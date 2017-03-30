@@ -12,7 +12,8 @@ import java.util.TimerTask;
 public class Activity00Comienzo extends AppCompatActivity  {
 
 
-    private static final long delayBienvenida = 3000;
+    private static final long SPLASH_SCREEN_DELAY = 3000;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +21,7 @@ public class Activity00Comienzo extends AppCompatActivity  {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //establesco la orientacion de la pantalla
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE); //con ésto oculto el titulo
+        //requestWindowFeature(Window.FEATURE_NO_TITLE); //con ésto oculto el titulo
 
         setContentView(R.layout.activity00_comienzo);
 
@@ -37,7 +38,7 @@ public class Activity00Comienzo extends AppCompatActivity  {
         };
 
         Timer tiempo = new Timer(); // definimos la duracion
-        tiempo.schedule(tarea, delayBienvenida);
+        tiempo.schedule(tarea, SPLASH_SCREEN_DELAY);
 
     }
 }
