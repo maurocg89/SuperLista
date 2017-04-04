@@ -29,7 +29,7 @@ public class SuperListaDbHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.myContext = context;
         this.DATABASE_PATH =  "/data/data/" + context.getPackageName() + "/databases/";
-        Log.e("Path 1: ", DATABASE_PATH);
+        //Log.e("Path 1: ", DATABASE_PATH);
     }
 
     // Si la base de datos no existe en el dispositivo, copia la que cargamos en la carpeta assets
