@@ -1,13 +1,23 @@
 package com.example.superlista.model;
 
-/**
- * Created by user on 31/03/2017.
- */
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
+@DatabaseTable(tableName = "categoria")
 public class Categoria {
 
+    // Nombre de columnas de la tabla en la base de datos
+    public static final String _ID = "id_categoria";
+    public static final String COLUMNA_NOMBRE = "nombre";
+    public static final String COLUMNA_DESCRIPCION = "descripcion";
+
+    @DatabaseField(generatedId = true, columnName = _ID)
     private int id_categoria;
+
+    @DatabaseField(columnName = COLUMNA_NOMBRE, canBeNull = false, unique = true)
     private String nombre;
+
+    @DatabaseField(columnName = COLUMNA_DESCRIPCION)
     private String descripcion;
 
     public Categoria() {
@@ -18,6 +28,7 @@ public class Categoria {
         this.descripcion = descripcion;
     }
 
+    //<editor-fold desc = "Getters and Setters">
     public int getId_categoria() {
         return id_categoria;
     }
@@ -41,4 +52,6 @@ public class Categoria {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    //</editor-fold>
 }

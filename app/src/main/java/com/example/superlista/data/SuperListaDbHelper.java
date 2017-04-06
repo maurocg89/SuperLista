@@ -4,19 +4,23 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+
+import com.example.superlista.model.Categoria;
+import com.example.superlista.model.Lista;
+import com.example.superlista.model.Producto;
+import com.example.superlista.model.ProductoPorLista;
+import com.example.superlista.model.Supermercado;
+import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.support.ConnectionSource;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * Created by user on 30/03/2017.
- */
-
-public class SuperListaDbHelper extends SQLiteOpenHelper {
+public class SuperListaDbHelper extends OrmLiteSqliteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "superLista.db";
@@ -24,12 +28,30 @@ public class SuperListaDbHelper extends SQLiteOpenHelper {
     private final Context myContext;
     private SQLiteDatabase myDataBase;
 
+    // Objetos DAO que se utilizaran para acceder a las tablas
+    private Dao<Producto, Integer> productoDao = null;
+    private Dao<Categoria, Integer> categoriaDao = null;
+    private Dao<Lista, Integer> listaDao = null;
+    private Dao<Supermercado, Integer> supermercadoDao = null;
+    private Dao<ProductoPorLista, Integer> productoPorListaDao = null;
+
+
     public SuperListaDbHelper(Context context){
 
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.myContext = context;
         this.DATABASE_PATH =  "/data/data/" + context.getPackageName() + "/databases/";
         //Log.e("Path 1: ", DATABASE_PATH);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase, ConnectionSource connectionSource) {
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, ConnectionSource connectionSource, int i, int i1) {
+
     }
 
     // Si la base de datos no existe en el dispositivo, copia la que cargamos en la carpeta assets
@@ -87,6 +109,61 @@ public class SuperListaDbHelper extends SQLiteOpenHelper {
 
     }
 
+    public Dao<Producto, Integer> getProductoDao() {
+        if (productoDao == null) {
+            try {
+                productoDao = getDao(Producto.class);
+            }catch (java.sql.SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return productoDao;
+    }
+
+    public Dao<Categoria, Integer> getCategoriaDao() {
+        if (categoriaDao == null) {
+            try {
+                categoriaDao = getDao(Categoria.class);
+            }catch (java.sql.SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return categoriaDao;
+    }
+
+    public Dao<Lista, Integer> getListaDao() {
+        if (listaDao == null) {
+            try {
+                listaDao = getDao(Lista.class);
+            }catch (java.sql.SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return listaDao;
+    }
+
+    public Dao<Supermercado, Integer> getSupermercadoDao() {
+        if (supermercadoDao == null) {
+            try {
+                supermercadoDao = getDao(Supermercado.class);
+            }catch (java.sql.SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return supermercadoDao;
+    }
+
+    public Dao<ProductoPorLista, Integer> getProductoPorListaDao() {
+        if (productoPorListaDao == null) {
+            try {
+                productoPorListaDao = getDao(ProductoPorLista.class);
+            }catch (java.sql.SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return productoPorListaDao;
+    }
+
     @Override
     public synchronized void close(){
         if(myDataBase != null){
@@ -95,11 +172,8 @@ public class SuperListaDbHelper extends SQLiteOpenHelper {
         super.close();
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-    }
-
+/*
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         if (newVersion > oldVersion){
@@ -109,6 +183,6 @@ public class SuperListaDbHelper extends SQLiteOpenHelper {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
 }
