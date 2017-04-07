@@ -3,42 +3,43 @@
     package="com.example.superlista">
 
     <!-- esto es un comentario -->
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <!-- user-permission permite a la aplicacion dar permisos para acceso a internet -->
-
     <application
-
         android:allowBackup="true"
         android:icon="@mipmap/icono02"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/icono02"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".Activity00Comienzo"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden">
-            <!--con el screenOrientation defino la orientacion del activity
-             con el configChanges le digo al android que asumo la responsabilidad de la
-             orientacion de la pantalla, por lo tanto la misma no va a cambiar -->
+            android:theme="@style/Theme.AppCompat.NoActionBar">
 
+            <!--
+             con el screenOrientation defino la orientacion del activity
+             con el configChanges le digo al android que asumo la responsabilidad de la
+             orientacion de la pantalla, por lo tanto la misma no va a cambiar
+            -->
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAINACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".PruebaBD"></activity>
     </application>
 
 </manifest>
