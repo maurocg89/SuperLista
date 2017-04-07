@@ -20,7 +20,7 @@ public class Producto {
     @DatabaseField(columnName = COLUMNA_NOMBRE, canBeNull = false, uniqueCombo = true)
     private String nombre;
 
-    @DatabaseField(columnName = COLUMNA_MARCA, canBeNull = false, uniqueCombo = true)
+    @DatabaseField(columnName = COLUMNA_MARCA, uniqueCombo = true)
     private String marca;
 
     @DatabaseField(columnName = COLUMNA_PRECIO, canBeNull = false, defaultValue = "0")
