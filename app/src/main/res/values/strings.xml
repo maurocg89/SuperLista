@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Super Lista</string>
+
+    <string name="nombre_menu">Menú</string>
 </resources>
