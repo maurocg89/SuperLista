@@ -54,10 +54,12 @@
 
 
 
-
+ <!--
     <Button
         android:id="@+id/buttonPruebaDb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button" />
+
+        -->
 </android.support.v4.widget.DrawerLayout>

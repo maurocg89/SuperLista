@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Super Lista</string>
 
-    <string name="nombre_menu">Menú</string>
+    <string name="version_apk">Version 1.0</string>
 
     <string name="item_lista">Listas</string>
     <string name="item_productos">Productos</string>
