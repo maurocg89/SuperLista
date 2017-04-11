@@ -2,4 +2,13 @@
     <string name="app_name">Super Lista</string>
 
     <string name="nombre_menu">Menú</string>
+
+    <string name="item_lista">Listas</string>
+    <string name="item_productos">Productos</string>
+    <string name="item_categorias">Categorias</string>
+    <string name="item_supers">Supermercados</string>
+    <string name="item_acercade">Acerca de</string>
+
+    <string name="inicio_toolbar">INICIO</string>
+
 </resources>

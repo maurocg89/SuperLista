@@ -3,7 +3,8 @@
 
     android:layout_width="300dp"
     android:layout_height="180dp"
-    android:background="@drawable/carrito">
+    android:background="@drawable/carrito"
+    >
 
 
     <TextView
@@ -15,10 +16,11 @@
         android:textColor="@color/colorBlanco"
         android:textSize="20sp"
         android:textStyle="italic"
-        android:layout_marginTop="55dp"
-        android:layout_marginStart="15dp"
+        android:layout_marginTop="57dp"
         android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        />
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp" />
 
 </RelativeLayout>
