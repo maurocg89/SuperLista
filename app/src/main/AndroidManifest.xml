@@ -13,13 +13,13 @@
         android:roundIcon="@mipmap/icono02"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".Activity00Comienzo"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
+
             <!--
              con el screenOrientation defino la orientacion del activity
              con el configChanges le digo al android que asumo la responsabilidad de la
@@ -27,22 +27,18 @@
             -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAINACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".PruebaBD">
-
-        </activity>
-
-
+        <activity android:name=".PruebaBD"></activity>
     </application>
 
 </manifest>

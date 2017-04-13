@@ -8,7 +8,6 @@
             android:checked="false"
             android:title="@string/item_lista"
             android:icon="@drawable/ic_assignment_black_24dp">
-
         </item>
 
         <item
@@ -16,7 +15,6 @@
             android:checked="false"
             android:title="@string/item_productos"
             android:icon="@drawable/ic_local_grocery_store_black_24dp">
-
         </item>
 
         <item
@@ -24,7 +22,6 @@
             android:checked="false"
             android:title="@string/item_categorias"
             android:icon="@drawable/ic_filter_list_black_24dp">
-
         </item>
 
         <item
@@ -32,20 +29,25 @@
             android:checked="false"
             android:title="@string/item_supers"
             android:icon="@drawable/ic_store_black_24dp">
-
         </item>
-
-        <item
-            android:id="@+id/item_menu_acercade"
-            android:checked="false"
-            android:title="@string/item_acercade"
-            android:icon="@drawable/ic_help_outline_black_24dp">
-
-        </item>
-
-
 
     </group>
+
+        <item android:title="Opciones">
+            <menu>
+                <item
+                    android:id="@+id/item_menu_acercade"
+                    android:checked="false"
+                    android:title="@string/item_acercade"
+                    android:icon="@drawable/ic_help_outline_black_24dp">
+                </item>
+            </menu>
+        </item>
+
+
+
+
+
 
 
 </menu>
