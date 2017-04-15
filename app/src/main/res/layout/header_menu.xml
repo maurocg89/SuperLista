@@ -14,17 +14,6 @@
     >
 
 
-    <TextView
-        android:id="@+id/textViewMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="4dp"
-        android:text="@string/version_apk"
-        android:textColor="@color/colorBlanco"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+
 
 </RelativeLayout>

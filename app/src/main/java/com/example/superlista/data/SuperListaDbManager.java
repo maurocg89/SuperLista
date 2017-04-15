@@ -2,13 +2,13 @@ package com.example.superlista.data;
 
 import android.content.Context;
 
+import com.example.superlista.PruebaBD;
 import com.example.superlista.model.Categoria;
 import com.example.superlista.model.Lista;
 import com.example.superlista.model.Producto;
 import com.example.superlista.model.ProductoPorLista;
 import com.example.superlista.model.Supermercado;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
 
@@ -41,7 +41,7 @@ public class SuperListaDbManager {
     }
 
     // Se llama una sola vez en el onCreate del activity principal
-    public static void init(Context context){
+    public static void init(PruebaBD context){
         if(instance == null){
             instance = new SuperListaDbManager(context);
         }

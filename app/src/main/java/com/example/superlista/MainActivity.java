@@ -19,16 +19,9 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-
-    //private Toolbar toolbar;
-    //private NavigationView navigationView;
-    //private DrawerLayout drawerLayout;
+    Button boton;
 
 
-
-    //Button boton;
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -48,12 +41,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        //Fragmento fragmento = new Fragmento();
-        //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        //transaction.replace(R.id.frame, fragmento);
-        //transaction.commit();
-
-
+        //Intent i = new Intent(MainActivity.this, PruebaBD.class);
+        //startActivity(i);
 
 
         /*BOTON QUE CREO MAURO
@@ -102,12 +91,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    //metodo que le paso un item del navigation
+    public boolean onNavigationItemSelected(MenuItem item) {
 
         int id = item.getItemId();
 
         if (id == R.id.item_menu_lista) {
+
+            Intent i = new Intent(MainActivity.this, PruebaBD.class);
+            startActivity(i);
             Toast.makeText(getApplicationContext(), "Bienvenido a las Listas", Toast.LENGTH_SHORT).show();
 
         } else if (id == R.id.item_menu_productos) {

@@ -30,6 +30,7 @@ public class PruebaBD extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prueba_bd);
+
         SuperListaDbManager.init(this);
 
         listView1 = (ListView) findViewById(R.id.lvLista);
