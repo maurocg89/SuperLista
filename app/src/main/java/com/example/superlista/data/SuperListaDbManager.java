@@ -2,6 +2,7 @@ package com.example.superlista.data;
 
 import android.content.Context;
 
+import com.example.superlista.FragmentListas;
 import com.example.superlista.PruebaBD;
 import com.example.superlista.model.Categoria;
 import com.example.superlista.model.Lista;
@@ -22,6 +23,8 @@ public class SuperListaDbManager {
     private static SuperListaDbManager instance;
     private SuperListaDbHelper helper;
 
+    //private SuperListaDbManager(Context context) {
+    //    helper = new SuperListaDbHelper(context);
     private SuperListaDbManager(Context context) {
         helper = new SuperListaDbHelper(context);
         try{
@@ -41,7 +44,7 @@ public class SuperListaDbManager {
     }
 
     // Se llama una sola vez en el onCreate del activity principal
-    public static void init(PruebaBD context){
+    public static void init(Context context){
         if(instance == null){
             instance = new SuperListaDbManager(context);
         }

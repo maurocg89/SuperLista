@@ -3,6 +3,7 @@ package com.example.superlista;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -95,11 +96,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
 
         int id = item.getItemId();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (id == R.id.item_menu_lista) {
 
             Intent i = new Intent(MainActivity.this, PruebaBD.class);
             startActivity(i);
+            //fragmentManager.beginTransaction().replace(R.id.contenedor, new FragmentListas()).commit();
+
+
             Toast.makeText(getApplicationContext(), "Bienvenido a las Listas", Toast.LENGTH_SHORT).show();
 
         } else if (id == R.id.item_menu_productos) {

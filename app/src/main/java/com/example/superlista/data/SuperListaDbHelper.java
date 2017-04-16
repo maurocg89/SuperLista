@@ -5,6 +5,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
+import com.example.superlista.FragmentListas;
 import com.example.superlista.model.Categoria;
 import com.example.superlista.model.Lista;
 import com.example.superlista.model.Producto;

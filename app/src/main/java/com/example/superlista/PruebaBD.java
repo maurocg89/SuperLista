@@ -31,7 +31,7 @@ public class PruebaBD extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prueba_bd);
 
-        SuperListaDbManager.init(this);
+        SuperListaDbManager.init(this); //OJO QUE CAMBIAMOS EL PruebaBD por el del fragment para probar
 
         listView1 = (ListView) findViewById(R.id.lvLista);
         nombres = new ArrayList<String>();
