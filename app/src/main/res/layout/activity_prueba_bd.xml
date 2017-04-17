@@ -7,10 +7,25 @@
     android:orientation="vertical"
     tools:context="com.example.superlista.PruebaBD">
 
+    <EditText
+        android:id="@+id/etTextHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/btnSpeak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="Speak" />
+
     <ListView
         android:id="@+id/lvLista"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
     </ListView>
 
 </LinearLayout>
