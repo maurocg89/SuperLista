@@ -115,7 +115,7 @@ public class SuperListaDbManager {
         return productos;
     }
 
-    public List<Producto> getAllProductosByName(){
+    public List<Producto> getAllProductosByNameDistinct(){
         QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
         queryBuilder.distinct().selectColumns(Producto.COLUMNA_NOMBRE);
         List<Producto> productos = null;
@@ -170,7 +170,21 @@ public class SuperListaDbManager {
 
     }
 
-    //TODO: Agregar metodo que devuelva los productos por categoria sin repetir nombres(distinct)
+    public List<Producto> getProductoByCategoriaDistinct(int id_categoria){
+        List<Producto> productos = null;
+        try {
+            QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
+            queryBuilder.where().eq(Producto.COLUMNA_CATEGORIA_FKEY, id_categoria);
+            queryBuilder.distinct().selectColumns(Producto.COLUMNA_NOMBRE);
+            /*GenericRawResults<String[]> rawResults =
+                    getHelper().getProductoDao().queryRaw("SELECT DISTINCT "+Producto.COLUMNA_NOMBRE+" FROM producto");*/
+            productos = queryBuilder.query();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return productos;
+    }
+
     // </editor-fold>
 
     // <editor-fold desc = "Acciones Categorias">
