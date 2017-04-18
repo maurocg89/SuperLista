@@ -38,9 +38,6 @@
     </android.support.design.widget.NavigationView>
 
 
-
-
-
  <!--
     <Button
         android:id="@+id/buttonPruebaDb"
