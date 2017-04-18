@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -56,9 +55,9 @@ public class PruebaBD extends AppCompatActivity implements TextView.OnEditorActi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_prueba_bd);
+        setContentView(R.layout.fragment_productos);
 
-        SuperListaDbManager.init(this); //OJO QUE CAMBIAMOS EL PruebaBD por el del fragment para probar
+        //SuperListaDbManager.init(this);
 
         listView1 = (ListView) findViewById(R.id.lvLista);
         btnSpeak = (Button) findViewById(R.id.btnSpeak);
@@ -110,7 +109,6 @@ public class PruebaBD extends AppCompatActivity implements TextView.OnEditorActi
         searchAdapter = new SearchAdapter(this);
         listas = SuperListaDbManager.getInstance().getAllListas();
         productos = SuperListaDbManager.getInstance().getAllProductos();
-        //productos = SuperListaDbManager.getInstance().getAllProductosByNameDistinct();
         categorias = SuperListaDbManager.getInstance().getAllCategorias();
         supermercados = SuperListaDbManager.getInstance().getAllSupermercados();
         nombres = new ArrayList<String>();
@@ -127,6 +125,7 @@ public class PruebaBD extends AppCompatActivity implements TextView.OnEditorActi
 
         //myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, nombres);
         listView1.setAdapter(searchAdapter);
+        //listView1.setAdapter(myAdapter);
 
     }
 

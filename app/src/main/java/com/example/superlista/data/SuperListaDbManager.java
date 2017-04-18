@@ -2,8 +2,6 @@ package com.example.superlista.data;
 
 import android.content.Context;
 
-import com.example.superlista.FragmentListas;
-import com.example.superlista.PruebaBD;
 import com.example.superlista.model.Categoria;
 import com.example.superlista.model.Lista;
 import com.example.superlista.model.Producto;

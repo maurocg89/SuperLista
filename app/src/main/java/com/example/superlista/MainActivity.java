@@ -3,6 +3,7 @@ package com.example.superlista;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -18,15 +19,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.superlista.data.SuperListaDbManager;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    Button boton;
-
-
+    /* TODO: Fede: Fragment de listas, supermercados, floating button de todas activities. Acerca de (Activity). Formularios para agregar  productos, listas y categorias.
+       TODO: Mauro: Terminar activity productos(icono de microfono, search adapter en el fragment, checkbox), menu cuando se mantiene presionado un item. Activity categoria con boton de ver productos pasandole al fragment de productos el id de la categoria
+       TODO: Agregar marca en los list view que tengan productos*/
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Instancia unica de la base de datos
+        SuperListaDbManager.init(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -41,20 +46,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         //Intent i = new Intent(MainActivity.this, PruebaBD.class);
         //startActivity(i);
 
-
-        /*BOTON QUE CREO MAURO
-        boton = (Button) findViewById(R.id.buttonPruebaDb);
-        boton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, PruebaBD.class);
-                startActivity(i);
-            }
-        });*/
     }
 
 
@@ -96,13 +90,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        FragmentManager fragmentManager = getSupportFragmentManager();
+      /*  FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (id == R.id.item_menu_lista) {
 
-            Intent i = new Intent(MainActivity.this, PruebaBD.class);
-            startActivity(i);
-            //fragmentManager.beginTransaction().replace(R.id.contenedor, new FragmentListas()).commit();
+            //Intent i = new Intent(MainActivity.this, PruebaBD.class);
+            //startActivity(i);
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new FragmentListas()).commit();
 
 
             Toast.makeText(getApplicationContext(), "Bienvenido a las Listas", Toast.LENGTH_SHORT).show();
@@ -122,7 +116,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        drawer.closeDrawer(GravityCompat.START);*/
+        displaySelectedScreen(id);
         return true;
     }
+
+    private void displaySelectedScreen(int id){
+        Fragment fragment = null;
+        switch (id){
+            case R.id.item_menu_productos:
+                fragment = new FragmentProductos();
+                break;
+        }
+
+        if (fragment != null){
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.contenedor, fragment);
+            ft.commit();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
+    }
+
+
+
 }

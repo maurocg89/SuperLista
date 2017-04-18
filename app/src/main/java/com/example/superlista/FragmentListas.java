@@ -50,19 +50,19 @@ public class FragmentListas extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_listas, container, false);
+        View view = inflater.inflate(R.layout.fragment_productos, container, false);
 
-        //SuperListaDbManager.init(getContext());
+        SuperListaDbManager.init(getContext());
 
-        //listView1 = (ListView) view.findViewById(R.id.lvListas);
-        //nombres = new ArrayList<String>();
-        //setData();
+        listView1 = (ListView) view.findViewById(R.id.lvLista);
+        nombres = new ArrayList<String>();
+        setData();
 
 
         return view;
     }
 
-/*
+
     private void setData(){
         listas = SuperListaDbManager.getInstance().getAllListas();
         productos = SuperListaDbManager.getInstance().getAllProductos();
@@ -75,10 +75,13 @@ public class FragmentListas extends Fragment {
         myAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, nombres);
         listView1.setAdapter(myAdapter);
 
-    }*/
+    }
 
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        setData();
+    }
 
 
     // TODO: Rename method, update argument and hook method into UI event
