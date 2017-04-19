@@ -23,6 +23,8 @@ import com.example.superlista.data.SuperListaDbManager;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    Fragment fragment = null;
+
     /* TODO: Fede: Fragment de listas, supermercados, floating button de todas activities. Acerca de (Activity). Formularios para agregar  productos, listas y categorias.
        TODO: Mauro: Terminar activity productos(icono de microfono, search adapter en el fragment, checkbox), menu cuando se mantiene presionado un item. Activity categoria con boton de ver productos pasandole al fragment de productos el id de la categoria
        TODO: Agregar marca en los list view que tengan productos*/
@@ -46,8 +48,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Intent i = new Intent(MainActivity.this, PruebaBD.class);
-        //startActivity(i);
+
+        //colocamos el fragment de listas en el principio
+        fragment = new FragmentListas();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.contenedor, fragment);
+        ft.commit();
+
 
     }
 
@@ -122,11 +129,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void displaySelectedScreen(int id){
-        Fragment fragment = null;
+
+
         switch (id){
+            case R.id.item_menu_lista:
+                fragment = new FragmentListas();
+                Toast.makeText(getApplicationContext(), "Bienvenido a las Listas", Toast.LENGTH_SHORT).show();
+                break;
             case R.id.item_menu_productos:
                 fragment = new FragmentProductos();
+                Toast.makeText(getApplicationContext(), "Bienvenido a los Productos", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.item_menu_categoria:
+
+                Toast.makeText(getApplicationContext(), "Bienvenido a las Categorias", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.item_menu_supers:
+                fragment = new FragmentSupers();
+                Toast.makeText(getApplicationContext(), "Bienvenido a los Supermercados", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.item_menu_acercade:
+
+                Toast.makeText(getApplicationContext(), R.string.version_apk, Toast.LENGTH_SHORT).show();
+                break;
+
         }
 
         if (fragment != null){

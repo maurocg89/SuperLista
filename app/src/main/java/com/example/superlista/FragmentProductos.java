@@ -59,7 +59,7 @@ public class FragmentProductos extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Productos");
+        getActivity().setTitle(R.string.item_productos);
     }
     // TODO: Ver porque no trae todos los productos de la base de datos (trae uno solo de los que tienen el mismo nombre)
     private void setData(){

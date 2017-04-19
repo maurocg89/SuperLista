@@ -9,18 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
 import com.example.superlista.data.SuperListaDbManager;
 import com.example.superlista.model.Lista;
+import com.example.superlista.model.Supermercado;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-
-public class FragmentListas extends Fragment {
+public class FragmentSupers extends Fragment {
 
 
     private ListView listView1;
-    private List<Lista> listas;
+    private List<Supermercado> supermercados;
     private ArrayList<String> nombres;
     private ArrayAdapter<String> myAdapter;
 
@@ -28,7 +30,7 @@ public class FragmentListas extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_listas, container, false);
+        View view = inflater.inflate(R.layout.fragment_supers, container, false);
 
         SuperListaDbManager.init(getContext());
 
@@ -42,15 +44,16 @@ public class FragmentListas extends Fragment {
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle(R.string.item_lista);
+        getActivity().setTitle(R.string.item_supers);
     }
 
 
     private void setData(){
-        listas = SuperListaDbManager.getInstance().getAllListas();
 
-        for (Lista lista: listas) {
-            nombres.add(lista.getNombre());
+        supermercados = SuperListaDbManager.getInstance().getAllSupermercados();
+
+        for (Supermercado supermercado: supermercados) {
+            nombres.add(supermercado.getNombre() + " " + supermercado.getSucursal());
         }
         myAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, nombres);
         listView1.setAdapter(myAdapter);
