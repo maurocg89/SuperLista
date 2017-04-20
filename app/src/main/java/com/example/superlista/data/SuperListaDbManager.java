@@ -10,6 +10,7 @@ import com.example.superlista.model.Supermercado;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.query.In;
 
 import java.io.IOException;
 import java.util.List;
@@ -115,7 +116,7 @@ public class SuperListaDbManager {
 
     public List<Producto> getAllProductosByNameDistinct(){
         QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
-        queryBuilder.distinct().selectColumns(Producto.COLUMNA_NOMBRE);
+        queryBuilder.distinct().selectColumns(Producto.COLUMNA_MARCA, Producto.COLUMNA_NOMBRE);
         List<Producto> productos = null;
         try {
             /*GenericRawResults<String[]> rawResults =
@@ -131,6 +132,18 @@ public class SuperListaDbManager {
         Producto producto = null;
         try {
             producto = getHelper().getProductoDao().queryForId(id_producto);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return producto;
+    }
+
+    public Producto getProductoByNombre(String nombre, String marca){
+        QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
+        Producto producto = null;
+        try {
+            queryBuilder.where().eq(Producto.COLUMNA_NOMBRE, nombre).and().eq(Producto.COLUMNA_MARCA, marca);
+            producto = queryBuilder.queryForFirst();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -173,7 +186,7 @@ public class SuperListaDbManager {
         try {
             QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
             queryBuilder.where().eq(Producto.COLUMNA_CATEGORIA_FKEY, id_categoria);
-            queryBuilder.distinct().selectColumns(Producto.COLUMNA_NOMBRE);
+            queryBuilder.distinct().selectColumns(Producto.COLUMNA_NOMBRE, Producto.COLUMNA_MARCA);
             /*GenericRawResults<String[]> rawResults =
                     getHelper().getProductoDao().queryRaw("SELECT DISTINCT "+Producto.COLUMNA_NOMBRE+" FROM producto");*/
             productos = queryBuilder.query();

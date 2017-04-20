@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.media.Image;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +50,7 @@ public class PruebaBD extends AppCompatActivity implements TextView.OnEditorActi
 
     private SearchAdapter searchAdapter;
 
-    private Button btnSpeak;
+    private ImageView btnSpeak;
     private EditText etSearch;
     private final int REQ_CODE_SPEECH_OUTPUT = 143;
 
@@ -60,8 +62,8 @@ public class PruebaBD extends AppCompatActivity implements TextView.OnEditorActi
         //SuperListaDbManager.init(this);
 
         listView1 = (ListView) findViewById(R.id.lvLista);
-        btnSpeak = (Button) findViewById(R.id.btnSpeak);
-        etSearch = (EditText) findViewById(R.id.etTextHint);
+        btnSpeak = (ImageView) findViewById(R.id.imgBtnSpeak);
+        etSearch = (EditText) findViewById(R.id.etBuscar);
         searchAdapter = new SearchAdapter(this);
 
         setData();

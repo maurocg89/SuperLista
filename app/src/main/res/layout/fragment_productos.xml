@@ -1,31 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.example.superlista.PruebaBD">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/etTextHint"
+    <RelativeLayout
+        android:id="@+id/top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top"
-        android:inputType="text" />
+        android:layout_height="40dp"
+        android:layout_margin="5dp">
 
-    <Button
-        android:id="@+id/btnSpeak"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="Speak" />
+        <EditText
+            android:id="@+id/etBuscar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
+            android:hint="Buscar" />
 
-    <ListView
-        android:id="@+id/lvLista"
+        <ImageView
+            android:id="@+id/imgBtnSpeak"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/etBuscar"
+            android:layout_alignBottom="@id/etBuscar"
+            android:layout_alignRight="@id/etBuscar"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/ic_microphone"
+            />
+    </RelativeLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
-    </ListView>
+        android:orientation="vertical"
+        android:layout_below="@id/top">
 
-</LinearLayout>
+        <ListView
+            android:id="@+id/lvLista"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+    </LinearLayout>
+
+</RelativeLayout>
