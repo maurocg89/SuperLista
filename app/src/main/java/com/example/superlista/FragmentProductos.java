@@ -48,13 +48,14 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
     private EditText etSearch;
     private final int REQ_CODE_SPEECH_OUTPUT = 143;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_productos, container, false);
 
-        listView1 = (ListView) view.findViewById(R.id.lvLista);
+        listView1 = (ListView) view.findViewById(R.id.lvProductos);
         btnSpeak = (ImageView) view.findViewById(R.id.imgBtnSpeak);
         etSearch = (EditText) view.findViewById(R.id.etBuscar);
         searchAdapter = new SearchAdapterProducto(getActivity());
@@ -106,13 +107,14 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
         nombres = new ArrayList<String>();
 
         for(Producto producto : productos){
-            //nombres.add(producto.getNombre() + " " + producto.getMarca());
+            nombres.add(producto.getNombre() + " " + producto.getMarca());
             searchAdapter.addItem(producto.getNombre() + " " + producto.getMarca());
         }
 
         //myAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, nombres);
-        listView1.setAdapter(searchAdapter);
         //listView1.setAdapter(myAdapter);
+        listView1.setAdapter(searchAdapter);
+
 
     }
 
@@ -189,7 +191,7 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            ViewHolderProducto holder = null;
+            ViewHolderProducto holder;
             if (convertView == null){
                 holder = new ViewHolderProducto();
                 convertView = inflater.inflate(R.layout.list_item, null);
@@ -207,6 +209,6 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
 
     public class ViewHolderProducto{
         TextView textView;
-        CheckBox checkBox;
+       // CheckBox checkBox;
     }
 }

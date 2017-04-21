@@ -32,7 +32,7 @@ public class FragmentSupers extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_supers, container, false);
 
-        SuperListaDbManager.init(getContext());
+        //SuperListaDbManager.init(getContext());
 
         listView1 = (ListView) view.findViewById(R.id.lvLista);
         nombres = new ArrayList<String>();
