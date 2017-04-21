@@ -56,6 +56,7 @@ public class FragmentSupers extends Fragment {
             nombres.add(supermercado.getNombre() + " " + supermercado.getSucursal());
         }
         myAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, nombres);
+
         listView1.setAdapter(myAdapter);
 
     }

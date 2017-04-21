@@ -7,9 +7,9 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Supermercado {
 
     // Nombre de columnas de la tabla en la base de datos
-    public static final String _ID = "id_supermercado";
-    public static final String COLUMNA_NOMBRE = "nombre";
-    public static final String COLUMNA_SUCURSAL = "sucursal";
+    private static final String _ID = "id_supermercado";
+    private static final String COLUMNA_NOMBRE = "nombre";
+    private static final String COLUMNA_SUCURSAL = "sucursal";
 
     @DatabaseField(generatedId = true, columnName = _ID)
     private int id_supermercado;
