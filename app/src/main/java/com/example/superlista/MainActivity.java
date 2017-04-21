@@ -137,8 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(getApplicationContext(), "Bienvenido a las Listas", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.item_menu_productos:
-                //fragment = new FragmentProductos();
-                fragment = new FragmentProductos2(); // Probando busqueda en el menu
+                fragment = new FragmentProductos();
                 Toast.makeText(getApplicationContext(), "Bienvenido a los Productos", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.item_menu_categoria:
