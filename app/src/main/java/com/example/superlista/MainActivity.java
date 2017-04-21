@@ -95,42 +95,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //metodo que le paso un item del navigation
     public boolean onNavigationItemSelected(MenuItem item) {
-
         int id = item.getItemId();
-      /*  FragmentManager fragmentManager = getSupportFragmentManager();
-
-        if (id == R.id.item_menu_lista) {
-
-            //Intent i = new Intent(MainActivity.this, PruebaBD.class);
-            //startActivity(i);
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new FragmentListas()).commit();
-
-
-            Toast.makeText(getApplicationContext(), "Bienvenido a las Listas", Toast.LENGTH_SHORT).show();
-
-        } else if (id == R.id.item_menu_productos) {
-            Toast.makeText(getApplicationContext(), "Bienvenido a los Productos", Toast.LENGTH_SHORT).show();
-
-        } else if (id == R.id.item_menu_categoria) {
-            Toast.makeText(getApplicationContext(), "Bienvenido a las Categorias", Toast.LENGTH_SHORT).show();
-
-        } else if (id == R.id.item_menu_supers) {
-            Toast.makeText(getApplicationContext(), "Bienvenido a los Supermercados", Toast.LENGTH_SHORT).show();
-
-        } else if (id == R.id.item_menu_acercade) {
-            Toast.makeText(getApplicationContext(), R.string.version_apk, Toast.LENGTH_SHORT).show();
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);*/
         displaySelectedScreen(id);
         return true;
     }
 
     private void displaySelectedScreen(int id){
-
-
         switch (id){
             case R.id.item_menu_lista:
                 fragment = new FragmentListas();
@@ -141,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(getApplicationContext(), "Bienvenido a los Productos", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.item_menu_categoria:
-
+                fragment = new FragmentCategorias();
                 Toast.makeText(getApplicationContext(), "Bienvenido a las Categorias", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.item_menu_supers:

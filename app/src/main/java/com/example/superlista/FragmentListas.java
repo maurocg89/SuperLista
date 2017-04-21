@@ -30,7 +30,7 @@ public class FragmentListas extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_listas, container, false);
 
-        SuperListaDbManager.init(getContext());
+        //SuperListaDbManager.init(getContext()); no hace falta poner esto, lo carga en el main activity
 
         listView1 = (ListView) view.findViewById(R.id.lvLista);
         nombres = new ArrayList<String>();
