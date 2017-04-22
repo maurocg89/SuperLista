@@ -46,6 +46,7 @@ public final class SuperListaContract {
         public static final String _ID = "id_supermercado";
         public static final String COLUMNA_NOMBRE = "nombre";
         public static final String COLUMNA_SUCURSAL = "sucursal";
+        public static final String COLUMNA_LOGO = "logo";   // AGREGADO para el tema de la imagen de logo
 
     }
 

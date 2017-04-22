@@ -19,7 +19,7 @@ import java.util.List;
 public class FragmentListas extends Fragment {
 
 
-    private ListView listView1;
+    private ListView listViewListas;
     private List<Lista> listas;
     private ArrayList<String> nombres;
     private ArrayAdapter<String> myAdapter;
@@ -32,7 +32,7 @@ public class FragmentListas extends Fragment {
 
         //SuperListaDbManager.init(getContext()); no hace falta poner esto, lo carga en el main activity
 
-        listView1 = (ListView) view.findViewById(R.id.lvLista);
+        listViewListas = (ListView) view.findViewById(R.id.lvLista);
         nombres = new ArrayList<String>();
         setData();
 
@@ -53,7 +53,7 @@ public class FragmentListas extends Fragment {
             nombres.add(lista.getNombre());
         }
         myAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, nombres);
-        listView1.setAdapter(myAdapter);
+        listViewListas.setAdapter(myAdapter);
 
     }
 

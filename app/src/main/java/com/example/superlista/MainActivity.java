@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     Fragment fragment = null;
 
+
     /* TODO: Fede: Fragment de listas, supermercados, floating button de todas activities. Acerca de (Activity). Formularios para agregar  productos, listas y categorias.
        TODO: Mauro: Terminar activity productos(icono de microfono, search adapter en el fragment, checkbox), menu cuando se mantiene presionado un item. Activity categoria con boton de ver productos pasandole al fragment de productos el id de la categoria
        TODO: Agregar marca en los list view que tengan productos*/
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.contenedor, fragment);
         ft.commit();
+
+
 
 
     }

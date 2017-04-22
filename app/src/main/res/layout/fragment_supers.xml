@@ -6,7 +6,7 @@
     tools:context="com.example.superlista.FragmentListas">
 
     <ListView
-        android:id="@+id/lvLista"
+        android:id="@+id/lvSuper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
        >

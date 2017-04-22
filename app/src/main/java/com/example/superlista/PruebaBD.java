@@ -183,6 +183,7 @@ public class PruebaBD extends AppCompatActivity implements TextView.OnEditorActi
     }
 
     // TODO: Agregar checkbox a los item lists
+
     public class SearchAdapter extends BaseAdapter {
 
         private ArrayList<String> data = new ArrayList<String>();
@@ -212,6 +213,7 @@ public class PruebaBD extends AppCompatActivity implements TextView.OnEditorActi
             return position;
         }
 
+
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder holder = null;
@@ -233,4 +235,5 @@ public class PruebaBD extends AppCompatActivity implements TextView.OnEditorActi
     public class ViewHolder{
         public TextView textView;
     }
+
 }

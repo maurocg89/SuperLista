@@ -21,7 +21,7 @@ import java.util.List;
 public class FragmentSupers extends Fragment {
 
 
-    private ListView listView1;
+    private ListView listViewSuper;
     private List<Supermercado> supermercados;
     private ArrayList<String> nombres;
     private ArrayAdapter<String> myAdapter;
@@ -32,9 +32,8 @@ public class FragmentSupers extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_supers, container, false);
 
-        //SuperListaDbManager.init(getContext());
 
-        listView1 = (ListView) view.findViewById(R.id.lvLista);
+        listViewSuper = (ListView) view.findViewById(R.id.lvSuper);
         nombres = new ArrayList<String>();
         setData();
 
@@ -53,13 +52,15 @@ public class FragmentSupers extends Fragment {
         supermercados = SuperListaDbManager.getInstance().getAllSupermercados();
 
         for (Supermercado supermercado: supermercados) {
-            nombres.add(supermercado.getNombre() + " " + supermercado.getSucursal());
+            nombres.add(supermercado.getNombre() + " " + supermercado.getSucursal() + " imagen "  + supermercado.getLogo());
         }
         myAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, nombres);
 
-        listView1.setAdapter(myAdapter);
+        listViewSuper.setAdapter(myAdapter);
 
     }
+
+
 
 
 }
