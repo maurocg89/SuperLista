@@ -28,27 +28,17 @@ public class FragmentSupers extends Fragment {
 
     private ListView listViewSuper = null;
     private ArrayList<Supermercado> arrayItems = null;
-
     private List<Supermercado> supermercados;
-
     private ListAdapterSupermercado adapter;
-
-
-    //private ArrayAdapter<String> myAdapter;
-
-
-
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_supers, container, false);
 
-
         listViewSuper = (ListView) view.findViewById(R.id.lvSuper);
         arrayItems = new ArrayList<>();
         setData();
-
 
 
         return view;

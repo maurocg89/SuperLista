@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Super Lista</string>
 
-    <string name="version_apk">Version 1.0</string>
+    <string name="version_apk">Versión: 1.0</string>
 
     <string name="item_lista">Listas</string>
     <string name="item_productos">Productos</string>
@@ -10,10 +10,15 @@
     <string name="item_acercade">Acerca de</string>
 
     <string name="text_sucursal">Sucursal</string>
-    <string name="super_cargados">Supermercados Cargados</string>
+    <string name="informacion">Información:</string>
 
-
-    <string name="inicio_toolbar">INICIO</string>
+    <string name="text_informacion">
+        Aplicación desarrollada para la asignatura Seminario II de la carrera Analista Universitario en Sistemas.
+    </string>
+    <string name="text_ubicacion">Rosario-Santa Fe-Argentina</string>
+    <string name="text_desarrolladores">Desarrolladores:</string>
+    <string name="text_integrantes">Borda Federico\nGrillo Mauro</string>
+    <string name="boton_env_comentario">Enviar Comentario</string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

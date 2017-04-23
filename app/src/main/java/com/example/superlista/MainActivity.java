@@ -153,8 +153,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(getApplicationContext(), "Bienvenido a los Supermercados", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.item_menu_acercade:
-
-                Toast.makeText(getApplicationContext(), R.string.version_apk, Toast.LENGTH_SHORT).show();
+                fragment = new FragmentAcercaDe();
+                //Toast.makeText(getApplicationContext(), R.string.version_apk, Toast.LENGTH_SHORT).show();
                 break;
 
         }
