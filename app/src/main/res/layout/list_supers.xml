@@ -2,38 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:orientation="horizontal">
+    android:layout_marginTop="@dimen/margen_entre_items"
+    android:orientation="horizontal"
+    >
 
     <ImageView
         android:id="@+id/imageSuper"
-        android:layout_width="92dp"
-        android:layout_height="match_parent"
-        android:layout_marginRight="10dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="@dimen/margen_entre_items"
+        android:layout_marginRight="@dimen/margen_entre_items"
         android:layout_weight="1"
         app:srcCompat="@drawable/ic_store_black_24dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1131.41"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/viewSupermercado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Supermercado"
+            android:layout_marginTop="@dimen/margen_entre_items"
+            android:text="@string/item_supers"
             android:textSize="24sp" />
 
         <TextView
             android:id="@+id/viewSucursal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margen_entre_items"
             android:layout_marginTop="@dimen/margen_derecho_header"
-            android:text="Surcursal"
+            android:text="@string/text_sucursal"
             android:textSize="18sp" />
+
     </LinearLayout>
 
 </LinearLayout>

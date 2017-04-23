@@ -9,6 +9,10 @@
     <string name="item_supers">Supermercados</string>
     <string name="item_acercade">Acerca de</string>
 
+    <string name="text_sucursal">Sucursal</string>
+    <string name="super_cargados">Supermercados Cargados</string>
+
+
     <string name="inicio_toolbar">INICIO</string>
 
 

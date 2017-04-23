@@ -3,10 +3,12 @@ package com.example.superlista.model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+import java.sql.Blob;
 
 
 @DatabaseTable(tableName = "supermercado")
-public class Supermercado{
+public class Supermercado implements Serializable{
 
     // Nombre de columnas de la tabla en la base de datos
     private static final String _ID = "id_supermercado";
@@ -25,13 +27,13 @@ public class Supermercado{
     private String sucursal;
 
     @DatabaseField(columnName = COLUMNA_LOGO, uniqueCombo = true)//identificaciond de imagen en la base
-    private String logo;
+    private int logo;
 
 
     public Supermercado() {
     }
 
-    public Supermercado(String nombre, String sucursal, String logo) {
+    public Supermercado(String nombre, String sucursal, int logo) {
         this.nombre = nombre;
         this.sucursal = sucursal;
         this.logo = logo;
@@ -62,16 +64,39 @@ public class Supermercado{
         this.sucursal = sucursal;
     }
 
-    public String getLogo() {
+    public int getLogo() {
         return logo;
     }
 
-    public void setLogo(String logo) {
+    public void setLogo(int logo) {
         this.logo = logo;
     }
 
     //</editor-fold>
 
 
+    //<editor-fold desc="Equals y Hash Code">
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Supermercado that = (Supermercado) o;
+
+        if (id_supermercado != that.id_supermercado) return false;
+        if (logo != that.logo) return false;
+        if (!nombre.equals(that.nombre)) return false;
+        return sucursal != null ? sucursal.equals(that.sucursal) : that.sucursal == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id_supermercado;
+        result = 31 * result + nombre.hashCode();
+        result = 31 * result + (sucursal != null ? sucursal.hashCode() : 0);
+        result = 31 * result + logo;
+        return result;
+    }
+    //</editor-fold>
 }
