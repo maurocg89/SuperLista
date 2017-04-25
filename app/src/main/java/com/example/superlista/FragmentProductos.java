@@ -2,31 +2,30 @@ package com.example.superlista;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.superlista.utils.ProductSearchAdapter;
 import com.example.superlista.data.SuperListaDbManager;
+import com.example.superlista.model.Categoria;
 import com.example.superlista.model.Producto;
 
 
@@ -43,9 +42,10 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
     private List<Producto> productos;
     private ArrayList<String> nombres;
     private ArrayAdapter<String> myAdapter;
-    private SearchAdapterProducto searchAdapter;
+    private ProductSearchAdapter searchAdapter;
     private ImageView btnSpeak;
     private EditText etSearch;
+    private int cod_categoria;
     private final int REQ_CODE_SPEECH_OUTPUT = 143;
 
 
@@ -58,7 +58,7 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
         listView1 = (ListView) view.findViewById(R.id.lvProductos);
         btnSpeak = (ImageView) view.findViewById(R.id.imgBtnSpeak);
         etSearch = (EditText) view.findViewById(R.id.etBuscar);
-        searchAdapter = new SearchAdapterProducto(getActivity());
+        searchAdapter = new ProductSearchAdapter(getActivity());
         setData();
 
         btnSpeak.setOnClickListener(new View.OnClickListener() {
@@ -102,9 +102,21 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
     }
 
     private void setData(){
-        searchAdapter = new SearchAdapterProducto(getActivity());
+
+        /*try{
+            cod_categoria = getActivity().getIntent().getExtras().getInt(Categoria._ID);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        if (cod_categoria == 0){
+            productos = SuperListaDbManager.getInstance().getAllProductosByNameDistinct();
+        } else {
+            productos = SuperListaDbManager.getInstance().getProductoByCategoriaDistinct(cod_categoria);
+        }*/
+
         productos = SuperListaDbManager.getInstance().getAllProductosByNameDistinct();
-        nombres = new ArrayList<String>();
+        searchAdapter = new ProductSearchAdapter(getActivity());
+        nombres = new ArrayList<>();
 
         for(Producto producto : productos){
             nombres.add(producto.getNombre() + " " + producto.getMarca());
@@ -119,7 +131,7 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
     }
 
     private void setSearchResult(String str){
-        searchAdapter = new SearchAdapterProducto(getActivity());
+        searchAdapter = new ProductSearchAdapter(getActivity());
         for (String tmp: nombres){
             if (tmp.toLowerCase().contains(str.toLowerCase())){
                 searchAdapter.addItem(tmp);
@@ -160,55 +172,32 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
         return false;
     }
 
-    public class SearchAdapterProducto extends BaseAdapter{
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_productos, menu);
+    }
 
-        private ArrayList<String> data = new ArrayList<String>();
-        private LayoutInflater inflater;
-
-        public SearchAdapterProducto(Activity activity) {
-            inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        public void addItem(String item){
-            data.add(item);
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public int getCount() {
-            return data.size();
-        }
-
-        @Override
-        public String getItem(int position) {
-            return data.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            ViewHolderProducto holder;
-            if (convertView == null){
-                holder = new ViewHolderProducto();
-                convertView = inflater.inflate(R.layout.list_item, null);
-                holder.textView = (TextView) convertView.findViewById(R.id.list_item_texto);
-                convertView.setTag(holder);
-            }
-            else {
-                holder = (ViewHolderProducto) convertView.getTag();
-            }
-            String str = data.get(position);
-            holder.textView.setText(str);
-            return convertView;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_eliminar_producto: return true; // metodo eliminar producto
+            default: return super.onOptionsItemSelected(item);
         }
     }
 
-    public class ViewHolderProducto{
-        TextView textView;
-       // CheckBox checkBox;
+    private void eliminarProducto(MenuItem item){
+        SparseBooleanArray array = listView1.getCheckedItemPositions();
+        ArrayList<String> seleccion = new ArrayList<>();
+        for (int i = 0; i < array.size(); i++){
+            // Posicion del producto en el adaptador
+            int posicion = array.keyAt(i);
+            if (array.valueAt(i)){
+                seleccion.add(myAdapter.getItem(posicion));
+            }
+
+            //Intent intent = new Intent()
+        }
     }
+
+
 }
