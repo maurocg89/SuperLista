@@ -5,7 +5,7 @@
     tools:context="com.example.superlista.MainActivity">
 
     <item android:id="@+id/action_eliminar_producto"
-        android:title="Eliminar Producto"
+        android:title="@string/eliminar_producto"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_delete"
         />

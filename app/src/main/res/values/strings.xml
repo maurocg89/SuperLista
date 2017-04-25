@@ -13,6 +13,13 @@
 
     <string name="action_settings">Settings</string>
 
+    <!--STRINGS PARA EL MENU PRODUCTOS -->
+    <string name="eliminar_producto">Eliminar Producto</string>
+    <string name="modificar_producto">Modificar Producto</string>
+
+    <!--STRINGS PARA EL FRAGMENT PRODUCTO -->
+    <string name="buscar_producto">Buscar</string>
+    <string name="microphone">Microphone</string>
 
     <!--STRINGS PARA EL FRAGMENT SUPERMERCADO -->
     <string name="text_sucursal">Sucursal</string>
@@ -32,6 +39,7 @@
     <!--STRINGS PARA EL xml form_agregar_lista -->
     <string name="nombre">Nombre:</string>
     <string name="nombre_lista">escribe aqui el nombre</string>
+
 
 
 

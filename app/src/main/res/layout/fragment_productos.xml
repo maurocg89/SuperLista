@@ -13,7 +13,7 @@
             android:id="@+id/etBuscar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Buscar"
+            android:hint="@string/buscar_producto"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:maxLines="1" />
@@ -29,7 +29,7 @@
             android:layout_centerVertical="true"
             app:srcCompat="@drawable/ic_microphone"
             android:layout_alignEnd="@+id/etBuscar"
-            android:contentDescription="mic" />
+            android:contentDescription="@string/microphone" />
     </RelativeLayout>
 
     <LinearLayout
