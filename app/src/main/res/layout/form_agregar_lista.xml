@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/margen_entre_items"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/textViewNombreForm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.27"
+        android:gravity="bottom"
+        android:text="@string/nombre"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/editTextNombreForm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.03"
+        android:ems="10"
+        android:gravity="bottom"
+        android:hint="@string/nombre_lista"
+        android:inputType="textPersonName"
+        android:textSize="14sp"
+        android:textStyle="italic" />
+</LinearLayout>
