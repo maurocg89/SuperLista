@@ -44,7 +44,6 @@ public class FragmentListas extends Fragment {
         return view;
     }
 
-
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle(R.string.item_lista);
