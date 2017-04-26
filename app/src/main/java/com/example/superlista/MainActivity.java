@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     /* TODO: Fede: Fragment de listas, supermercados, floating button de todas activities. Acerca de (Activity). Formularios para agregar  productos, listas y categorias.
-       TODO: Mauro: Terminar activity productos(icono de microfono, search adapter en el fragment, checkbox), menu cuando se mantiene presionado un item. Activity categoria con boton de ver productos pasandole al fragment de productos el id de la categoria
+       TODO: Mauro: Terminar activity productos(checkbox, filtro de busqueda por voz), menu cuando se mantiene presionado un item. Activity categoria con boton de ver productos pasandole al fragment de productos el id de la categoria
        TODO: Agregar marca en los list view que tengan productos*/
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,33 +99,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-      /*  FragmentManager fragmentManager = getSupportFragmentManager();
-
-        if (id == R.id.item_menu_lista) {
-
-            //Intent i = new Intent(MainActivity.this, PruebaBD.class);
-            //startActivity(i);
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new FragmentListas()).commit();
-
-
-            Toast.makeText(getApplicationContext(), "Bienvenido a las Listas", Toast.LENGTH_SHORT).show();
-
-        } else if (id == R.id.item_menu_productos) {
-            Toast.makeText(getApplicationContext(), "Bienvenido a los Productos", Toast.LENGTH_SHORT).show();
-
-        } else if (id == R.id.item_menu_categoria) {
-            Toast.makeText(getApplicationContext(), "Bienvenido a las Categorias", Toast.LENGTH_SHORT).show();
-
-        } else if (id == R.id.item_menu_supers) {
-            Toast.makeText(getApplicationContext(), "Bienvenido a los Supermercados", Toast.LENGTH_SHORT).show();
-
-        } else if (id == R.id.item_menu_acercade) {
-            Toast.makeText(getApplicationContext(), R.string.version_apk, Toast.LENGTH_SHORT).show();
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);*/
         displaySelectedScreen(id);
         return true;
     }
@@ -140,11 +113,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.item_menu_productos:
                 fragment = new FragmentProductos();
-                //fragment = new FragmentProductos2(); // Probando busqueda en el menu
                 Toast.makeText(getApplicationContext(), "Bienvenido a los Productos", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.item_menu_categoria:
-
+                fragment = new FragmentCategorias();
                 Toast.makeText(getApplicationContext(), "Bienvenido a las Categorias", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.item_menu_supers:

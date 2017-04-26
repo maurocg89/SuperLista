@@ -13,6 +13,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.query.In;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.SQLException;
 
@@ -158,12 +159,17 @@ public class SuperListaDbManager {
         }
     }
 
-    public void deleteProducto(int id_producto){
+    public void deleteProductoById(int id_producto){
         try {
             getHelper().getProductoDao().deleteById(id_producto);
         }catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+    public void deleteProductos(ArrayList<Producto>productos)
+    {
+
     }
 
     public void updateProducto(int id_producto, String nombre_nuevo, String marca_nueva, double precio_nuevo, Categoria categoria_nueva, Supermercado supermercado_nuevo){
