@@ -30,10 +30,13 @@
     <string name="boton_env_comentario">Enviar Comentario</string>
 
     <!--STRINGS PARA EL xml form_agregar_lista -->
+    <string name="nueva_lista">Nueva lista</string>
     <string name="nombre">Nombre:</string>
     <string name="nombre_lista">escribe aqui el nombre</string>
+    <string name="agregar">AGREGAR</string>
 
-
+    <!--STRINGS PARA EL xml form_nuevo_producto -->
+    <string name="nueva_producto">Nuevo Producto</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

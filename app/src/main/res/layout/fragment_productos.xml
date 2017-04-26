@@ -30,7 +30,7 @@
             />
     </RelativeLayout>
 
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -40,6 +40,20 @@
             android:id="@+id/lvProductos"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/boton_de_accion_productos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:adjustViewBounds="false"
+            app:backgroundTint="@android:color/holo_blue_light"
+            app:elevation="0dp"
+            app:srcCompat="@mipmap/icono_add" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
 
 </RelativeLayout>

@@ -10,7 +10,9 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -48,12 +50,16 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
     private EditText etSearch;
     private final int REQ_CODE_SPEECH_OUTPUT = 143;
 
+    Fragment fragmentoNewProd = null;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_productos, container, false);
+
+        llamarFloatingButtonAction(view);
 
         listView1 = (ListView) view.findViewById(R.id.lvProductos);
         btnSpeak = (ImageView) view.findViewById(R.id.imgBtnSpeak);
@@ -159,6 +165,28 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         return false;
     }
+
+
+    private void llamarFloatingButtonAction(View vista) {
+
+        FloatingActionButton fab = (FloatingActionButton) vista.findViewById(R.id.boton_de_accion_productos);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                fragmentoNewProd = new FragmentAgregarProducto();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.contenedor, fragmentoNewProd);
+                ft.commit();
+                //Snackbar.make(view, "aca va la accion", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
+        });
+    }
+
+
+
+
+
 
     public class SearchAdapterProducto extends BaseAdapter{
 

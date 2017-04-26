@@ -40,4 +40,26 @@ public class Lista {
         this.nombre = nombre;
     }
     //</editor-fold>
+
+
+    //<editor-fold desc="Equals y HashCode">
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Lista lista = (Lista) o;
+
+        if (id_lista != lista.id_lista) return false;
+        return nombre.equals(lista.nombre);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id_lista;
+        result = 31 * result + nombre.hashCode();
+        return result;
+    }
+    //</editor-fold>
 }

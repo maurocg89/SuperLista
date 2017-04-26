@@ -15,7 +15,7 @@
     </ListView>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/boton_de_accion"
+        android:id="@+id/boton_de_accion_listas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

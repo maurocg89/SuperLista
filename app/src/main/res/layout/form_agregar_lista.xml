@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/margen_entre_items"
@@ -8,12 +9,12 @@
 
     <TextView
         android:id="@+id/textViewNombreForm"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.27"
+        android:layout_weight="0.38"
         android:gravity="bottom"
         android:text="@string/nombre"
-        android:textSize="18sp" />
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/editTextNombreForm"
@@ -24,6 +25,16 @@
         android:gravity="bottom"
         android:hint="@string/nombre_lista"
         android:inputType="textPersonName"
-        android:textSize="14sp"
+        android:textSize="18sp"
         android:textStyle="italic" />
+
+    <Button
+        android:id="@+id/buttonAgregar"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="30dp"
+        android:background="@android:color/holo_blue_dark"
+        android:text="@string/agregar"
+        android:textColor="@android:color/background_light" />
 </LinearLayout>
