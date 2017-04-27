@@ -24,6 +24,7 @@ public class FragmentAgregarLista extends Fragment implements View.OnClickListen
     private List<Lista> listadoDeListas;
     private EditText nombreLista;
     private Button botonAgregar;
+    private String dato, auxiliar;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,10 +55,14 @@ public class FragmentAgregarLista extends Fragment implements View.OnClickListen
 
         if (v == botonAgregar){
 
-            String dato = nombreLista.getText().toString();
-            check_add_Lista(dato);
+           dato = nombreLista.getText().toString();
+           auxiliar= dato.trim();
 
-
+           if (auxiliar.length() > 0){ //verificacion para que el campo nombre no sea vacio
+                check_add_Lista(dato);
+            }else{
+                Toast.makeText(getContext(), "Coloque un Nombre a Lista", Toast.LENGTH_SHORT).show();
+            }
 
         }
 
@@ -82,6 +87,8 @@ public class FragmentAgregarLista extends Fragment implements View.OnClickListen
         }
 
     }
+
+
 
 
 
