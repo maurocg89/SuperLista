@@ -7,18 +7,30 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
@@ -27,31 +39,36 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.AbsListView.MultiChoiceModeListener;
 
+import com.example.superlista.utils.ProductSearchAdapter;
 import com.example.superlista.data.SuperListaDbManager;
+import com.example.superlista.model.Categoria;
 import com.example.superlista.model.Producto;
+import com.example.superlista.utils.ToolBarActionModeCallback;
 
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-// TODO: Fijarse porque no filtra bien
 
 public class FragmentProductos extends Fragment implements TextView.OnEditorActionListener {
 
     private ListView listView1;
 
+    private static ActionMode mActionMode;
     private List<Producto> productos;
-    private ArrayList<String> nombres;
-    private ArrayAdapter<String> myAdapter;
-    private SearchAdapterProducto searchAdapter;
+    private List<Producto> listaProductos = new ArrayList<>();
+    private ProductSearchAdapter searchAdapter;
+    private ProductSearchAdapter adapter;
     private ImageView btnSpeak;
     private EditText etSearch;
+    private int cod_categoria;
     private final int REQ_CODE_SPEECH_OUTPUT = 143;
 
     Fragment fragmentoNewProd = null;
-
 
     @Nullable
     @Override
@@ -60,12 +77,14 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
         View view = inflater.inflate(R.layout.fragment_productos, container, false);
 
         llamarFloatingButtonAction(view);
-
         listView1 = (ListView) view.findViewById(R.id.lvProductos);
         btnSpeak = (ImageView) view.findViewById(R.id.imgBtnSpeak);
         etSearch = (EditText) view.findViewById(R.id.etBuscar);
-        searchAdapter = new SearchAdapterProducto(getActivity());
+
         setData();
+
+        implementsListViewClickListeners();
+
 
         btnSpeak.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +116,22 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
             }
         });
 
+        // Esconder el teclado una vez que se busca
+        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                boolean action = false;
+                if (actionId == EditorInfo.IME_ACTION_SEARCH){
+                    InputMethodManager inputMethodManager = (InputMethodManager) textView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+                    action = true;
+                }
+
+                return action;
+            }
+        });
+
         return view;
 
     }
@@ -107,33 +142,111 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
         getActivity().setTitle(R.string.item_productos);
     }
 
-    private void setData(){
-        searchAdapter = new SearchAdapterProducto(getActivity());
-        productos = SuperListaDbManager.getInstance().getAllProductosByNameDistinct();
-        nombres = new ArrayList<String>();
 
-        for(Producto producto : productos){
-            nombres.add(producto.getNombre() + " " + producto.getMarca());
-            searchAdapter.addItem(producto.getNombre() + " " + producto.getMarca());
+    //<editor-fold desc="Android Contextual Action Mode">
+    private void implementsListViewClickListeners(){
+        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                if (mActionMode != null){
+                    onListItemSelect(position);
+                }
+            }
+        });
+
+        listView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+               // mActionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(new ToolBarActionModeCallback(getActivity(), searchAdapter, productos));
+                onListItemSelect(position);
+                return true;
+
+            }
+        });
+    }
+
+    private void onListItemSelect(int position){
+        searchAdapter.toggleSelection(position);
+        boolean hasCheckedItems = searchAdapter.getSelectedCount() > 0; // Se fija si hay algun item seleccionado
+        if (hasCheckedItems && mActionMode == null){
+            mActionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(new ToolBarActionModeCallback(getActivity(), searchAdapter, productos));
+        } else if (!hasCheckedItems && mActionMode != null){
+            // no hay ningun item seleccionado, termino el action mode
+            mActionMode.finish();
+            setNullToActionMode();
+
         }
+        // Pongo la cantidad de items seleccionados
+        if (mActionMode != null){
+            mActionMode.setTitle(String.valueOf(searchAdapter.getSelectedCount()) + " seleccionado(s)");
 
-        //myAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, nombres);
-        //listView1.setAdapter(myAdapter);
-        listView1.setAdapter(searchAdapter);
-
+        }
 
     }
 
-    private void setSearchResult(String str){
-        searchAdapter = new SearchAdapterProducto(getActivity());
-        for (String tmp: nombres){
-            if (tmp.toLowerCase().contains(str.toLowerCase())){
-                searchAdapter.addItem(tmp);
+    // Seteo en null el action mode despues de usarlo
+    public void setNullToActionMode(){
+        if (mActionMode != null){
+            mActionMode = null;
+        }
+    }
+
+    // Falta implementacion para borrar productos de la base de datos
+    public void deleteRows(){
+        SparseBooleanArray seleceted = searchAdapter.getSelectedIds();
+        for (int i = (seleceted.size() - 1); i >= 0; i--){
+            if (seleceted.valueAt(i)){
+                productos.remove(seleceted.keyAt(i));
+                searchAdapter.notifyDataSetChanged();
             }
         }
+
+        Toast.makeText(getActivity(), seleceted.size() + " productos eliminados", Toast.LENGTH_LONG).show();
+        mActionMode.finish();
+    }
+    //</editor-fold>
+
+    private void setData(){
+        /*try{
+            cod_categoria = getActivity().getIntent().getExtras().getInt(Categoria._ID);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        if (cod_categoria == 0){
+            productos = SuperListaDbManager.getInstance().getAllProductosByNameDistinct();
+        } else {
+            productos = SuperListaDbManager.getInstance().getProductoByCategoriaDistinct(cod_categoria);
+        }*/
+
+        productos = SuperListaDbManager.getInstance().getAllProductosByNameDistinct();
+        searchAdapter = new ProductSearchAdapter(getActivity(), productos);
+     //   searchAdapter = new ProductSearchAdapter(getActivity());
+
+
+    /*    for(Producto producto : productos){
+            searchAdapter.addItem(producto);
+        }
+*/
+        listView1.setAdapter(searchAdapter);
+        searchAdapter.notifyDataSetChanged();
+
+    }
+
+
+    private void setSearchResult(String str){
+        searchAdapter = new ProductSearchAdapter(getActivity(), productos);
+      //  searchAdapter = new ProductSearchAdapter(getActivity());
+
+      /*  for (Producto tmp: productos){
+            if (tmp.toString().toLowerCase().contains(str.toLowerCase())){
+                searchAdapter.addItem(tmp);
+            }
+        }*/
         listView1.setAdapter(searchAdapter);
     }
 
+    //<editor-fold desc="Voice to text">
     private void btnOpenMic(){
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -165,6 +278,7 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         return false;
     }
+    //</editor-fold>
 
 
     private void llamarFloatingButtonAction(View vista) {
@@ -185,58 +299,19 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
 
 
 
-
-
-
-    public class SearchAdapterProducto extends BaseAdapter{
-
-        private ArrayList<String> data = new ArrayList<String>();
-        private LayoutInflater inflater;
-
-        public SearchAdapterProducto(Activity activity) {
-            inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        public void addItem(String item){
-            data.add(item);
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public int getCount() {
-            return data.size();
-        }
-
-        @Override
-        public String getItem(int position) {
-            return data.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            ViewHolderProducto holder;
-            if (convertView == null){
-                holder = new ViewHolderProducto();
-                convertView = inflater.inflate(R.layout.list_item, null);
-                holder.textView = (TextView) convertView.findViewById(R.id.list_item_texto);
-                convertView.setTag(holder);
+    /*private void eliminarProducto(MenuItem item){
+        SparseBooleanArray array = listView1.getCheckedItemPositions();
+        List seleccion = new List();
+        for (int i = 0; i < array.size(); i++){
+            // Posicion del producto en el adaptador
+            int posicion = array.keyAt(i);
+            if (array.valueAt(i)){
+                seleccion.add(searchAdapter.getItem(posicion));
             }
-            else {
-                holder = (ViewHolderProducto) convertView.getTag();
-            }
-            String str = data.get(position);
-            holder.textView.setText(str);
-            return convertView;
-        }
-    }
 
-    public class ViewHolderProducto{
-        TextView textView;
-       // CheckBox checkBox;
-    }
+            //Intent intent = new Intent()
+        }
+    }*/
+
+
 }

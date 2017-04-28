@@ -54,4 +54,9 @@ public class Categoria {
     }
 
     //</editor-fold>
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }

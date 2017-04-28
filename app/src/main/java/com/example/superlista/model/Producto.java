@@ -93,4 +93,10 @@ public class Producto {
         this.supermercado = supermercado;
     }
     //</editor-fold>
+
+
+    @Override
+    public String toString() {
+        return nombre + " " + marca;
+    }
 }

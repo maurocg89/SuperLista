@@ -34,9 +34,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-
+        
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -55,12 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //ft.replace(R.id.contenedor, fragment);
         //ft.commit();
 
-
-
-
     }
-
-
 
 
     public void onBackPressed() {
@@ -127,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new FragmentAcercaDe();
                 //Toast.makeText(getApplicationContext(), R.string.version_apk, Toast.LENGTH_SHORT).show();
                 break;
-
         }
 
         if (fragment != null){

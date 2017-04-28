@@ -19,9 +19,8 @@ import java.util.List;
 public class FragmentCategorias extends Fragment {
 
     private ListView listView;
-    private ArrayList<String> nombreCategorias;
     private List<Categoria> categorias;
-    private ArrayAdapter<String> myAdapter;
+    private ArrayAdapter<Categoria> myAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,13 +38,8 @@ public class FragmentCategorias extends Fragment {
 
     private void setData(){
         categorias = SuperListaDbManager.getInstance().getAllCategorias();
-        nombreCategorias = new ArrayList<>();
 
-        for(Categoria categoria : categorias){
-            nombreCategorias.add(categoria.getNombre());
-        }
-
-        myAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, nombreCategorias);
+        myAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, categorias);
         listView.setAdapter(myAdapter);
     }
 }
