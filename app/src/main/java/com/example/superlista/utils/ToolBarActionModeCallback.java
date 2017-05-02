@@ -1,27 +1,24 @@
 package com.example.superlista.utils;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.support.v7.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.superlista.FragmentProductos;
-import com.example.superlista.MainActivity;
 import com.example.superlista.R;
 import com.example.superlista.model.Producto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ToolBarActionModeCallback implements ActionMode.Callback {
 
     private Context context;
-    private ProductSearchAdapter adapter;
+    private ProductListAdapter adapter;
     private List<Producto> mensajes;
     //private boolean isListViewFragment;
 
-    public ToolBarActionModeCallback(Context context, ProductSearchAdapter adapter, List<Producto> mensajes) {
+    public ToolBarActionModeCallback(Context context, ProductListAdapter adapter, List<Producto> mensajes) {
         this.context = context;
         this.adapter = adapter;
         this.mensajes = mensajes;

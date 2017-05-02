@@ -3,49 +3,35 @@ package com.example.superlista;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView;
-import android.widget.AbsListView.MultiChoiceModeListener;
 
-import com.example.superlista.utils.ProductSearchAdapter;
+import com.example.superlista.utils.ProductListAdapter;
 import com.example.superlista.data.SuperListaDbManager;
-import com.example.superlista.model.Categoria;
 import com.example.superlista.model.Producto;
+import com.example.superlista.utils.ProductSearchAdapter;
 import com.example.superlista.utils.ToolBarActionModeCallback;
 
 
@@ -62,7 +48,7 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
     private List<Producto> productos;
     private List<Producto> listaProductos = new ArrayList<>();
     private ProductSearchAdapter searchAdapter;
-    private ProductSearchAdapter adapter;
+    private ProductListAdapter productListAdapter;
     private ImageView btnSpeak;
     private EditText etSearch;
     private int cod_categoria;
@@ -107,11 +93,13 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
             @Override
             public void afterTextChanged(Editable editable) {
                 if (etSearch.getText().length() != 0){
+                    desactivarListViewClickListeners();
                     String spnId = etSearch.getText().toString();
                     setSearchResult(spnId);
                 }
                 else {
                     setData();
+                    implementsListViewClickListeners();
                 }
             }
         });
@@ -158,7 +146,7 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
         listView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-               // mActionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(new ToolBarActionModeCallback(getActivity(), searchAdapter, productos));
+               // mActionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(new ToolBarActionModeCallback(getActivity(), productListAdapter, productos));
                 onListItemSelect(position);
                 return true;
 
@@ -166,11 +154,30 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
         });
     }
 
+    // Desactivo los listeners cuando está en modo buscar
+    private void desactivarListViewClickListeners(){
+        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+            }
+        });
+
+        listView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                return false;
+
+            }
+        });
+    }
+
     private void onListItemSelect(int position){
-        searchAdapter.toggleSelection(position);
-        boolean hasCheckedItems = searchAdapter.getSelectedCount() > 0; // Se fija si hay algun item seleccionado
+        productListAdapter.toggleSelection(position);
+        boolean hasCheckedItems = productListAdapter.getSelectedCount() > 0; // Se fija si hay algun item seleccionado
         if (hasCheckedItems && mActionMode == null){
-            mActionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(new ToolBarActionModeCallback(getActivity(), searchAdapter, productos));
+            mActionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(new ToolBarActionModeCallback(getActivity(), productListAdapter, productos));
         } else if (!hasCheckedItems && mActionMode != null){
             // no hay ningun item seleccionado, termino el action mode
             mActionMode.finish();
@@ -179,7 +186,7 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
         }
         // Pongo la cantidad de items seleccionados
         if (mActionMode != null){
-            mActionMode.setTitle(String.valueOf(searchAdapter.getSelectedCount()) + " seleccionado(s)");
+            mActionMode.setTitle(String.valueOf(productListAdapter.getSelectedCount()) + " seleccionado(s)");
 
         }
 
@@ -194,11 +201,11 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
 
     // Falta implementacion para borrar productos de la base de datos
     public void deleteRows(){
-        SparseBooleanArray seleceted = searchAdapter.getSelectedIds();
+        SparseBooleanArray seleceted = productListAdapter.getSelectedIds();
         for (int i = (seleceted.size() - 1); i >= 0; i--){
             if (seleceted.valueAt(i)){
                 productos.remove(seleceted.keyAt(i));
-                searchAdapter.notifyDataSetChanged();
+                productListAdapter.notifyDataSetChanged();
             }
         }
 
@@ -220,29 +227,28 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
         }*/
 
         productos = SuperListaDbManager.getInstance().getAllProductosByNameDistinct();
-        searchAdapter = new ProductSearchAdapter(getActivity(), productos);
-     //   searchAdapter = new ProductSearchAdapter(getActivity());
+        productListAdapter = new ProductListAdapter(getActivity(), productos);
+        searchAdapter = new ProductSearchAdapter(getActivity());
 
-
-    /*    for(Producto producto : productos){
+        for(Producto producto : productos){
             searchAdapter.addItem(producto);
         }
-*/
-        listView1.setAdapter(searchAdapter);
-        searchAdapter.notifyDataSetChanged();
+
+        listView1.setAdapter(productListAdapter);
+        productListAdapter.notifyDataSetChanged();
 
     }
 
 
     private void setSearchResult(String str){
-        searchAdapter = new ProductSearchAdapter(getActivity(), productos);
-      //  searchAdapter = new ProductSearchAdapter(getActivity());
+        searchAdapter = new ProductSearchAdapter(getActivity());
+      //  searchAdapter = new ProductListAdapter(getActivity());
 
-      /*  for (Producto tmp: productos){
+        for (Producto tmp: productos){
             if (tmp.toString().toLowerCase().contains(str.toLowerCase())){
                 searchAdapter.addItem(tmp);
             }
-        }*/
+        }
         listView1.setAdapter(searchAdapter);
     }
 
