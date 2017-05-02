@@ -1,5 +1,6 @@
 package com.example.superlista;
 
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 
@@ -118,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.item_menu_acercade:
                 fragment = new FragmentAcercaDe();
-                //Toast.makeText(getApplicationContext(), R.string.version_apk, Toast.LENGTH_SHORT).show();
                 break;
         }
 

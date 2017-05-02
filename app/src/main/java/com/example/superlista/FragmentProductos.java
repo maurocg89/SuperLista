@@ -281,6 +281,8 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
     //</editor-fold>
 
 
+
+
     private void llamarFloatingButtonAction(View vista) {
 
         FloatingActionButton fab = (FloatingActionButton) vista.findViewById(R.id.boton_de_accion_productos);

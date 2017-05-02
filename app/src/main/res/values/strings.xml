@@ -44,6 +44,10 @@
 
     <!--STRINGS PARA EL xml form_nuevo_producto -->
     <string name="nueva_producto">Nuevo Producto</string>
+    <string name="categoria">Categoria:</string>
+    <string name="supermercado">Supermercado:</string>
+    <string name="precio">Precio:</string>
+    <string name="marca">Marca:</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

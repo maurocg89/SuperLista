@@ -5,13 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/margen_entre_items"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1">
+
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -19,68 +23,83 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/editTextNombreProd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Nombre"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:ems="10"
+                android:hint="@string/nombre"
+                android:inputType="textPersonName"
+                android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageViewMicrofono"
                 android:layout_width="59dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 app:srcCompat="@drawable/ic_microphone"
-                android:layout_alignParentTop="true" />
+                android:contentDescription=""
+                tools:ignore="ContentDescription" />
 
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="59dp"
+            android:layout_height="103dp"
             android:orientation="horizontal"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:layout_weight="0.42"
+            tools:ignore="InefficientWeight">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/textViewPrecio"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Precio:"
+                android:layout_height="75dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="bottom"
+                android:text="@string/precio"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/editTextValorPrecio"
                 android:layout_width="159dp"
-                android:layout_height="wrap_content"
+                android:layout_height="79dp"
                 android:ems="10"
                 android:inputType="numberSigned" />
+
+            <ImageView
+                android:id="@+id/imageViewFotoProd"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_local_grocery_store_black_24dp"
+                tools:ignore="ContentDescription,NestedWeights" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="44dp"
+            android:layout_height="74dp"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/textViewCategoria"
                 android:layout_width="137dp"
                 android:layout_height="wrap_content"
-                android:text="Categoria:"
+                android:layout_gravity="center_vertical"
+                android:text="@string/categoria"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/spinnerCategoria"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_gravity="center_vertical" />
         </LinearLayout>
 
         <LinearLayout
@@ -89,18 +108,17 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/textViewMarca"
                 android:layout_width="138dp"
                 android:layout_height="wrap_content"
-                android:text="Marca:"
+                android:text="@string/marca"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
             <Spinner
-                android:id="@+id/spinner2"
+                android:id="@+id/spinnerMarca"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content" />
 
 
         </LinearLayout>
@@ -111,19 +129,31 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/textViewSuper"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
-                android:text="Supermercado:"
+                android:text="@string/supermercado"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
             <Spinner
-                android:id="@+id/spinner3"
+                android:id="@+id/spinnerSuper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                tools:ignore="InefficientWeight" />
+
         </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonAgregarProd"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="30dp"
+            android:background="@android:color/holo_blue_dark"
+            android:text="@string/agregar"
+            android:textColor="@android:color/background_light" />
 
     </LinearLayout>
 

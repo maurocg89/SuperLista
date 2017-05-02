@@ -59,4 +59,27 @@ public class Categoria {
     public String toString() {
         return nombre;
     }
+
+    //<editor-fold desc="Equals y Hash Code">
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Categoria categoria = (Categoria) o;
+
+        if (id_categoria != categoria.id_categoria) return false;
+        if (!nombre.equals(categoria.nombre)) return false;
+        return descripcion != null ? descripcion.equals(categoria.descripcion) : categoria.descripcion == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id_categoria;
+        result = 31 * result + nombre.hashCode();
+        result = 31 * result + (descripcion != null ? descripcion.hashCode() : 0);
+        return result;
+    }
+    //</editor-fold>
 }
