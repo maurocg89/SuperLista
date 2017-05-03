@@ -10,24 +10,21 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.superlista.R;
-import com.example.superlista.model.Producto;
+import com.example.superlista.model.Categoria;
 
 import java.util.List;
 
-public class ProductListAdapter extends BaseAdapter{
+public class CategoryListAdapter extends BaseAdapter {
+
 
     private Context context;
-    private List<Producto> data;
+    private List<Categoria> data;
     private LayoutInflater inflater;
     private SparseBooleanArray mSelectedItemsIds;
 
-   /* public ProductListAdapter(Activity activity) {
-        inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }*/
-
-    public ProductListAdapter(Context context, List<Producto> productos) {
+    public CategoryListAdapter(Context context, List<Categoria> categorias) {
         this.context = context;
-        this.data = productos;
+        this.data = categorias;
         mSelectedItemsIds = new SparseBooleanArray();
     }
 
@@ -37,8 +34,8 @@ public class ProductListAdapter extends BaseAdapter{
         return data.size();
     }
 
-   @Override
-    public Producto getItem(int position){
+    @Override
+    public Categoria getItem(int position){
         return data.get(position);
     }
 
@@ -47,40 +44,23 @@ public class ProductListAdapter extends BaseAdapter{
         return position;
     }
 
-  /*  @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolderProducto holder;
-        if (convertView == null){
-            holder = new ViewHolderProducto();
-            convertView = inflater.inflate(R.layout.list_item_product, null);
-            holder.textView = (TextView) convertView.findViewById(R.id.list_item_texto);
-            convertView.setTag(holder);
-        }
-        else {
-            holder = (ViewHolderProducto) convertView.getTag();
-        }
-        Producto prod = data.get(position);
-        holder.textView.setText(prod.toString());
-        return convertView;
-    }*/
-
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ViewHolderProducto holder;
+        ViewHolder holder;
 
         if (convertView == null){
-            holder = new ViewHolderProducto();
-            convertView = inflater.inflate(R.layout.list_item_product, null);
-            holder.textView = (TextView) convertView.findViewById(R.id.list_item_texto);
+            holder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.list_item_category, null);
+            holder.textView = (TextView) convertView.findViewById(R.id.list_item_categoria);
             convertView.setTag(holder);
         }
         else {
-            holder = (ViewHolderProducto) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        Producto prod = data.get(position);
-        holder.textView.setText(prod.toString());
+        Categoria categoria = data.get(position);
+        holder.textView.setText(categoria.toString());
 
         // Cambia el color de fondo de los items seleccionados
         convertView.setBackgroundColor(mSelectedItemsIds.get(position) ? Color.parseColor("#a9a9a9") : Color.TRANSPARENT);
@@ -112,7 +92,7 @@ public class ProductListAdapter extends BaseAdapter{
 
     // La cantidad de items seleccionados
     public int getSelectedCount(){
-      return mSelectedItemsIds.size();
+        return mSelectedItemsIds.size();
     }
 
     // Todos los ids de los items seleccionados
@@ -121,9 +101,3 @@ public class ProductListAdapter extends BaseAdapter{
     }
 
 }
-
-class ViewHolderProducto{
-    TextView textView;
-    // CheckBox checkBox;
-}
-

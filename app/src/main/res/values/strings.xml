@@ -18,7 +18,7 @@
     <string name="modificar_producto">Modificar Producto</string>
 
     <!--STRINGS PARA EL FRAGMENT PRODUCTO -->
-    <string name="buscar_producto">Buscar</string>
+    <string name="buscar">Buscar</string>
     <string name="microphone">Microphone</string>
 
     <!--STRINGS PARA EL FRAGMENT SUPERMERCADO -->

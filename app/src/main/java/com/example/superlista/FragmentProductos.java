@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView;
 
+import com.example.superlista.model.Categoria;
 import com.example.superlista.utils.ProductListAdapter;
 import com.example.superlista.data.SuperListaDbManager;
 import com.example.superlista.model.Producto;
@@ -46,13 +48,13 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
 
     private static ActionMode mActionMode;
     private List<Producto> productos;
-    private List<Producto> listaProductos = new ArrayList<>();
     private ProductSearchAdapter searchAdapter;
     private ProductListAdapter productListAdapter;
     private ImageView btnSpeak;
     private EditText etSearch;
-    private int cod_categoria;
+    private int cod_categoria = 0;
     private final int REQ_CODE_SPEECH_OUTPUT = 143;
+    private boolean isSearching;
 
     Fragment fragmentoNewProd = null;
 
@@ -66,12 +68,53 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
         listView1 = (ListView) view.findViewById(R.id.lvProductos);
         btnSpeak = (ImageView) view.findViewById(R.id.imgBtnSpeak);
         etSearch = (EditText) view.findViewById(R.id.etBuscar);
-
         setData();
 
         implementsListViewClickListeners();
+        inicializarComponentes();
 
 
+        return view;
+
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle(R.string.item_productos);
+        if (cod_categoria != 0){
+            Categoria categoria = SuperListaDbManager.getInstance().getCategoriaById(cod_categoria);
+            getActivity().setTitle("Productos de " + categoria.getNombre());
+        }
+    }
+
+    //<editor-fold desc="Seteo de componentes">
+    private void setData(){
+        try{
+            cod_categoria = getArguments().getInt(Categoria._ID);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        if (cod_categoria != 0) {
+            productos = SuperListaDbManager.getInstance().getProductoByCategoriaDistinct(cod_categoria);
+        }
+        else{
+            productos = SuperListaDbManager.getInstance().getAllProductosByNameDistinct();
+        }
+
+        productListAdapter = new ProductListAdapter(getActivity(), productos);
+        searchAdapter = new ProductSearchAdapter(getActivity());
+
+        for(Producto producto : productos){
+            searchAdapter.addItem(producto);
+        }
+
+        listView1.setAdapter(productListAdapter);
+        productListAdapter.notifyDataSetChanged();
+
+    }
+
+    private void inicializarComponentes(){
         btnSpeak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,11 +136,12 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
             @Override
             public void afterTextChanged(Editable editable) {
                 if (etSearch.getText().length() != 0){
-                    desactivarListViewClickListeners();
+                    isSearching = true;
                     String spnId = etSearch.getText().toString();
                     setSearchResult(spnId);
                 }
                 else {
+                    isSearching = false;
                     setData();
                     implementsListViewClickListeners();
                 }
@@ -119,17 +163,36 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
                 return action;
             }
         });
+    }
+    //</editor-fold>
 
-        return view;
+    private void setSearchResult(String str){
+        searchAdapter = new ProductSearchAdapter(getActivity());
+      //  searchAdapter = new ProductListAdapter(getActivity());
 
+        for (Producto tmp: productos){
+            if (tmp.toString().toLowerCase().contains(str.toLowerCase())){
+                searchAdapter.addItem(tmp);
+            }
+        }
+        listView1.setAdapter(searchAdapter);
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle(R.string.item_productos);
-    }
+    private void llamarFloatingButtonAction(View vista) {
 
+        FloatingActionButton fab = (FloatingActionButton) vista.findViewById(R.id.boton_de_accion_productos);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                fragmentoNewProd = new FragmentAgregarProducto();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.contenedor, fragmentoNewProd);
+                ft.commit();
+                //Snackbar.make(view, "aca va la accion", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
+        });
+    }
 
     //<editor-fold desc="Android Contextual Action Mode">
     private void implementsListViewClickListeners(){
@@ -137,6 +200,8 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                // Si se esta buscando un producto se desactiva el actionmode
+                if (isSearching){return;}
                 if (mActionMode != null){
                     onListItemSelect(position);
                 }
@@ -146,28 +211,9 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
         listView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-               // mActionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(new ToolBarActionModeCallback(getActivity(), productListAdapter, productos));
+               if(isSearching){return false;}
                 onListItemSelect(position);
                 return true;
-
-            }
-        });
-    }
-
-    // Desactivo los listeners cuando está en modo buscar
-    private void desactivarListViewClickListeners(){
-        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-            }
-        });
-
-        listView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-                return false;
 
             }
         });
@@ -214,44 +260,6 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
     }
     //</editor-fold>
 
-    private void setData(){
-        /*try{
-            cod_categoria = getActivity().getIntent().getExtras().getInt(Categoria._ID);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        if (cod_categoria == 0){
-            productos = SuperListaDbManager.getInstance().getAllProductosByNameDistinct();
-        } else {
-            productos = SuperListaDbManager.getInstance().getProductoByCategoriaDistinct(cod_categoria);
-        }*/
-
-        productos = SuperListaDbManager.getInstance().getAllProductosByNameDistinct();
-        productListAdapter = new ProductListAdapter(getActivity(), productos);
-        searchAdapter = new ProductSearchAdapter(getActivity());
-
-        for(Producto producto : productos){
-            searchAdapter.addItem(producto);
-        }
-
-        listView1.setAdapter(productListAdapter);
-        productListAdapter.notifyDataSetChanged();
-
-    }
-
-
-    private void setSearchResult(String str){
-        searchAdapter = new ProductSearchAdapter(getActivity());
-      //  searchAdapter = new ProductListAdapter(getActivity());
-
-        for (Producto tmp: productos){
-            if (tmp.toString().toLowerCase().contains(str.toLowerCase())){
-                searchAdapter.addItem(tmp);
-            }
-        }
-        listView1.setAdapter(searchAdapter);
-    }
-
     //<editor-fold desc="Voice to text">
     private void btnOpenMic(){
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -285,41 +293,6 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
         return false;
     }
     //</editor-fold>
-
-
-
-
-    private void llamarFloatingButtonAction(View vista) {
-
-        FloatingActionButton fab = (FloatingActionButton) vista.findViewById(R.id.boton_de_accion_productos);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                fragmentoNewProd = new FragmentAgregarProducto();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.contenedor, fragmentoNewProd);
-                ft.commit();
-                //Snackbar.make(view, "aca va la accion", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            }
-        });
-    }
-
-
-
-    /*private void eliminarProducto(MenuItem item){
-        SparseBooleanArray array = listView1.getCheckedItemPositions();
-        List seleccion = new List();
-        for (int i = 0; i < array.size(); i++){
-            // Posicion del producto en el adaptador
-            int posicion = array.keyAt(i);
-            if (array.valueAt(i)){
-                seleccion.add(searchAdapter.getItem(posicion));
-            }
-
-            //Intent intent = new Intent()
-        }
-    }*/
 
 
 }

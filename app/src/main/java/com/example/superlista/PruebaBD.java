@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.media.Image;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -219,7 +217,7 @@ public class PruebaBD extends AppCompatActivity implements TextView.OnEditorActi
             ViewHolder holder = null;
             if (convertView == null){
                 holder = new ViewHolder();
-                convertView = inflater.inflate(R.layout.list_item, null);
+                convertView = inflater.inflate(R.layout.list_item_product, null);
                 holder.textView = (TextView) convertView.findViewById(R.id.list_item_texto);
                 convertView.setTag(holder);
             }

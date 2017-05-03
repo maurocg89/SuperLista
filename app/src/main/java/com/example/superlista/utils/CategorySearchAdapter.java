@@ -9,20 +9,21 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.superlista.R;
+import com.example.superlista.model.Categoria;
 import com.example.superlista.model.Producto;
 
 import java.util.ArrayList;
 
-public class ProductSearchAdapter extends BaseAdapter{
+public class CategorySearchAdapter extends BaseAdapter{
 
-    private ArrayList<Producto> data = new ArrayList<>();
+    private ArrayList<Categoria> data = new ArrayList<>();
     private LayoutInflater inflater;
 
-    public ProductSearchAdapter(Activity activity) {
+    public CategorySearchAdapter(Activity activity) {
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public void addItem(Producto item){
+    public void addItem(Categoria item){
         data.add(item);
         notifyDataSetChanged();
     }
@@ -33,7 +34,7 @@ public class ProductSearchAdapter extends BaseAdapter{
     }
 
     @Override
-    public Producto getItem(int position){
+    public Categoria getItem(int position){
         return data.get(position);
     }
 
@@ -47,15 +48,15 @@ public class ProductSearchAdapter extends BaseAdapter{
         ViewHolder holder;
         if (convertView == null){
             holder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.list_item_product, null);
-            holder.textView = (TextView) convertView.findViewById(R.id.list_item_texto);
+            convertView = inflater.inflate(R.layout.list_item_category, null);
+            holder.textView = (TextView) convertView.findViewById(R.id.list_item_categoria);
             convertView.setTag(holder);
         }
         else {
             holder = (ViewHolder) convertView.getTag();
         }
-        Producto prod = data.get(position);
-        holder.textView.setText(prod.toString());
+        Categoria categoria = data.get(position);
+        holder.textView.setText(categoria.toString());
         return convertView;
     }
 }

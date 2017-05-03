@@ -24,7 +24,7 @@
                 android:id="@+id/etBuscar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/buscar_producto"
+                android:hint="@string/buscar"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:maxLines="1"
