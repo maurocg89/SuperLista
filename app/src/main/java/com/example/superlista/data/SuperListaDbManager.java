@@ -289,7 +289,7 @@ public class SuperListaDbManager {
     }
 
     // Devuelve todos los productos de una lista
-    public List<ProductoPorLista> getAllProductosListaS(int id_lista){
+    public List<ProductoPorLista> getAllProductosListas(int id_lista){
         List<ProductoPorLista> productos = null;
         try {
             productos = getHelper().getProductoPorListaDao().queryForEq(Lista._ID, id_lista);
@@ -298,6 +298,32 @@ public class SuperListaDbManager {
         }
         return productos;
 
+    }
+
+
+    // Devuelve todos los productos de una lista
+    public List<Producto> getProductosPorLista(int id_lista){
+
+        List<Producto> productos = null;
+        QueryBuilder<Producto, Integer> queryBuilderProducto = getHelper().getProductoDao().queryBuilder();
+        QueryBuilder<ProductoPorLista, Integer> queryBuilderProdLista = getHelper().getProductoPorListaDao().queryBuilder();
+        QueryBuilder<Lista, Integer> queryBuilderLista = getHelper().getListaDao().queryBuilder();
+
+        try {
+            queryBuilderLista.where().eq(Lista._ID, id_lista);
+            queryBuilderProdLista.join(queryBuilderLista);
+            productos = queryBuilderProducto.join(queryBuilderProdLista).query();
+
+            // SELECT * FROM producto INNER JOIN productoporlista
+            // ON producto.id = productoporlista.id_producto WHERE productoporlista.id_lista = id_lista;
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+
+        return productos;
     }
 
     public ProductoPorLista getProductosDeListaById(int id_producto_lista){

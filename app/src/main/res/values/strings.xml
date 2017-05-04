@@ -24,6 +24,8 @@
     <!--STRINGS PARA EL FRAGMENT SUPERMERCADO -->
     <string name="text_sucursal">Sucursal</string>
 
+    <!--STRINGS PARA EL FRAGMENT SUPERMERCADO -->
+    <string name="item_productos_de_lista">Productos de</string>
 
     <!--STRINGS PARA EL FRAGMENT ACERCA DE -->
     <string name="version_apk">Versión: 1.0</string>
@@ -38,7 +40,7 @@
 
     <!--STRINGS PARA EL xml form_agregar_lista -->
     <string name="nueva_lista">Nueva lista</string>
-    <string name="nombre">Nombre:</string>
+    <string name="nombre">Nombre</string>
     <string name="nombre_lista">escribe aqui el nombre</string>
     <string name="agregar">AGREGAR</string>
 

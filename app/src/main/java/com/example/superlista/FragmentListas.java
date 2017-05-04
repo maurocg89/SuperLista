@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.example.superlista.data.SuperListaDbManager;
@@ -25,9 +26,9 @@ public class FragmentListas extends Fragment {
 
     private ListView listViewListas;
     private List<Lista> listas;
-    private ArrayList<String> nombres;
-    private ArrayAdapter<String> myAdapter;
+    private ArrayAdapter<Lista> myAdapter;
     Fragment fragmento = null;
+    private int id_lista;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,9 +39,9 @@ public class FragmentListas extends Fragment {
         llamarFloatingButtonAction(view);
 
         listViewListas = (ListView) view.findViewById(R.id.lvLista);
-        nombres = new ArrayList<String>();
-        setData();
 
+        setData();
+        implementsListViewListener();
         return view;
     }
 
@@ -53,12 +54,26 @@ public class FragmentListas extends Fragment {
     private void setData(){
         listas = SuperListaDbManager.getInstance().getAllListas();
 
-        for (Lista lista: listas) {
-            nombres.add(lista.getNombre());
-        }
-        myAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, nombres);
+        myAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listas);
         listViewListas.setAdapter(myAdapter);
 
+    }
+
+    private void implementsListViewListener(){
+        listViewListas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                id_lista = myAdapter.getItem(position).getId_lista();
+                Bundle bundle = new Bundle();
+                bundle.putInt(Lista._ID, id_lista);
+
+                FragmentProductosDeLista fragmentProductosDeLista = new FragmentProductosDeLista();
+                fragmentProductosDeLista.setArguments(bundle);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.contenedor, fragmentProductosDeLista);
+                ft.commit();
+            }
+        });
     }
 
     private void llamarFloatingButtonAction(View vista){
