@@ -11,11 +11,13 @@ import java.sql.Blob;
 public class Supermercado implements Serializable{
 
     // Nombre de columnas de la tabla en la base de datos
-    private static final String _ID = "id_supermercado";
-    private static final String COLUMNA_NOMBRE = "nombre";
-    private static final String COLUMNA_SUCURSAL = "sucursal";
-    private static final String COLUMNA_LOGO = "logo"; //creando variable de imagen en la base
-
+    public static final String _ID = "id_supermercado";
+    public static final String COLUMNA_NOMBRE = "nombre";
+    public static final String COLUMNA_SUCURSAL = "sucursal";
+    public static final String COLUMNA_LOGO = "logo"; //creando variable de imagen en la base
+    public static final int ID_LA_GALLEGA = 1;
+    public static final int ID_COTO = 2;
+    public static final int ID_CARREFOUR = 3;
 
     @DatabaseField(generatedId = true, columnName = _ID)
     private int id_supermercado;
