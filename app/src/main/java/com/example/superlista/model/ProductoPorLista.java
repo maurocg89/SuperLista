@@ -19,9 +19,9 @@ public class ProductoPorLista {
     private int cantidad;
 
     // Foreign keys
-    @DatabaseField(columnName = COLUMNA_PRODUCTO_FKEY, id = true, foreign = true)
+    @DatabaseField(columnName = COLUMNA_PRODUCTO_FKEY, foreign = true, foreignAutoRefresh = true)
     private Producto producto;
-    @DatabaseField(columnName = COLUMNA_LISTA_FKEY, id = true, foreign = true)
+    @DatabaseField(columnName = COLUMNA_LISTA_FKEY, foreign = true, foreignAutoRefresh = true)
     private Lista lista;
 
 
@@ -69,4 +69,10 @@ public class ProductoPorLista {
     }
 
     //</editor-fold>
+
+
+    @Override
+    public String toString() {
+        return producto + " x"+cantidad;
+    }
 }

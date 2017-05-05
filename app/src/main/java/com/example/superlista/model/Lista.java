@@ -42,7 +42,7 @@ public class Lista {
     //</editor-fold>
 
 
-    //<editor-fold desc="Equals y HashCode">
+    //<editor-fold desc="Equals HashCode y ToString">
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -61,5 +61,11 @@ public class Lista {
         result = 31 * result + nombre.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
+
     //</editor-fold>
 }
