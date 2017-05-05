@@ -10,6 +10,7 @@ import com.example.superlista.model.Supermercado;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.stmt.query.In;
 
 import java.io.IOException;
@@ -139,11 +140,35 @@ public class SuperListaDbManager {
         return producto;
     }
 
-    public Producto getProductoByNombre(String nombre, String marca){
+    public List<Producto> getProductosByNombre(String nombre, String marca){
         QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
-        Producto producto = null;
+        List<Producto> productos = null;
         try {
             queryBuilder.where().eq(Producto.COLUMNA_NOMBRE, nombre).and().eq(Producto.COLUMNA_MARCA, marca);
+            productos = queryBuilder.query();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return productos;
+    }
+
+
+    public Producto getProductoByNombreSuper(String nombre, String marca, int id_super){
+        QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
+       // QueryBuilder<Supermercado, Integer> queryBuilderSuper = getHelper().getSupermercadoDao().queryBuilder();
+        Producto producto = null;
+        Where<Producto, Integer> where = queryBuilder.where();
+
+        try {
+
+            where.eq(Producto.COLUMNA_NOMBRE, nombre);
+            where.eq(Producto.COLUMNA_MARCA, marca);
+            where.eq(Producto.COLUMNA_SUPER_FKEY, id_super);
+            where.and(3);
+
+            //queryBuilder.where().eq(Producto.COLUMNA_NOMBRE, nombre).and().eq(Producto.COLUMNA_MARCA, marca);
+            //queryBuilderSuper.where().eq(Supermercado._ID, id_super);
+            //queryBuilder.join(queryBuilderSuper);
             producto = queryBuilder.queryForFirst();
         }catch (SQLException e){
             e.printStackTrace();
@@ -288,7 +313,7 @@ public class SuperListaDbManager {
         return productosPorLista;
     }
 
-    // Devuelve todos los productos de una lista
+    // Devuelve todos los productos de una lista y sus cantidades
     public List<ProductoPorLista> getAllProductosListas(int id_lista){
         List<ProductoPorLista> productos = null;
         try {
@@ -299,6 +324,8 @@ public class SuperListaDbManager {
         return productos;
 
     }
+
+    //// TODO: Cambiar modelo producto, agregar 4 precios (uno por super)
 
 
     // Devuelve todos los productos de una lista

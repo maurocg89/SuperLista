@@ -43,7 +43,7 @@
             android:layout_weight="7" >
 
             <ImageView
-                android:id="@+id/imageButton"
+                android:id="@+id/imgBtnLaGallega"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -51,20 +51,22 @@
                 android:contentDescription="Total La Gallega" />
 
             <ImageView
-                android:id="@+id/imageButton2"
+                android:id="@+id/imgBtnCoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@mipmap/logo_coto"
+                android:contentDescription="Total Coto" />
+
+            <ImageView
+                android:id="@+id/imgBtnCarrefour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:srcCompat="@mipmap/logo_carrefour"
                 android:contentDescription="Total Carregour"/>
 
-            <ImageView
-                android:id="@+id/imageButton3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@mipmap/logo_coto"
-                android:contentDescription="Total Coto" />
+
         </LinearLayout>
 
     </LinearLayout>
