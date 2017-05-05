@@ -25,6 +25,8 @@ public class FragmentAgregarLista extends Fragment implements View.OnClickListen
     private EditText nombreLista;
     private Button botonAgregar;
     private String dato, auxiliar;
+    private boolean validacion = true;
+
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,20 +71,25 @@ public class FragmentAgregarLista extends Fragment implements View.OnClickListen
     }
 
     public void check_add_Lista(String nombreList){
+
         listadoDeListas = SuperListaDbManager.getInstance().getAllListas();
 
         for (Lista lista: listadoDeListas) {
 
-            if(Objects.equals(lista.getNombre(), nombreList)){
+            if (Objects.equals(lista.getNombre(), nombreList)) {
                 Toast.makeText(getContext(), "Nombre Existente", Toast.LENGTH_SHORT).show();
+                validacion = true;
                 break;
+            }else{
+                validacion = false;
             }
-            if(!(Objects.equals(lista.getNombre(), nombreList))){
-                Lista nuevaLista = new Lista(nombreList);
-                SuperListaDbManager.getInstance().addLista(nuevaLista);
-                Toast.makeText(getContext(), "Lista Agregada", Toast.LENGTH_SHORT).show();
-                break;
-            }
+        }
+
+        if (!validacion) {
+            Lista nuevaLista = new Lista(nombreList);
+            SuperListaDbManager.getInstance().addLista(nuevaLista);
+            Toast.makeText(getContext(), "Lista Agregada", Toast.LENGTH_SHORT).show();
+
 
         }
 

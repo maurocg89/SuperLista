@@ -1,6 +1,6 @@
 package com.example.superlista;
 
-import android.support.annotation.Nullable;
+
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 
@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import android.widget.Toast;
 
 import com.example.superlista.data.SuperListaDbManager;

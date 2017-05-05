@@ -1,6 +1,8 @@
 package com.example.superlista;
 
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.example.superlista.data.SuperListaDbManager;
@@ -34,13 +37,18 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     private ArrayList<String> nombresCategorias, nombresMarcas, nombresSupers;
 
-    private ArrayAdapter<String> adapterCategoria, adapterMarca, adapterSuper ;
+    private ArrayAdapter adapterCategoria;
+    private ArrayAdapter<String> adapterMarca;
+    private ArrayAdapter<String> adapterSuper ;
 
     HashSet<String> hs;
+
+    private int request_code = 1;
 
     private EditText nomProd, valorPrecio;
     private Button agregarProducto;
     private Spinner sCategoria, sMarca, sSupermercado;
+    private ImageView imageProd;
 
 
 
@@ -62,20 +70,13 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
     }
 
 
-    @Override
-    public void onClick(View v) {
-
-        if (v == agregarProducto){
-
-
-        }
-    }
-
 
     private void iniciarIU(View vista){
 
         nomProd =  (EditText) vista.findViewById(R.id.editTextNombreProd);
         valorPrecio =  (EditText) vista.findViewById(R.id.editTextValorPrecio);
+
+        imageProd = (ImageView) vista.findViewById(R.id.imageViewFotoProd);
 
         agregarProducto = (Button) vista.findViewById(R.id.buttonAgregarProd);
         agregarProducto.setOnClickListener(this);
@@ -91,11 +92,42 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     }
 
+    @Override
+    public void onClick(View v) {
+
+        if (v == agregarProducto){
+
+
+        }
+    }
+
+    public void onImageClickFotoProd(View view){
+
+        Intent intent = null;
+
+        if(Build.VERSION.SDK_INT < 19){ // verificacion para version de android 4.3 a anterior
+            intent = new Intent();
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        }else{
+            intent =  new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+        }
+
+        intent.setType("image/*");
+        startActivityForResult(intent, request_code);
+
+    }
+
+
+
     private void setSpinnerCategoria(){
 
         nombresCategorias = new ArrayList<String>();
 
         listCategorias = SuperListaDbManager.getInstance().getAllCategorias();
+
+        nombresCategorias.add(0, "-N/D-");
 
         for (Categoria listaCat: listCategorias) {
 
@@ -136,6 +168,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         hs = new HashSet<String>();
         hs.addAll(arrayList);
         arrayList.clear();
+        arrayList.add(0, "-N/D-");
         arrayList.addAll(hs);
 
         //ordeno alfabeticamente los elementos del ArrayList
@@ -155,6 +188,8 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         nombresSupers = new ArrayList<String>();
 
         listSupers = SuperListaDbManager.getInstance().getAllSupermercados();
+
+        nombresSupers.add(0, "-N/D-");
 
         for (Supermercado listaSup: listSupers) {
 

@@ -16,7 +16,6 @@
         android:weightSum="1">
 
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,8 +31,7 @@
                 android:layout_alignParentStart="true"
                 android:ems="10"
                 android:hint="@string/nombre"
-                android:inputType="textPersonName"
-                android:textStyle="bold" />
+                android:inputType="textPersonName" />
 
             <ImageView
                 android:id="@+id/imageViewMicrofono"
@@ -41,36 +39,37 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                app:srcCompat="@drawable/ic_microphone"
                 android:contentDescription=""
+                app:srcCompat="@drawable/ic_microphone"
                 tools:ignore="ContentDescription" />
 
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="103dp"
+            android:layout_height="136dp"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:layout_weight="0.42"
             tools:ignore="InefficientWeight">
 
             <TextView
                 android:id="@+id/textViewPrecio"
                 android:layout_width="wrap_content"
-                android:layout_height="75dp"
-                android:layout_gravity="center_horizontal"
-                android:gravity="bottom"
+                android:layout_height="34dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
                 android:text="@string/precio"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/editTextValorPrecio"
-                android:layout_width="159dp"
-                android:layout_height="79dp"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:ems="10"
-                android:inputType="numberSigned" />
+                android:inputType="numberSigned"
+                android:textSize="17dp" />
 
             <ImageView
                 android:id="@+id/imageViewFotoProd"
@@ -78,12 +77,13 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/ic_local_grocery_store_black_24dp"
-                tools:ignore="ContentDescription,NestedWeights" />
+                android:onClick="onImageClickFotoProd"
+                 />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="74dp"
+            android:layout_height="65dp"
             android:orientation="horizontal">
 
             <TextView
@@ -125,7 +125,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="65dp"
+            android:layout_height="51dp"
             android:orientation="horizontal">
 
             <TextView
@@ -154,6 +154,8 @@
             android:background="@android:color/holo_blue_dark"
             android:text="@string/agregar"
             android:textColor="@android:color/background_light" />
+
+
 
     </LinearLayout>
 
