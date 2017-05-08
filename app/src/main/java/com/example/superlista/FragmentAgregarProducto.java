@@ -9,11 +9,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.superlista.data.SuperListaDbManager;
 import com.example.superlista.model.Categoria;
@@ -26,6 +28,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
 
 
 public class FragmentAgregarProducto extends Fragment implements View.OnClickListener {
@@ -44,6 +47,8 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
     HashSet<String> hs;
 
     private int request_code = 1;
+    private int numberIDcat, numberIDsup;
+    private String cadCategoria, cadMarca, cadSuper;
 
     private EditText nomProd, valorPrecio;
     private Button agregarProducto;
@@ -98,28 +103,58 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         if (v == agregarProducto){
 
 
+
+
+        }else if(v == imageProd){
+
+            Intent intent = null;
+
+            if(Build.VERSION.SDK_INT < 19){ // verificacion para version de android 4.3 a anterior
+                intent = new Intent();
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+
+            }else{
+                intent =  new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+            }
+
+            intent.setType("image/*");
+            startActivityForResult(intent, request_code);
         }
     }
 
-    public void onImageClickFotoProd(View view){
+    public void agregarProducto(String nombre, String marca, double precio, Categoria categoria, Supermercado supermercado){
 
-        Intent intent = null;
+        Producto nuevoProd = new Producto(nombre, marca, precio, categoria, supermercado);
+        SuperListaDbManager.getInstance().addProducto(nuevoProd);
 
-        if(Build.VERSION.SDK_INT < 19){ // verificacion para version de android 4.3 a anterior
-            intent = new Intent();
-            intent.setAction(Intent.ACTION_GET_CONTENT);
 
-        }else{
-            intent =  new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-        }
+        /*Producto nuevoProd = new Producto(
+                nomProd.getText().toString(),
+                cadMarca,
+                Double.parseDouble(valorPrecio.getText().toString()),
+                addCategoria,
+                addSupermercado
 
-        intent.setType("image/*");
-        startActivityForResult(intent, request_code);
+        );*/
+
 
     }
 
 
+
+    //TODO: falta terminar
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(resultCode == RESULT_OK && requestCode == request_code){
+
+            imageProd.setImageURI(data.getData());
+            //Utilizamos el atributo TAG para almacenar la uri al acrchivo seleccionado
+            imageProd.setTag(data.getData());
+        }
+
+    }
 
     private void setSpinnerCategoria(){
 
@@ -127,16 +162,37 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
         listCategorias = SuperListaDbManager.getInstance().getAllCategorias();
 
-        nombresCategorias.add(0, "-N/D-");
-
         for (Categoria listaCat: listCategorias) {
 
             nombresCategorias.add(listaCat.getNombre());
         }
+        Collections.sort(nombresCategorias);
 
         adapterCategoria = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, nombresCategorias);
         adapterCategoria.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sCategoria.setAdapter(adapterCategoria);
+
+        sCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                cadCategoria = String.valueOf(sCategoria.getSelectedItem());
+
+                for (Categoria listaCat: listCategorias) {
+                    if (listaCat.getNombre().equals(cadCategoria)){
+                        //Categoria nuevo = new Categoria();
+                        numberIDcat =  listaCat.getId_categoria();
+                       // nuevo.setId_categoria(listaCat.getId_categoria());
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 
@@ -159,6 +215,20 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         adapterMarca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sMarca.setAdapter(adapterMarca);
 
+        //TODO:  terminar
+        sMarca.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                cadMarca = String.valueOf(sMarca.getSelectedItem());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
     }
 
@@ -168,7 +238,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         hs = new HashSet<String>();
         hs.addAll(arrayList);
         arrayList.clear();
-        arrayList.add(0, "-N/D-");
+        arrayList.add(0, "-No Especificado-");
         arrayList.addAll(hs);
 
         //ordeno alfabeticamente los elementos del ArrayList
@@ -189,16 +259,35 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
         listSupers = SuperListaDbManager.getInstance().getAllSupermercados();
 
-        nombresSupers.add(0, "-N/D-");
-
         for (Supermercado listaSup: listSupers) {
 
             nombresSupers.add(listaSup.getNombre());
         }
+        Collections.sort(nombresSupers);
 
         adapterSuper = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, nombresSupers);
         adapterSuper.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sSupermercado.setAdapter(adapterSuper);
+
+        sSupermercado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                cadSuper = String.valueOf(sSupermercado.getSelectedItem());
+
+                for (Supermercado listaSup: listSupers) {
+                    if (listaSup.getNombre().equals(cadSuper)){
+                        numberIDsup =  listaSup.getId_supermercado();
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 

@@ -29,6 +29,7 @@ public class Producto {
     // Foreign Keys
     @DatabaseField(foreign = true, columnName = COLUMNA_CATEGORIA_FKEY)
     private Categoria categoria;
+
     @DatabaseField(foreign = true, columnName = COLUMNA_SUPER_FKEY, uniqueCombo = true)
     private Supermercado supermercado;
 
@@ -94,6 +95,38 @@ public class Producto {
     }
     //</editor-fold>
 
+
+    //<editor-fold desc="Equals y HashCode">
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Producto producto = (Producto) o;
+
+        if (id_producto != producto.id_producto) return false;
+        if (Double.compare(producto.precio, precio) != 0) return false;
+        if (!nombre.equals(producto.nombre)) return false;
+        if (!marca.equals(producto.marca)) return false;
+        if (!categoria.equals(producto.categoria)) return false;
+        return supermercado.equals(producto.supermercado);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = id_producto;
+        result = 31 * result + nombre.hashCode();
+        result = 31 * result + marca.hashCode();
+        temp = Double.doubleToLongBits(precio);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + categoria.hashCode();
+        result = 31 * result + supermercado.hashCode();
+        return result;
+    }
+    //</editor-fold>
 
     @Override
     public String toString() {
