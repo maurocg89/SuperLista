@@ -102,6 +102,9 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
         if (v == agregarProducto){
 
+            add_Producto();
+
+            //limpiarCampos();
 
 
 
@@ -123,27 +126,41 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         }
     }
 
-    public void agregarProducto(String nombre, String marca, double precio, Categoria categoria, Supermercado supermercado){
+    public void add_Producto(){ //TODO: verificar como le paso la categoria y el supermercado
 
-        Producto nuevoProd = new Producto(nombre, marca, precio, categoria, supermercado);
-        SuperListaDbManager.getInstance().addProducto(nuevoProd);
+        Categoria category = new Categoria();
+        category.setId_categoria(numberIDcat);
+        Supermercado market = new Supermercado();
+        market.setId_supermercado(numberIDsup);
 
-
-        /*Producto nuevoProd = new Producto(
+        Producto nuevoProd = new Producto(
                 nomProd.getText().toString(),
                 cadMarca,
                 Double.parseDouble(valorPrecio.getText().toString()),
-                addCategoria,
-                addSupermercado
+                category,
+                market,
+                (String) imageProd.getTag()
+        );
+        SuperListaDbManager.getInstance().addProducto(nuevoProd);
 
-        );*/
+    }
 
+    public void limpiarCampos(){
+
+        nomProd.getText().clear();
+        valorPrecio.getText().clear();
+        imageProd.setImageResource(R.drawable.ic_local_grocery_store_black_24dp);
+        setSpinnerMarca();
+        setSpinnerCategoria();
+        setSpinnerSupermercado();
 
     }
 
 
 
-    //TODO: falta terminar
+
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -180,9 +197,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
                 for (Categoria listaCat: listCategorias) {
                     if (listaCat.getNombre().equals(cadCategoria)){
-                        //Categoria nuevo = new Categoria();
                         numberIDcat =  listaCat.getId_categoria();
-                       // nuevo.setId_categoria(listaCat.getId_categoria());
                         break;
                     }
                 }
@@ -215,7 +230,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         adapterMarca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sMarca.setAdapter(adapterMarca);
 
-        //TODO:  terminar
+
         sMarca.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

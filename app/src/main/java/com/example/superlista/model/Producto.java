@@ -13,6 +13,7 @@ public class Producto {
     public static final String COLUMNA_MARCA = "marca";
     public static final String COLUMNA_PRECIO = "precio";
     public static final String COLUMNA_CATEGORIA_FKEY = "id_categoria";
+    public static final String COLUMNA_IMAGEN_PROD = "imagen_producto";
 
     @DatabaseField(generatedId = true, columnName = _ID)
     private int id_producto;
@@ -33,15 +34,19 @@ public class Producto {
     @DatabaseField(foreign = true, columnName = COLUMNA_SUPER_FKEY, uniqueCombo = true)
     private Supermercado supermercado;
 
+    @DatabaseField(columnName = COLUMNA_IMAGEN_PROD, canBeNull = false)
+    private String imagen;
+
     public Producto(){}
 
-    public Producto(String nombre, String marca, double precio, Categoria categoria, Supermercado supermercado){
+    public Producto(String nombre, String marca, double precio, Categoria categoria, Supermercado supermercado, String imagen){
 
         this.nombre = nombre;
         this.marca = marca;
         this.precio = precio;
         this.categoria = categoria;
         this.supermercado = supermercado;
+        this.imagen = imagen;
     }
 
     //<editor-fold desc = "Getters and Setters">
@@ -52,7 +57,6 @@ public class Producto {
     public void setId_producto(int id_producto) {
         this.id_producto = id_producto;
     }
-
 
     public String getNombre() {
         return nombre;
@@ -93,6 +97,15 @@ public class Producto {
     public void setSupermercado(Supermercado supermercado) {
         this.supermercado = supermercado;
     }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
     //</editor-fold>
 
 
