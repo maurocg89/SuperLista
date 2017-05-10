@@ -71,7 +71,6 @@ public class FragmentProductosDeLista extends Fragment {
             myAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, productosPorLista);
             listView.setAdapter(myAdapter);
 
-
         }
     }
 
@@ -113,5 +112,9 @@ public class FragmentProductosDeLista extends Fragment {
                 Toast.makeText(getContext(), "Total en Carrefour: "+getTotal(Supermercado.ID_CARREFOUR), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void listViewListener(){
+
     }
 }

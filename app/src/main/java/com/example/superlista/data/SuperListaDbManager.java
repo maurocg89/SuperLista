@@ -250,6 +250,18 @@ public class SuperListaDbManager {
         return categoria;
     }
 
+    public Categoria getCategoriaByNombre(String nombre_categoria){
+        Categoria categoria = null;
+        QueryBuilder<Categoria, Integer> queryBuilder = getHelper().getCategoriaDao().queryBuilder();
+        try {
+            queryBuilder.where().eq(Categoria.COLUMNA_NOMBRE, nombre_categoria);
+            categoria = queryBuilder.queryForFirst();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return categoria;
+    }
+
     public void addCategoria(Categoria categoria){
         try {
             getHelper().getCategoriaDao().create(categoria);
@@ -293,6 +305,18 @@ public class SuperListaDbManager {
         Supermercado supermercado = null;
         try {
             supermercado = getHelper().getSupermercadoDao().queryForId(id_supermercado);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return supermercado;
+    }
+
+    public Supermercado getSupermercadoByNombre(String nombre_supermercado){
+        Supermercado supermercado = null;
+        QueryBuilder<Supermercado, Integer> queryBuilder = getHelper().getSupermercadoDao().queryBuilder();
+        try {
+            queryBuilder.where().eq(Supermercado.COLUMNA_NOMBRE, nombre_supermercado);
+            supermercado = queryBuilder.queryForFirst();
         }catch (SQLException e){
             e.printStackTrace();
         }

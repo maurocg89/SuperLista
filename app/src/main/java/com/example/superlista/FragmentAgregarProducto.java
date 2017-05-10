@@ -49,6 +49,8 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
     private int request_code = 1;
     private int numberIDcat, numberIDsup;
     private String cadCategoria, cadMarca, cadSuper;
+    private Categoria categoria;
+    private Supermercado supermercado;
 
     private EditText nomProd, valorPrecio;
     private Button agregarProducto;
@@ -128,17 +130,19 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     public void add_Producto(){ //TODO: verificar como le paso la categoria y el supermercado
 
-        Categoria category = new Categoria();
-        category.setId_categoria(numberIDcat);
-        Supermercado market = new Supermercado();
-        market.setId_supermercado(numberIDsup);
+       // Categoria category = new Categoria();
+       // category.setId_categoria(numberIDcat);
+        //Supermercado market = new Supermercado();
+        //market.setId_supermercado(numberIDsup);
 
         Producto nuevoProd = new Producto(
                 nomProd.getText().toString(),
                 cadMarca,
                 Double.parseDouble(valorPrecio.getText().toString()),
-                category,
-                market,
+                //category,
+                categoria,
+                //market,
+                supermercado,
                 (String) imageProd.getTag()
         );
         SuperListaDbManager.getInstance().addProducto(nuevoProd);
@@ -194,13 +198,13 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 cadCategoria = String.valueOf(sCategoria.getSelectedItem());
-
-                for (Categoria listaCat: listCategorias) {
+                categoria = SuperListaDbManager.getInstance().getCategoriaByNombre(cadCategoria);
+            /*    for (Categoria listaCat: listCategorias) {
                     if (listaCat.getNombre().equals(cadCategoria)){
                         numberIDcat =  listaCat.getId_categoria();
                         break;
                     }
-                }
+                }*/
             }
 
             @Override
@@ -289,13 +293,13 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 cadSuper = String.valueOf(sSupermercado.getSelectedItem());
-
-                for (Supermercado listaSup: listSupers) {
+                supermercado = SuperListaDbManager.getInstance().getSupermercadoByNombre(cadSuper);
+               /* for (Supermercado listaSup: listSupers) {
                     if (listaSup.getNombre().equals(cadSuper)){
                         numberIDsup =  listaSup.getId_supermercado();
                         break;
                     }
-                }
+                }*/
             }
 
             @Override

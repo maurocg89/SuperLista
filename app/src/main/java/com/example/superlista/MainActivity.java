@@ -23,9 +23,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     Fragment fragment = null;
 
+    // TODO: Coto va con una sola t (cambiar en donde aparezca con 2), fijarse onBackPressed para salir de la aplicacion, agregar unidad en tabla productos
+    /* TODO: Fede:  Formularios para agregar  productos (imagen) y categorias. En nuevo producto poder agregar marca, comando de voz
 
-    /* TODO: Fede: Fragment de listas, supermercados, floating button de todas activities. Acerca de (Activity). Formularios para agregar  productos, listas y categorias.
-       TODO: Mauro: Terminar activity productos(checkbox). */
+       TODO: Mauro: Terminar activity productos(checkbox, marca abajo del nombre, imagen a la derecha). Fragment de listas (agregar productos a listas, action bar para borrar listas)
+       TODO: hacer fragment con productos y totales de cada uno de los supers y lista de productos faltantes
+       TODO: fragment de productos de lista (agregar checkable)*/
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

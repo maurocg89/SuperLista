@@ -28,13 +28,13 @@ public class Producto {
     private double precio;
 
     // Foreign Keys
-    @DatabaseField(foreign = true, columnName = COLUMNA_CATEGORIA_FKEY)
+    @DatabaseField(foreign = true, columnName = COLUMNA_CATEGORIA_FKEY, foreignAutoRefresh = true)
     private Categoria categoria;
 
-    @DatabaseField(foreign = true, columnName = COLUMNA_SUPER_FKEY, uniqueCombo = true)
+    @DatabaseField(foreign = true, columnName = COLUMNA_SUPER_FKEY, uniqueCombo = true, foreignAutoRefresh = true)
     private Supermercado supermercado;
 
-    @DatabaseField(columnName = COLUMNA_IMAGEN_PROD, canBeNull = false)
+    @DatabaseField(columnName = COLUMNA_IMAGEN_PROD)
     private String imagen;
 
     public Producto(){}
