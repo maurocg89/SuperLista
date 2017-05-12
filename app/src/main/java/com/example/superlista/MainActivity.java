@@ -23,10 +23,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     Fragment fragment = null;
 
-    // TODO: Coto va con una sola t (cambiar en donde aparezca con 2), fijarse onBackPressed para salir de la aplicacion, agregar unidad en tabla productos
+    // TODO: Coto va con una sola t (cambiar en donde aparezca con 2), fijarse onBackPressed para salir de la aplicacion, agregar unidad en tabla productos, cambiar cantidad a double
     /* TODO: Fede:  Formularios para agregar  productos (imagen) y categorias. En nuevo producto poder agregar marca, comando de voz
 
-       TODO: Mauro: Terminar activity productos(checkbox, marca abajo del nombre, imagen a la derecha). Fragment de listas (agregar productos a listas, action bar para borrar listas)
+       TODO: Mauro: Terminar activity productos(checkbox, imagen a la derecha). Fragment de listas (agregar productos a listas, action bar para borrar listas)
        TODO: hacer fragment con productos y totales de cada uno de los supers y lista de productos faltantes
        TODO: fragment de productos de lista (agregar checkable)*/
 

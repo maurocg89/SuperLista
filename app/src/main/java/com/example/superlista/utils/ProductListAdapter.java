@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.superlista.R;
@@ -72,7 +73,9 @@ public class ProductListAdapter extends BaseAdapter{
         if (convertView == null){
             holder = new ViewHolderProducto();
             convertView = inflater.inflate(R.layout.list_item_product, null);
-            holder.textView = (TextView) convertView.findViewById(R.id.list_item_texto);
+            holder.nombreProducto = (TextView) convertView.findViewById(R.id.list_item_texto);
+            holder.marcaProducto = (TextView) convertView.findViewById(R.id.list_item_marca);
+            holder.imagenProducto = (ImageView) convertView.findViewById(R.id.list_item_imagen);
             convertView.setTag(holder);
         }
         else {
@@ -80,7 +83,8 @@ public class ProductListAdapter extends BaseAdapter{
         }
 
         Producto prod = data.get(position);
-        holder.textView.setText(prod.toString());
+        holder.nombreProducto.setText(prod.getNombre());
+        holder.marcaProducto.setText(prod.getMarca());
 
         // Cambia el color de fondo de los items seleccionados
         convertView.setBackgroundColor(mSelectedItemsIds.get(position) ? Color.parseColor("#a9a9a9") : Color.TRANSPARENT);
@@ -120,10 +124,14 @@ public class ProductListAdapter extends BaseAdapter{
         return mSelectedItemsIds;
     }
 
+    private class ViewHolderProducto{
+        TextView nombreProducto;
+        TextView marcaProducto;
+        // CheckBox checkBox;
+         ImageView imagenProducto;
+    }
+
 }
 
-class ViewHolderProducto{
-    TextView textView;
-    // CheckBox checkBox;
-}
+
 

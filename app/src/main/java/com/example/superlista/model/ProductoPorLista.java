@@ -1,10 +1,13 @@
 package com.example.superlista.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "producto_por_lista")
-public class ProductoPorLista {
+public class ProductoPorLista implements Parcelable {
 
     // Nombre de columnas de la tabla en la base de datos
     public static final String _ID = "id_producto_lista";
@@ -75,4 +78,38 @@ public class ProductoPorLista {
     public String toString() {
         return producto + " x"+cantidad;
     }
+
+    //<editor-fold desc="Parcelable">
+    public static final Creator<ProductoPorLista> CREATOR = new Creator<ProductoPorLista>() {
+        @Override
+        public ProductoPorLista createFromParcel(Parcel parcel) {
+            return new ProductoPorLista(parcel);
+        }
+
+        @Override
+        public ProductoPorLista[] newArray(int size) {
+            return new ProductoPorLista[size];
+        }
+    };
+
+    public ProductoPorLista (Parcel in){
+        this.id_producto_lista = in.readInt();
+        this.producto = in.readParcelable(Producto.class.getClassLoader());
+        this.lista = in.readParcelable(Lista.class.getClassLoader());
+        this.cantidad = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id_producto_lista);
+        parcel.writeParcelable(producto, i);
+        parcel.writeParcelable(lista, i);
+        parcel.writeInt(cantidad);
+    }
+    //</editor-fold>
 }

@@ -44,24 +44,24 @@
 
             <ImageView
                 android:id="@+id/imgBtnLaGallega"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 app:srcCompat="@mipmap/logo_la_gallega"
                 android:contentDescription="Total La Gallega" />
 
             <ImageView
                 android:id="@+id/imgBtnCoto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 app:srcCompat="@mipmap/logo_coto"
                 android:contentDescription="Total Coto" />
 
             <ImageView
                 android:id="@+id/imgBtnCarrefour"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 app:srcCompat="@mipmap/logo_carrefour"
                 android:contentDescription="Total Carregour"/>

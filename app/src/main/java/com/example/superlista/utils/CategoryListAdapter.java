@@ -101,3 +101,4 @@ public class CategoryListAdapter extends BaseAdapter {
     }
 
 }
+

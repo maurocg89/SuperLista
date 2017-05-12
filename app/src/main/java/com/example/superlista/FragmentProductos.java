@@ -91,7 +91,7 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
     //<editor-fold desc="Seteo de componentes">
     private void setData(){
         try{
-            cod_categoria = getArguments().getInt(Categoria._ID);
+            cod_categoria = getArguments().getInt(Categoria._ID, 0);
         } catch (Exception e){
             e.printStackTrace();
         }

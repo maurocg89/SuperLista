@@ -1,10 +1,13 @@
 package com.example.superlista.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "producto")
-public class Producto {
+public class Producto implements Parcelable{
 
     // Nombre de columnas de la tabla en la base de datos
     public static final String _ID = "id_producto";
@@ -145,4 +148,45 @@ public class Producto {
     public String toString() {
         return nombre + " " + marca;
     }
+
+    //<editor-fold desc="Parcelable">
+
+    public static final Creator<Producto> CREATOR = new Creator<Producto>() {
+        @Override
+        public Producto createFromParcel(Parcel parcel) {
+            return new Producto(parcel);
+        }
+
+        @Override
+        public Producto[] newArray(int size) {
+            return new Producto[size];
+        }
+    };
+
+    public Producto (Parcel in){
+        this.id_producto = in.readInt();
+        this.nombre = in.readString();
+        this.marca = in.readString();
+        this.precio = in.readDouble();
+        this.categoria = in.readParcelable(Categoria.class.getClassLoader());
+        this.supermercado = in.readParcelable(Supermercado.class.getClassLoader());
+        this.imagen = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id_producto);
+        parcel.writeString(nombre);
+        parcel.writeString(marca);
+        parcel.writeDouble(precio);
+        parcel.writeParcelable(categoria, i);
+        parcel.writeParcelable(supermercado, i);
+        parcel.writeString(imagen);
+    }
+    //</editor-fold>
 }

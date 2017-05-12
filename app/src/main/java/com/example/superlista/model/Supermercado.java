@@ -1,5 +1,8 @@
 package com.example.superlista.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -8,7 +11,7 @@ import java.sql.Blob;
 
 
 @DatabaseTable(tableName = "supermercado")
-public class Supermercado implements Serializable{
+public class Supermercado implements Parcelable{
 
     // Nombre de columnas de la tabla en la base de datos
     public static final String _ID = "id_supermercado";
@@ -76,7 +79,6 @@ public class Supermercado implements Serializable{
 
     //</editor-fold>
 
-
     //<editor-fold desc="Equals y Hash Code">
     @Override
     public boolean equals(Object o) {
@@ -99,6 +101,41 @@ public class Supermercado implements Serializable{
         result = 31 * result + (sucursal != null ? sucursal.hashCode() : 0);
         result = 31 * result + logo;
         return result;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Parcelable">
+    public static final Creator<Supermercado> CREATOR = new Creator<Supermercado>() {
+        @Override
+        public Supermercado createFromParcel(Parcel parcel) {
+            return new Supermercado(parcel);
+        }
+
+        @Override
+        public Supermercado[] newArray(int size) {
+            return new Supermercado[size];
+        }
+    };
+
+    public Supermercado (Parcel in){
+        this.id_supermercado = in.readInt();
+        this.nombre = in.readString();
+        this.sucursal = in.readString();
+        this.logo = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id_supermercado);
+        parcel.writeString(nombre);
+        parcel.writeString(sucursal);
+        parcel.writeInt(logo);
+
     }
     //</editor-fold>
 }
