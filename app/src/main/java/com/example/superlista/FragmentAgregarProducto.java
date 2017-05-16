@@ -81,7 +81,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
 
 
-    private String cadCategoria, cadMarca, cadSuper, mPath;    //mPath lo voy a usar para saber en que ruta se guardo la imagen
+    private String cadCategoria, cadMarca, cadSuper, mPath, direccion_imagen;    //mPath lo voy a usar para saber en que ruta se guardo la imagen
     private Categoria categoria;
     private Supermercado supermercado;
 
@@ -180,15 +180,15 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         if (v == agregarProducto){
 
             add_Producto();
-
-            //limpiarCampos();
+            Toast.makeText(getContext(), "Producto agregado", Toast.LENGTH_SHORT).show();
+            limpiarCampos();
 
 
 
         }else if(v == imageProd){
 
             mostrarOpciones();
-            Toast.makeText(getContext(), "holaaass22", Toast.LENGTH_SHORT).show();
+
 
             /*
             Intent intent = null;
@@ -281,6 +281,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
                                     //estos logs son meramente informativos
                                     Log.i("Almacenamiento Externo", "Escaneada " + path );
                                     Log.i("Almacenamiento Externo", "-> Uri = " + uri );
+                                    direccion_imagen = uri.toString();
                                 }
                             });
 
@@ -288,13 +289,16 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
                     Bitmap bitmap = BitmapFactory.decodeFile(mPath); // lo que hace esta linea es traer la ruta en donde esta la imagen y la decodifica y la guarda en un bitmap
                     imageProd.setImageBitmap(bitmap);
                     Log.i("mPath", "Escaneada " + mPath );
+
                     break;
 
                 case SELECT_PICTURE:
                     Uri path = data.getData();// en esta linea trae la ruta de la imagen pero en uri que es otro formato
                     imageProd.setImageURI(path);
-                    Log.i("mensaje: ", "lalala:  " + path);
-                    Log.i("mPath222", "Escaneada " + mPath );
+                    Log.i("SELECT_PICTURE ", "-> Uri = " + path);
+
+                    direccion_imagen = path.toString();
+
                     break;
 
             }
@@ -323,7 +327,8 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
                 Double.parseDouble(valorPrecio.getText().toString()),
                 categoria,
                 supermercado,
-                String.valueOf(imageProd.getTag())
+                direccion_imagen
+                //String.valueOf(imageProd.getTag())
         );
         SuperListaDbManager.getInstance().addProducto(nuevoProd);
 
