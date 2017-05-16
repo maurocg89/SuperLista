@@ -4,6 +4,11 @@
 
     <!-- esto es un comentario -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <protected-broadcast android:name="android.intent.action.MEDIA_MOUNTED" />
+
 
     <!-- user-permission permite a la aplicacion dar permisos para acceso a internet -->
     <application

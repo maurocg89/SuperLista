@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.example.superlista.data.SuperListaDbManager;
 
+
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     Fragment fragment = null;
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (id){
             case R.id.item_menu_lista:
+
                 fragment = new FragmentListas();
                 Toast.makeText(getApplicationContext(), "Bienvenido a las Listas", Toast.LENGTH_SHORT).show();
                 break;

@@ -1,11 +1,28 @@
 package com.example.superlista;
 
 
+
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ScrollingView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,21 +31,26 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 
 import com.example.superlista.data.SuperListaDbManager;
 import com.example.superlista.model.Categoria;
 import com.example.superlista.model.Producto;
 import com.example.superlista.model.Supermercado;
 
+
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 
 public class FragmentAgregarProducto extends Fragment implements View.OnClickListener {
@@ -47,11 +69,23 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
     HashSet<String> hs;
 
     private int request_code = 1;
-    private int numberIDcat, numberIDsup;
-    private String cadCategoria, cadMarca, cadSuper;
+
+    private static String APP_DIRECTORY = "SuperListaApp/";
+    private static String MEDIA_DIRECTORY = APP_DIRECTORY + "PictureApp";
+
+    private final int MY_PERMISSIONS = 100; // constante que sirve para los permisos
+    private final int PHOTO_CODE = 200; // sirve para cuando mandemos a llamar la aplicacion de fotos
+    private final int SELECT_PICTURE = 300;
+
+
+
+
+
+    private String cadCategoria, cadMarca, cadSuper, mPath;    //mPath lo voy a usar para saber en que ruta se guardo la imagen
     private Categoria categoria;
     private Supermercado supermercado;
 
+    private LinearLayout linearLayoutProd;
     private EditText nomProd, valorPrecio;
     private Button agregarProducto;
     private Spinner sCategoria, sMarca, sSupermercado;
@@ -80,10 +114,23 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     private void iniciarIU(View vista){
 
+
+        linearLayoutProd = (LinearLayout) vista.findViewById(R.id.linearProducto);
+
         nomProd =  (EditText) vista.findViewById(R.id.editTextNombreProd);
         valorPrecio =  (EditText) vista.findViewById(R.id.editTextValorPrecio);
 
         imageProd = (ImageView) vista.findViewById(R.id.imageViewFotoProd);
+        imageProd.setOnClickListener(this);
+
+
+        if (mayRequestStoragePermission()){
+            imageProd.setEnabled(true);
+        }else{
+            imageProd.setEnabled(false);
+        }
+
+
 
         agregarProducto = (Button) vista.findViewById(R.id.buttonAgregarProd);
         agregarProducto.setOnClickListener(this);
@@ -99,6 +146,34 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     }
 
+    private boolean mayRequestStoragePermission() {//con este metodo le otorgo los permisos de acuerdo a la version de android
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M){// toda version menor a la 6.0 no necesita permisos, los mismo son agarrados del manifest
+
+            return true;
+        }
+        if (((ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) == PackageManager.PERMISSION_GRANTED)
+                && ((ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)) == PackageManager.PERMISSION_GRANTED)){
+                //si los permisos ya estan aceptados regresamos un true
+            return true;
+         }
+         if((shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) || (shouldShowRequestPermissionRationale(CAMERA))){
+             Snackbar.make(linearLayoutProd, "Los permisos son nacesarios para poder usar la app", Snackbar.LENGTH_INDEFINITE)
+                     .setAction(android.R.string.ok, new View.OnClickListener() {
+                         @Override
+                         public void onClick(View v) {
+                             requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+                         }
+                     }).show();
+
+         }else{
+             requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+         }
+
+       return false;
+    }
+
+
     @Override
     public void onClick(View v) {
 
@@ -112,6 +187,10 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
         }else if(v == imageProd){
 
+            mostrarOpciones();
+            Toast.makeText(getContext(), "holaaass22", Toast.LENGTH_SHORT).show();
+
+            /*
             Intent intent = null;
 
             if(Build.VERSION.SDK_INT < 19){ // verificacion para version de android 4.3 a anterior
@@ -124,26 +203,127 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
             }
 
             intent.setType("image/*");
-            startActivityForResult(intent, request_code);
+            startActivityForResult(intent, request_code);*/
         }
     }
 
-    public void add_Producto(){ //TODO: verificar como le paso la categoria y el supermercado
 
-       // Categoria category = new Categoria();
-       // category.setId_categoria(numberIDcat);
-        //Supermercado market = new Supermercado();
-        //market.setId_supermercado(numberIDsup);
+
+    private void mostrarOpciones(){
+
+        final CharSequence[] opcion = {"Tomar Foto", "Elegir de Galeria", "Cancelar"};
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Elije una Opción:");
+        builder.setItems(opcion, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (opcion[which] == "Tomar Foto"){
+                    abrirCamara();
+                }else if(opcion[which] == "Elegir de Galeria"){
+                    //ACTION_PICK tiene la opcion de abrir un archivo, y external content uri lanza el volumen de almacenamiento del dispositivo
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setType("image/*"); //aca le decimos que muestre todos los archivos de tipo imagen
+                    startActivityForResult(intent.createChooser(intent, "Selecciona app de imágen"), SELECT_PICTURE);
+                }else{
+                    dialog.dismiss(); // esta perteneceria a la opcion de cancelar
+                }
+            }
+
+        });
+        builder.show();
+
+    }
+
+    private void abrirCamara() {
+
+        File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY); //file guarda toda la ruta del almacenamiento externo del dispositivo
+        boolean isDirectoryCreated = file.exists(); //esto nos va a decir si PictureApp ya esta creado
+
+        if (!isDirectoryCreated){
+            isDirectoryCreated = file.mkdirs();
+        }
+
+        if (isDirectoryCreated){
+            Long timestamp = System.currentTimeMillis() / 1000; //con esto obtengo la fecha
+            String imageName = timestamp.toString() + ".jpg"; //aca asigno el nombre a la imagen y le pongo la extension jpg
+
+            //aca le estamos diciendo explicitamente donde queremos que se guarde nuestra imagen
+            //seria  SuperListaApp/PictureApp/imageName
+            mPath = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY + File.separator + imageName;
+
+            File newFile = new File(mPath);
+
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//lanzamos en intent para abrir la camara
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));//le enviamos un uri a la aplicacion de camara y del file sacamos el uri
+            startActivityForResult(intent, PHOTO_CODE);
+        }
+
+    }
+
+
+    @Override
+    //con el metodo onActivityResult manejamos las respuestas de la camara, galeria etc
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK){//el RESULT_OK significa si la respuesta que nos llega esta bien o sea sin errores
+            switch (requestCode){
+                case PHOTO_CODE:
+                    //el Scan lo que hace es que una vez que guarda la imagen, escanea la ruta ya que sino la misma no apararece en la galeria
+                    MediaScannerConnection.scanFile(
+                            getContext(),
+                            new String[]{mPath},
+                            null,
+                            new MediaScannerConnection.OnScanCompletedListener() {
+                                @Override
+                                public void onScanCompleted(String path, Uri uri) {
+                                    //estos logs son meramente informativos
+                                    Log.i("Almacenamiento Externo", "Escaneada " + path );
+                                    Log.i("Almacenamiento Externo", "-> Uri = " + uri );
+                                }
+                            });
+
+                    //una vez escaneada la hay que ponerlo en el imageview
+                    Bitmap bitmap = BitmapFactory.decodeFile(mPath); // lo que hace esta linea es traer la ruta en donde esta la imagen y la decodifica y la guarda en un bitmap
+                    imageProd.setImageBitmap(bitmap);
+                    Log.i("mPath", "Escaneada " + mPath );
+                    break;
+
+                case SELECT_PICTURE:
+                    Uri path = data.getData();// en esta linea trae la ruta de la imagen pero en uri que es otro formato
+                    imageProd.setImageURI(path);
+                    Log.i("mensaje: ", "lalala:  " + path);
+                    Log.i("mPath222", "Escaneada " + mPath );
+                    break;
+
+            }
+        }
+
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == MY_PERMISSIONS){
+            if (grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(getContext(), "Permisos Aceptados", Toast.LENGTH_SHORT).show();
+                imageProd.setEnabled(true);
+            }
+        }
+    }
+
+    public void add_Producto(){
 
         Producto nuevoProd = new Producto(
                 nomProd.getText().toString(),
                 cadMarca,
                 Double.parseDouble(valorPrecio.getText().toString()),
-                //category,
                 categoria,
-                //market,
                 supermercado,
-                (String) imageProd.getTag()
+                String.valueOf(imageProd.getTag())
         );
         SuperListaDbManager.getInstance().addProducto(nuevoProd);
 
@@ -164,7 +344,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
 
 
-
+/*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -175,7 +355,13 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
             imageProd.setTag(data.getData());
         }
 
-    }
+    }*/
+
+
+
+
+
+
 
     private void setSpinnerCategoria(){
 
