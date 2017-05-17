@@ -2,6 +2,7 @@ package com.example.superlista.utils;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,6 +87,10 @@ public class ProductListAdapter extends BaseAdapter{
         holder.nombreProducto.setText(prod.getNombre());
         holder.marcaProducto.setText(prod.getMarca());
 
+        // TODO: Fede acá se le asignaría la imagen al producto
+        if(prod.getImagen() != null) {
+            holder.imagenProducto.setImageURI(Uri.parse(prod.getImagen()));
+        }
         // Cambia el color de fondo de los items seleccionados
         convertView.setBackgroundColor(mSelectedItemsIds.get(position) ? Color.parseColor("#a9a9a9") : Color.TRANSPARENT);
 

@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /* TODO: Fede:  Formularios para agregar  productos (imagen) y categorias. En nuevo producto poder agregar marca, comando de voz
 
        TODO: Mauro: Terminar activity productos(checkbox, imagen a la derecha). Fragment de listas (agregar productos a listas, action bar para borrar listas)
-       TODO: hacer fragment con productos y totales de cada uno de los supers y lista de productos faltantes
        TODO: fragment de productos de lista (agregar checkable)*/
 
 

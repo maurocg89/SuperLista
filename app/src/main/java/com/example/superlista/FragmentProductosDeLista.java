@@ -1,5 +1,6 @@
 package com.example.superlista;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,9 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.superlista.data.SuperListaDbManager;
@@ -29,7 +33,9 @@ public class FragmentProductosDeLista extends Fragment {
     private List<ProductoPorLista> productosPorLista;
     private ArrayList<ProductoPorLista> productosPorSuper;
     private ArrayList<ProductoPorLista> productosFaltantes;
-    private ArrayAdapter<ProductoPorLista> myAdapter;
+    //private ArrayAdapter<ProductoPorLista> myAdapter;
+    private ProductosDeListaAdapter myAdapter;
+
     private int id_lista;
     private ImageView btnCoto;
     private ImageView btnLaGallega;
@@ -41,7 +47,6 @@ public class FragmentProductosDeLista extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_productos_de_lista, container, false);
-
         listView = (ListView) view.findViewById(R.id.lvProductosDeLista);
         btnCoto = (ImageView) view.findViewById(R.id.imgBtnCoto);
         btnCarrefour = (ImageView) view.findViewById(R.id.imgBtnCarrefour);
@@ -70,7 +75,8 @@ public class FragmentProductosDeLista extends Fragment {
             // productos = SuperListaDbManager.getInstance().getProductosPorLista(id_lista);
             //    SuperListaDbManager.getInstance().getProductoById(productosPorLista.get(0).getProducto().getId_producto());
             productosPorLista = SuperListaDbManager.getInstance().getAllProductosListas(id_lista);
-            myAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, productosPorLista);
+           // myAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, productosPorLista);
+            myAdapter = new ProductosDeListaAdapter(getActivity(), productosPorLista);
             listView.setAdapter(myAdapter);
 
         }
@@ -158,6 +164,61 @@ public class FragmentProductosDeLista extends Fragment {
     }
 
     private void listViewListener(){
+
+    }
+
+    private class ProductosDeListaAdapter extends BaseAdapter{
+
+        private Context context;
+        private List<ProductoPorLista> productoPorListas;
+        private LayoutInflater inflater;
+
+        public ProductosDeListaAdapter(Context context, List<ProductoPorLista> productoPorListas){
+            this.context = context;
+            this.productoPorListas = productoPorListas;
+        }
+
+
+        @Override
+        public int getCount() {
+            return productoPorListas.size();
+        }
+
+        @Override
+        public ProductoPorLista getItem(int i) {
+            return productoPorListas.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(final int i, View view, ViewGroup viewGroup) {
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            ViewHolderProductoDeLista holder;
+
+            if (view == null){
+                holder = new ViewHolderProductoDeLista();
+                view = inflater.inflate(R.layout.list_item_producto_de_lista, null);
+                holder.producto = (TextView) view.findViewById(R.id.tvProductoDeLista);
+                holder.checkBox = (CheckBox) view.findViewById(R.id.checkBoxProducto);
+                view.setTag(holder);
+            }else{
+                holder = (ViewHolderProductoDeLista) view.getTag();
+            }
+
+            ProductoPorLista prod = productoPorListas.get(i);
+            holder.producto.setText(prod.toString());
+
+            return view;
+        }
+    }
+
+    private class ViewHolderProductoDeLista{
+        TextView producto;
+        CheckBox checkBox;
 
     }
 }

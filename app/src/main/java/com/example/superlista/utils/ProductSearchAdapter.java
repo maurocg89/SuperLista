@@ -2,6 +2,7 @@ package com.example.superlista.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,9 +63,10 @@ public class ProductSearchAdapter extends BaseAdapter{
         Producto prod = data.get(position);
         holder.nombreProducto.setText(prod.getNombre());
         holder.marcaProducto.setText(prod.getMarca());
-        //if (prod.getImagen() != null){
-          //  holder.imagenProducto = prod.getImagen();
-        //}
+        // TODO: Acá se le asigna la imagen al producto
+        if(prod.getImagen() != null) {
+            holder.imagenProducto.setImageURI(Uri.parse(prod.getImagen()));
+        }
         return convertView;
     }
 
