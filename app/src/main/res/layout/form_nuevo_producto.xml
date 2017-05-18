@@ -60,6 +60,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
                 android:text="@string/precio"
+
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -70,7 +71,8 @@
                 android:layout_gravity="center_vertical"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:textSize="17dp" />
+                android:hint="@string/valor_precio"
+                android:textSize="17sp" />
 
             <ImageView
                 android:id="@+id/imageViewFotoProd"

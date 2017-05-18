@@ -60,14 +60,14 @@ public class FragmentSupers extends Fragment {
             if(Objects.equals(supermercado.getNombre(), "La Gallega")){
                 arrayItems.add(new Supermercado(supermercado.getNombre() , "Sucursal: " + supermercado.getSucursal() , R.mipmap.logo_la_gallega));
 
-            }else if(Objects.equals(supermercado.getNombre(), "Cotto")){
+            }else if(Objects.equals(supermercado.getNombre(), "Coto")){
                 arrayItems.add(new Supermercado(supermercado.getNombre() , "Sucursal: " + supermercado.getSucursal() , R.mipmap.logo_coto));
 
             }else if(Objects.equals(supermercado.getNombre(), "Carrefour")){
                 arrayItems.add(new Supermercado(supermercado.getNombre() , "Sucursal: " + supermercado.getSucursal() , R.mipmap.logo_carrefour));
 
             }else{
-                arrayItems.add(new Supermercado(supermercado.getNombre() , "Sucursal: " + supermercado.getSucursal() , R.drawable.ic_store_black_24dp));
+                arrayItems.add(new Supermercado(supermercado.getNombre() , "Sucursal: " , R.drawable.ic_store_black_24dp));
             }
 
         }

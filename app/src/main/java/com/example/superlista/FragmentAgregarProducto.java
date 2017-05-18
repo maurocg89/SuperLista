@@ -21,6 +21,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ScrollingView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 import static android.Manifest.permission.CAMERA;
@@ -55,6 +57,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class FragmentAgregarProducto extends Fragment implements View.OnClickListener {
 
+    Fragment fragmento = null;
 
     private List<Categoria> listCategorias;
     private List<Producto> listProductos;
@@ -77,13 +80,10 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
     private final int PHOTO_CODE = 200; // sirve para cuando mandemos a llamar la aplicacion de fotos
     private final int SELECT_PICTURE = 300;
 
-
-
-
-
-    private String cadCategoria, cadMarca, cadSuper, mPath, direccion_imagen;    //mPath lo voy a usar para saber en que ruta se guardo la imagen
+    private String cadCategoria, cadMarca, cadSuper, mPath, direccion_imagen, nom, aux;    //mPath lo voy a usar para saber en que ruta se guardo la imagen
     private Categoria categoria;
     private Supermercado supermercado;
+    private boolean validacionProd = true;
 
     private LinearLayout linearLayoutProd;
     private EditText nomProd, valorPrecio;
@@ -98,8 +98,6 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         View view = inflater.inflate(R.layout.form_nuevo_producto, container, false);
 
         iniciarIU(view);  //metodo que relaciona la parte logica con la grafica
-
-
 
         return view;
     }
@@ -179,10 +177,23 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
         if (v == agregarProducto){
 
-            add_Producto();
-            Toast.makeText(getContext(), "Producto agregado", Toast.LENGTH_SHORT).show();
-            limpiarCampos();
 
+            nom = nomProd.getText().toString();
+            aux= nom.trim();
+
+            if (aux.length() > 0){ //verificacion para que el campo nombre no sea vacio
+
+                check_exist_addProducto(
+                        nom,
+                        cadMarca,
+                        Double.parseDouble(valorPrecio.getText().toString()),
+                        categoria,
+                        supermercado,
+                        direccion_imagen
+                );
+            }else{
+                Toast.makeText(getContext(), "El Nombre no puede estar vacio", Toast.LENGTH_SHORT).show();
+            }
 
 
         }else if(v == imageProd){
@@ -190,20 +201,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
             mostrarOpciones();
 
 
-            /*
-            Intent intent = null;
 
-            if(Build.VERSION.SDK_INT < 19){ // verificacion para version de android 4.3 a anterior
-                intent = new Intent();
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-
-            }else{
-                intent =  new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-            }
-
-            intent.setType("image/*");
-            startActivityForResult(intent, request_code);*/
         }
     }
 
@@ -224,7 +222,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
                     //ACTION_PICK tiene la opcion de abrir un archivo, y external content uri lanza el volumen de almacenamiento del dispositivo
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*"); //aca le decimos que muestre todos los archivos de tipo imagen
-                    startActivityForResult(intent.createChooser(intent, "Selecciona app de imágen"), SELECT_PICTURE);
+                    startActivityForResult(intent.createChooser(intent, "Selecciona app de imágen:"), SELECT_PICTURE);
                 }else{
                     dialog.dismiss(); // esta perteneceria a la opcion de cancelar
                 }
@@ -319,22 +317,57 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         }
     }
 
-    public void add_Producto(){
 
-        Producto nuevoProd = new Producto(
-                nomProd.getText().toString(),
-                cadMarca,
-                Double.parseDouble(valorPrecio.getText().toString()),
-                categoria,
-                supermercado,
-                direccion_imagen
-                //String.valueOf(imageProd.getTag())
-        );
-        SuperListaDbManager.getInstance().addProducto(nuevoProd);
 
-    }
+    //<editor-fold desc="Verificaciones y agregar Producto">
+    public void check_exist_addProducto(String nombre, String marca, double precio, Categoria categoria, Supermercado supermercado, String imagen){
 
-    public void limpiarCampos(){
+       listProductos =  SuperListaDbManager.getInstance().getAllProductos();
+
+       for (Producto listaProd: listProductos) {
+
+           if(Objects.equals(listaProd.getNombre(), nombre)
+                   && Objects.equals(listaProd.getMarca(), marca)
+                   && Objects.equals(listaProd.getPrecio(), precio)
+                   && Objects.equals(listaProd.getCategoria(), categoria)
+                   && Objects.equals(listaProd.getSupermercado(), supermercado)){
+
+               final CharSequence[] opcion = {"OK"};
+               final AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
+               builder2.setTitle("Ya hay registrado un producto igual");
+               builder2.setItems(opcion, new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+                       if (opcion[which] == "OK") {
+                           dialog.dismiss();
+                       }
+                   }
+               });
+               builder2.show();
+               validacionProd = true;
+               break;
+           }else{
+               validacionProd = false;
+           }
+       }
+
+       if (!validacionProd) {
+
+           Producto nuevoProd = new Producto(nombre, marca, precio, categoria, supermercado, imagen);
+           SuperListaDbManager.getInstance().addProducto(nuevoProd);
+           Toast.makeText(getContext(), "Producto Agregado", Toast.LENGTH_SHORT).show();
+
+           //TODO: no me gusta como esta implementado limpiarCampos aca
+           limpiarCampos();
+           llamarFragmentProd();
+
+       }
+
+   }
+    //</editor-fold>
+
+
+    public void limpiarCampos(){//metodo que setea todos los campos nuevamente por default
 
         nomProd.getText().clear();
         valorPrecio.getText().clear();
@@ -345,29 +378,16 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     }
 
+    public void llamarFragmentProd(){
+
+        fragmento = new FragmentProductos();
+        FragmentTransaction ft =  getFragmentManager().beginTransaction();
+        ft.replace(R.id.contenedor, fragmento);
+        ft.commit();
+    }
 
 
-
-
-/*
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if(resultCode == RESULT_OK && requestCode == request_code){
-
-            imageProd.setImageURI(data.getData());
-            //Utilizamos el atributo TAG para almacenar la uri al acrchivo seleccionado
-            imageProd.setTag(data.getData());
-        }
-
-    }*/
-
-
-
-
-
-
-
+    //<editor-fold desc="Spinner Categoria">
     private void setSpinnerCategoria(){
 
         nombresCategorias = new ArrayList<String>();
@@ -390,12 +410,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
                 cadCategoria = String.valueOf(sCategoria.getSelectedItem());
                 categoria = SuperListaDbManager.getInstance().getCategoriaByNombre(cadCategoria);
-            /*    for (Categoria listaCat: listCategorias) {
-                    if (listaCat.getNombre().equals(cadCategoria)){
-                        numberIDcat =  listaCat.getId_categoria();
-                        break;
-                    }
-                }*/
+
             }
 
             @Override
@@ -405,9 +420,9 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         });
 
     }
+    //</editor-fold>
 
-
-
+    //<editor-fold desc="Spinner Marca">
     private void setSpinnerMarca(){
 
         nombresMarcas = new ArrayList<String>();
@@ -441,14 +456,16 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
 
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Acomodar ArrayList">
     private void acomodarArrayList (ArrayList<String> arrayList){
 
         //elimino elementos duplicados del ArrayList
         hs = new HashSet<String>();
         hs.addAll(arrayList);
         arrayList.clear();
-        arrayList.add(0, "-No Especificado-");
+        arrayList.add(0, "-Otro-");
         arrayList.addAll(hs);
 
         //ordeno alfabeticamente los elementos del ArrayList
@@ -462,7 +479,9 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
             }
         }
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Spinner Supermercado">
     private void setSpinnerSupermercado(){
 
         nombresSupers = new ArrayList<String>();
@@ -500,6 +519,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         });
 
     }
+    //</editor-fold>
 
 
 }

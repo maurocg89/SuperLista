@@ -50,6 +50,7 @@
     <string name="supermercado">Supermercado:</string>
     <string name="precio">Precio:</string>
     <string name="marca">Marca:</string>
+    <string name="valor_precio">0</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
