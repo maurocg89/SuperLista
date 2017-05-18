@@ -116,6 +116,7 @@ public class SuperListaDbManager {
         return productos;
     }
 
+    // TODO: No setea los ids de los productos solo la marca y el nombre
     public List<Producto> getAllProductosByNameDistinct(){
         QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
         queryBuilder.distinct().selectColumns(Producto.COLUMNA_MARCA, Producto.COLUMNA_NOMBRE);
@@ -140,16 +141,18 @@ public class SuperListaDbManager {
         return producto;
     }
 
-    public List<Producto> getProductosByNombre(String nombre, String marca){
+    public Producto getProductoByNombre(String nombre, String marca){
         QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
-        List<Producto> productos = null;
+        //List<Producto> productos = null;
+        Producto producto = null;
         try {
             queryBuilder.where().eq(Producto.COLUMNA_NOMBRE, nombre).and().eq(Producto.COLUMNA_MARCA, marca);
-            productos = queryBuilder.query();
+            producto = queryBuilder.queryForFirst();
+            //productos = queryBuilder.query();
         }catch (SQLException e){
             e.printStackTrace();
         }
-        return productos;
+        return producto;
     }
 
 
@@ -183,7 +186,15 @@ public class SuperListaDbManager {
             e.printStackTrace();
         }
     }
-
+/*
+    public void deleteProductoByNombre(String nombre, String marca){
+        try {
+            getHelper().getProductoDao().deleteBuilder();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+*/
     public void deleteProductoById(int id_producto){
         try {
             getHelper().getProductoDao().deleteById(id_producto);
@@ -192,10 +203,6 @@ public class SuperListaDbManager {
         }
     }
 
-    public void deleteProductos(ArrayList<Producto>productos)
-    {
-
-    }
 
     public void updateProducto(int id_producto, String nombre_nuevo, String marca_nueva, double precio_nuevo, Categoria categoria_nueva, Supermercado supermercado_nuevo){
         try {
@@ -396,12 +403,22 @@ public class SuperListaDbManager {
         }
     }
 
-    public void deleteProductoLista(int id_producto_lista){
+    public void deleteProductoDeLista(int id_producto_lista){
         try {
             getHelper().getProductoPorListaDao().deleteById(id_producto_lista);
         }catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+    public void deleteProductosDeLista(ArrayList<ProductoPorLista>productoPorListas){
+        try{
+            getHelper().getProductoPorListaDao().delete(productoPorListas);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+
     }
 
     // Borra todos los productos de una lista

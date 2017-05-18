@@ -62,7 +62,8 @@
                 android:adjustViewBounds="false"
                 app:backgroundTint="@android:color/holo_blue_light"
                 app:elevation="0dp"
-                app:srcCompat="@mipmap/icono_add" />
+                app:srcCompat="@mipmap/icono_add"
+                />
 
         </android.support.design.widget.CoordinatorLayout>
 

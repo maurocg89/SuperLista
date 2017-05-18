@@ -21,7 +21,8 @@
             <ListView
                 android:id="@+id/lvProductosDeLista"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:choiceMode="multipleChoice"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/boton_de_accion_productos"

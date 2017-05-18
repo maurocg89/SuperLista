@@ -8,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "producto_por_lista")
 public class ProductoPorLista implements Parcelable {
-
+    // TODO: Cambiar tipo de dato de columna cantidad a double
     // Nombre de columnas de la tabla en la base de datos
     public static final String _ID = "id_producto_lista";
     public static final String COLUMNA_PRODUCTO_FKEY = "id_producto";
@@ -73,11 +73,28 @@ public class ProductoPorLista implements Parcelable {
 
     //</editor-fold>
 
-
+    //<editor-fold desc="toString equals y hashCode">
     @Override
     public String toString() {
         return producto + " x"+cantidad;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProductoPorLista that = (ProductoPorLista) o;
+
+        return id_producto_lista == that.id_producto_lista;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id_producto_lista;
+    }
+    //</editor-fold>
 
     //<editor-fold desc="Parcelable">
     public static final Creator<ProductoPorLista> CREATOR = new Creator<ProductoPorLista>() {

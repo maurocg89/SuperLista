@@ -3,9 +3,14 @@ package com.example.superlista;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -36,6 +41,7 @@ public class FragmentProductosDeLista extends Fragment {
     //private ArrayAdapter<ProductoPorLista> myAdapter;
     private ProductosDeListaAdapter myAdapter;
 
+    private String nombreLista;
     private int id_lista;
     private ImageView btnCoto;
     private ImageView btnLaGallega;
@@ -47,11 +53,14 @@ public class FragmentProductosDeLista extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_productos_de_lista, container, false);
+
+        llamarFloatingButtonAction(view);
         listView = (ListView) view.findViewById(R.id.lvProductosDeLista);
         btnCoto = (ImageView) view.findViewById(R.id.imgBtnCoto);
         btnCarrefour = (ImageView) view.findViewById(R.id.imgBtnCarrefour);
         btnLaGallega = (ImageView) view.findViewById(R.id.imgBtnLaGallega);
 
+        setHasOptionsMenu(true);
         setData();
         imageViewListeners();
         return view;
@@ -60,10 +69,42 @@ public class FragmentProductosDeLista extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Lista lista = SuperListaDbManager.getInstance().getListaById(id_lista);
-        getActivity().setTitle("Productos de "+lista.getNombre());
+        nombreLista = SuperListaDbManager.getInstance().getListaById(id_lista).getNombre();
+
+        getActivity().setTitle("Productos de "+nombreLista);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_productos, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_eliminar_producto: eliminarProducto(item); return true;
+            default: return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void eliminarProducto(MenuItem item){
+        SparseBooleanArray array = listView.getCheckedItemPositions();
+        ArrayList<ProductoPorLista> seleccion = new ArrayList<>();
+        for (int i = 0; i < array.size(); i++){
+            // Posicion del contacto en el adaptador
+            int pos = array.keyAt(i);
+            if(array.valueAt(i)) {
+                seleccion.add(myAdapter.getItem(pos));
+            }
+            SuperListaDbManager.getInstance().deleteProductosDeLista(seleccion);
+            listView.clearChoices();
+
+        }
+    }
+
+    // TODO: Agregar un menu para poder modificar la cantidad cuando solo hay un producto seleccionado
+    
+    
     private void setData(){
         try {
             id_lista = getArguments().getInt(Lista._ID);
@@ -77,6 +118,7 @@ public class FragmentProductosDeLista extends Fragment {
             productosPorLista = SuperListaDbManager.getInstance().getAllProductosListas(id_lista);
            // myAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, productosPorLista);
             myAdapter = new ProductosDeListaAdapter(getActivity(), productosPorLista);
+            myAdapter.notifyDataSetChanged();
             listView.setAdapter(myAdapter);
 
         }
@@ -112,8 +154,6 @@ public class FragmentProductosDeLista extends Fragment {
         btnLaGallega.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             //   Toast.makeText(getContext(), "Total en La Gallega: "+getTotal(Supermercado.ID_LA_GALLEGA), Toast.LENGTH_LONG).show();
-
                 bundle.putString(Supermercado.COLUMNA_NOMBRE,"La Gallega");
                 bundle.putDouble("Total", getTotal(Supermercado.ID_LA_GALLEGA));
                 bundle.putParcelableArrayList("Productos", productosPorSuper);
@@ -130,7 +170,6 @@ public class FragmentProductosDeLista extends Fragment {
         btnCoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             //   Toast.makeText(getContext(), "Total en Coto: "+getTotal(Supermercado.ID_COTO), Toast.LENGTH_LONG).show();
 
                 bundle.putString(Supermercado.COLUMNA_NOMBRE,"Coto");
                 bundle.putDouble("Total", getTotal(Supermercado.ID_COTO));
@@ -148,7 +187,6 @@ public class FragmentProductosDeLista extends Fragment {
         btnCarrefour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Toast.makeText(getContext(), "Total en Carrefour: "+getTotal(Supermercado.ID_CARREFOUR), Toast.LENGTH_LONG).show();
 
                 bundle.putString(Supermercado.COLUMNA_NOMBRE,"Carrefour");
                 bundle.putDouble("Total", getTotal(Supermercado.ID_CARREFOUR));
@@ -163,8 +201,25 @@ public class FragmentProductosDeLista extends Fragment {
         });
     }
 
-    private void listViewListener(){
+    private void llamarFloatingButtonAction(View vista) {
 
+        FloatingActionButton fab = (FloatingActionButton) vista.findViewById(R.id.boton_de_accion_productos);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Bundle bundle = new Bundle();
+                bundle.putInt(Lista._ID, id_lista);
+                FragmentAgregarProductosLista fragmentoNewProd = new FragmentAgregarProductosLista();
+                fragmentoNewProd.setArguments(bundle);
+
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.contenedor, fragmentoNewProd);
+                ft.commit();
+                //Snackbar.make(view, "aca va la accion", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
+        });
     }
 
     private class ProductosDeListaAdapter extends BaseAdapter{
@@ -177,7 +232,6 @@ public class FragmentProductosDeLista extends Fragment {
             this.context = context;
             this.productoPorListas = productoPorListas;
         }
-
 
         @Override
         public int getCount() {

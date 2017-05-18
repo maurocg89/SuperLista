@@ -8,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "producto")
 public class Producto implements Parcelable{
-
+    // TODO: Agregar campo unidad
     // Nombre de columnas de la tabla en la base de datos
     public static final String _ID = "id_producto";
     public static final String COLUMNA_SUPER_FKEY = "id_super";
@@ -43,7 +43,6 @@ public class Producto implements Parcelable{
     public Producto(){}
 
     public Producto(String nombre, String marca, double precio, Categoria categoria, Supermercado supermercado, String imagen){
-
         this.nombre = nombre;
         this.marca = marca;
         this.precio = precio;
@@ -110,7 +109,6 @@ public class Producto implements Parcelable{
     }
 
     //</editor-fold>
-
 
     //<editor-fold desc="Equals y HashCode">
     @Override

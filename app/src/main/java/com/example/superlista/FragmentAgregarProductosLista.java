@@ -1,11 +1,12 @@
 package com.example.superlista;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +15,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
@@ -22,49 +24,48 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView;
 
-import com.example.superlista.model.Categoria;
-import com.example.superlista.utils.ProductListAdapter;
 import com.example.superlista.data.SuperListaDbManager;
+import com.example.superlista.model.Categoria;
+import com.example.superlista.model.Lista;
 import com.example.superlista.model.Producto;
+import com.example.superlista.model.ProductoPorLista;
+import com.example.superlista.utils.ProductListAdapter;
 import com.example.superlista.utils.ProductSearchAdapter;
 import com.example.superlista.utils.ToolBarActionModeCallback;
-
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 
-public class FragmentProductos extends Fragment implements TextView.OnEditorActionListener {
+public class FragmentAgregarProductosLista extends Fragment implements TextView.OnEditorActionListener {
 
     private ListView listView1;
 
-    private static ActionMode mActionMode;
     private List<Producto> productos;
     private ProductSearchAdapter searchAdapter;
     private ProductListAdapter productListAdapter;
     private ImageView btnSpeak;
     private EditText etSearch;
-    private int cod_categoria = 0;
     private final int REQ_CODE_SPEECH_OUTPUT = 143;
     private boolean isSearching;
-
-    Fragment fragmentoNewProd = null;
+    private int id_lista;
+    private Lista lista;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_productos, container, false);
-
-        llamarFloatingButtonAction(view);
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.boton_de_accion_productos);
+        fab.setVisibility(View.INVISIBLE);
         listView1 = (ListView) view.findViewById(R.id.lvProductos);
         btnSpeak = (ImageView) view.findViewById(R.id.imgBtnSpeak);
         etSearch = (EditText) view.findViewById(R.id.etBuscar);
@@ -81,32 +82,25 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle(R.string.item_productos);
-        if (cod_categoria != 0){
-            Categoria categoria = SuperListaDbManager.getInstance().getCategoriaById(cod_categoria);
-            getActivity().setTitle("Productos de " + categoria.getNombre());
+        String nombreLista = null;
+        try {
+            id_lista = getArguments().getInt(Lista._ID);
+            lista = SuperListaDbManager.getInstance().getListaById(id_lista);
+            nombreLista = lista.getNombre();
+        } catch (Exception e){
+            e.printStackTrace();
         }
+        getActivity().setTitle("Agregar producto a: "+nombreLista);
     }
 
     //<editor-fold desc="Seteo de componentes">
     private void setData(){
-        try{
-            cod_categoria = getArguments().getInt(Categoria._ID, 0);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        if (cod_categoria != 0) {
-            productos = SuperListaDbManager.getInstance().getProductoByCategoriaDistinct(cod_categoria);
-        }
-        else{
-            productos = SuperListaDbManager.getInstance().getAllProductosByNameDistinct();
-        }
 
+        productos = SuperListaDbManager.getInstance().getAllProductosByNameDistinct();
         productListAdapter = new ProductListAdapter(getActivity(), productos);
         searchAdapter = new ProductSearchAdapter(getActivity());
 
         for(Producto producto : productos){
-//            System.out.println(producto.getId_producto());
             searchAdapter.addItem(producto);
         }
 
@@ -180,87 +174,62 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
         listView1.setAdapter(searchAdapter);
     }
 
-    private void llamarFloatingButtonAction(View vista) {
-
-        FloatingActionButton fab = (FloatingActionButton) vista.findViewById(R.id.boton_de_accion_productos);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                fragmentoNewProd = new FragmentAgregarProducto();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.contenedor, fragmentoNewProd);
-                ft.commit();
-                //Snackbar.make(view, "aca va la accion", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            }
-        });
-    }
-
-    //<editor-fold desc="Android Contextual Action Mode">
     private void implementsListViewClickListeners(){
         listView1.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                // Si se esta buscando un producto se desactiva el actionmode
-                if (isSearching){return;}
-                if (mActionMode != null){
-                    onListItemSelect(position);
+                if (isSearching){
+                    Producto prod = searchAdapter.getItem(position);
+                    elegirCantidadProducto(prod);
+                } else {
+                    //long idProd = productListAdapter.getItemId(position);
+                    Producto prod = productListAdapter.getItem(position);
+                    elegirCantidadProducto(prod);
                 }
             }
         });
 
-        listView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-               if(isSearching){return false;}
-                onListItemSelect(position);
-                return true;
+    }
 
+    private void elegirCantidadProducto(final Producto producto){
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        final EditText cantidad = new EditText(getContext());
+        //cantidad.setLines(1);
+        //cantidad.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        cantidad.setInputType(InputType.TYPE_CLASS_NUMBER);
+        builder.setMessage("Cantidad en KG");//producto.getUnidad()
+        builder.setTitle("Elije la cantidad");
+        builder.setView(cantidad);
+        builder.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try{
+                    agregarProductoALista(producto, Integer.parseInt(cantidad.getText().toString()));
+                }catch (Exception e){e.printStackTrace();}
+                Toast.makeText(getContext(), "Se ha agregado: "+producto, Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+            }
+
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
             }
         });
-    }
 
-    private void onListItemSelect(int position){
-        productListAdapter.toggleSelection(position);
-        boolean hasCheckedItems = productListAdapter.getSelectedCount() > 0; // Se fija si hay algun item seleccionado
-        if (hasCheckedItems && mActionMode == null){
-            mActionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(new ToolBarActionModeCallback(getActivity(), productListAdapter, productos));
-        } else if (!hasCheckedItems && mActionMode != null){
-            // no hay ningun item seleccionado, termino el action mode
-            mActionMode.finish();
-            setNullToActionMode();
-
-        }
-        // Pongo la cantidad de items seleccionados
-        if (mActionMode != null){
-            mActionMode.setTitle(String.valueOf(productListAdapter.getSelectedCount()) + " seleccionado(s)");
-
-        }
+        builder.show();
 
     }
 
-    // Seteo en null el action mode despues de usarlo
-    public void setNullToActionMode(){
-        if (mActionMode != null){
-            mActionMode = null;
-        }
-    }
+    private void agregarProductoALista(Producto producto, int cantidad){
+        Producto prod = SuperListaDbManager.getInstance().getProductoByNombre(producto.getNombre(), producto.getMarca());
+        ProductoPorLista prodLista = new ProductoPorLista(prod, lista, cantidad);
+        SuperListaDbManager.getInstance().addProductoLista(prodLista);
 
-    // TODO: Falta implementacion para borrar productos de la base de datos
-    public void deleteRows(){
-        SparseBooleanArray seleceted = productListAdapter.getSelectedIds();
-        for (int i = (seleceted.size() - 1); i >= 0; i--){
-            if (seleceted.valueAt(i)){
-                productos.remove(seleceted.keyAt(i));
-                productListAdapter.notifyDataSetChanged();
-            }
-        }
-
-        Toast.makeText(getActivity(), seleceted.size() + " productos eliminados", Toast.LENGTH_LONG).show();
-        mActionMode.finish();
     }
-    //</editor-fold>
 
     //<editor-fold desc="Voice to text">
     private void btnOpenMic(){
