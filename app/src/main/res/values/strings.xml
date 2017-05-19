@@ -41,10 +41,17 @@
     <string name="boton_env_comentario">Enviar Comentario</string>
 
     <!--STRINGS PARA EL xml form_agregar_lista -->
-    <string name="nueva_lista">Nueva lista</string>
-    <string name="nombre">Nombre</string>
+    <string name="nueva_lista">Nueva Lista</string>
+    <string name="nombre">Nombre:</string>
     <string name="nombre_lista">escribe aqui el nombre</string>
     <string name="agregar">AGREGAR</string>
+
+    <!--STRINGS PARA EL xml form_agregar_categoria -->
+    <string name="nueva_categoria">Nueva Categoria</string>
+    <string name="nombre_categoria">escribe el nombre de la Categoria</string>
+    <string name="descr_categoria">Descripción:</string>
+    <string name="text_descr_categoria">escribe una descripción básica</string>
+
 
     <!--STRINGS PARA EL xml form_nuevo_producto -->
     <string name="nueva_producto">Nuevo Producto</string>
@@ -53,6 +60,7 @@
     <string name="precio">Precio:</string>
     <string name="marca">Marca:</string>
     <string name="valor_precio">0</string>
+    <string name="unidad">Unidad:</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

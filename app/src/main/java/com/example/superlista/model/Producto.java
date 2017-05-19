@@ -17,6 +17,7 @@ public class Producto implements Parcelable{
     public static final String COLUMNA_PRECIO = "precio";
     public static final String COLUMNA_CATEGORIA_FKEY = "id_categoria";
     public static final String COLUMNA_IMAGEN_PROD = "imagen_producto";
+    public static final String COLUMNA_UNIDAD_PROD = "unidad";
 
     @DatabaseField(generatedId = true, columnName = _ID)
     private int id_producto;
@@ -40,15 +41,19 @@ public class Producto implements Parcelable{
     @DatabaseField(columnName = COLUMNA_IMAGEN_PROD)
     private String imagen;
 
+    @DatabaseField(columnName = COLUMNA_UNIDAD_PROD)
+    private String unidad;
+
     public Producto(){}
 
-    public Producto(String nombre, String marca, double precio, Categoria categoria, Supermercado supermercado, String imagen){
+    public Producto(String nombre, String marca, double precio, Categoria categoria, Supermercado supermercado, String imagen, String unidad){
         this.nombre = nombre;
         this.marca = marca;
         this.precio = precio;
         this.categoria = categoria;
         this.supermercado = supermercado;
         this.imagen = imagen;
+        this.unidad = unidad;
     }
 
     //<editor-fold desc = "Getters and Setters">
@@ -108,9 +113,18 @@ public class Producto implements Parcelable{
         this.imagen = imagen;
     }
 
+    public String getUnidad() {
+        return unidad;
+    }
+
+    public void setUnidad(String unidad) {
+        this.unidad = unidad;
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="Equals y HashCode">
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -121,9 +135,14 @@ public class Producto implements Parcelable{
         if (id_producto != producto.id_producto) return false;
         if (Double.compare(producto.precio, precio) != 0) return false;
         if (!nombre.equals(producto.nombre)) return false;
-        if (!marca.equals(producto.marca)) return false;
-        if (!categoria.equals(producto.categoria)) return false;
-        return supermercado.equals(producto.supermercado);
+        if (marca != null ? !marca.equals(producto.marca) : producto.marca != null) return false;
+        if (categoria != null ? !categoria.equals(producto.categoria) : producto.categoria != null)
+            return false;
+        if (supermercado != null ? !supermercado.equals(producto.supermercado) : producto.supermercado != null)
+            return false;
+        if (imagen != null ? !imagen.equals(producto.imagen) : producto.imagen != null)
+            return false;
+        return unidad.equals(producto.unidad);
 
     }
 
@@ -133,13 +152,16 @@ public class Producto implements Parcelable{
         long temp;
         result = id_producto;
         result = 31 * result + nombre.hashCode();
-        result = 31 * result + marca.hashCode();
+        result = 31 * result + (marca != null ? marca.hashCode() : 0);
         temp = Double.doubleToLongBits(precio);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + categoria.hashCode();
-        result = 31 * result + supermercado.hashCode();
+        result = 31 * result + (categoria != null ? categoria.hashCode() : 0);
+        result = 31 * result + (supermercado != null ? supermercado.hashCode() : 0);
+        result = 31 * result + (imagen != null ? imagen.hashCode() : 0);
+        result = 31 * result + unidad.hashCode();
         return result;
     }
+
     //</editor-fold>
 
     @Override
@@ -169,6 +191,7 @@ public class Producto implements Parcelable{
         this.categoria = in.readParcelable(Categoria.class.getClassLoader());
         this.supermercado = in.readParcelable(Supermercado.class.getClassLoader());
         this.imagen = in.readString();
+        this.unidad = in.readString();
     }
 
     @Override
@@ -185,6 +208,7 @@ public class Producto implements Parcelable{
         parcel.writeParcelable(categoria, i);
         parcel.writeParcelable(supermercado, i);
         parcel.writeString(imagen);
+        parcel.writeString(unidad);
     }
     //</editor-fold>
 }

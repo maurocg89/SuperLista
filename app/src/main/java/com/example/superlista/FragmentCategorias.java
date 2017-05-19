@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
@@ -37,6 +38,8 @@ import java.util.Locale;
 
 public class FragmentCategorias extends Fragment implements TextView.OnEditorActionListener {
 
+    Fragment fragmento = null;
+
     private ListView listView;
     private List<Categoria> categorias;
     private ArrayAdapter<Categoria> myAdapter;
@@ -51,6 +54,8 @@ public class FragmentCategorias extends Fragment implements TextView.OnEditorAct
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categorias, container, false);
+
+        llamarFloatingButtonAction(view);
 
         listView = (ListView) view.findViewById(R.id.lvCategorias);
         btnSpeak = (ImageView) view.findViewById(R.id.imgBtnSpeakCat);
@@ -212,4 +217,31 @@ public class FragmentCategorias extends Fragment implements TextView.OnEditorAct
     }
     //</editor-fold>
 
+
+
+
+    private void llamarFloatingButtonAction(View vista){
+
+        FloatingActionButton fab = (FloatingActionButton) vista.findViewById(R.id.boton_de_accion_categorias);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                fragmento = new FragmentAgregarCategoria();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.contenedor, fragmento);
+                ft.commit();
+
+            }
+        });
+
+
+    }
+
+
+
+
+
 }
+
+

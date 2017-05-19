@@ -3,7 +3,9 @@ package com.example.superlista;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,6 +18,7 @@ import android.os.Bundle;
 
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -24,6 +27,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ScrollingView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +38,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -48,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
@@ -55,16 +61,18 @@ import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 
-public class FragmentAgregarProducto extends Fragment implements View.OnClickListener {
+public class FragmentAgregarProducto extends Fragment implements View.OnClickListener, TextView.OnEditorActionListener{
 
     Fragment fragmento = null;
 
     private List<Categoria> listCategorias;
     private List<Producto> listProductos;
+    private List<Producto> listProductos2;
     private List<Supermercado> listSupers;
 
-    private ArrayList<String> nombresCategorias, nombresMarcas, nombresSupers;
+    private ArrayList<String> nombresCategorias, nombresMarcas, nombresSupers, nombresUnidades;
 
+    private ArrayAdapter<String> adapterUnidad;
     private ArrayAdapter adapterCategoria;
     private ArrayAdapter<String> adapterMarca;
     private ArrayAdapter<String> adapterSuper ;
@@ -74,11 +82,13 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
     private static String APP_DIRECTORY = "SuperListaApp/";
     private static String MEDIA_DIRECTORY = APP_DIRECTORY + "PictureApp";
 
+    private final int REQ_CODE_SPEECH_OUTPUT = 143;
+
     private final int MY_PERMISSIONS = 100; // constante que sirve para los permisos
     private final int PHOTO_CODE = 200; // sirve para cuando mandemos a llamar la aplicacion de fotos
     private final int SELECT_PICTURE = 300;
 
-    private String cadCategoria, cadMarca, cadSuper, mPath, direccion_imagen, nom, aux;    //mPath lo voy a usar para saber en que ruta se guardo la imagen
+    private String cadCategoria, cadUnidad, cadMarca, cadSuper, mPath, direccion_imagen, nom, aux;    //mPath lo voy a usar para saber en que ruta se guardo la imagen
     private Categoria categoria;
     private Supermercado supermercado;
     private boolean validacionProd = true;
@@ -86,8 +96,8 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
     private LinearLayout linearLayoutProd;
     private EditText nomProd, valorPrecio;
     private Button agregarProducto;
-    private Spinner sCategoria, sMarca, sSupermercado;
-    private ImageView imageProd;
+    private Spinner sCategoria, sMarca, sSupermercado, sUnidad;
+    private ImageView imageProd, botonMicrofono;
 
 
 
@@ -113,6 +123,9 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
         linearLayoutProd = (LinearLayout) vista.findViewById(R.id.linearProducto);
 
+        botonMicrofono = (ImageView) vista.findViewById(R.id.imageViewMicrofono);
+        botonMicrofono.setOnClickListener(this);
+
         nomProd =  (EditText) vista.findViewById(R.id.editTextNombreProd);
         valorPrecio =  (EditText) vista.findViewById(R.id.editTextValorPrecio);
 
@@ -131,10 +144,12 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         agregarProducto = (Button) vista.findViewById(R.id.buttonAgregarProd);
         agregarProducto.setOnClickListener(this);
 
+        sUnidad = (Spinner) vista.findViewById(R.id.spinnerUnidad);
         sCategoria = (Spinner) vista.findViewById(R.id.spinnerCategoria);
         sMarca = (Spinner) vista.findViewById(R.id.spinnerMarca);
         sSupermercado = (Spinner) vista.findViewById(R.id.spinnerSuper);
 
+        setSpinnerUnidad();
         setSpinnerCategoria();
         setSpinnerMarca();
         setSpinnerSupermercado();
@@ -186,7 +201,8 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
                         Double.parseDouble(valorPrecio.getText().toString()),
                         categoria,
                         supermercado,
-                        direccion_imagen
+                        direccion_imagen,
+                        cadUnidad
                 );
             }else{
                 Toast.makeText(getContext(), "El Nombre no puede estar vacio", Toast.LENGTH_SHORT).show();
@@ -195,6 +211,9 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         }else if(v == imageProd){
 
             mostrarOpciones();
+
+        }else if(v == botonMicrofono){
+            btnOpenMic();
         }
     }
 
@@ -254,7 +273,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
 
     @Override
-    //con el metodo onActivityResult manejamos las respuestas de la camara, galeria etc
+    //con el metodo onActivityResult manejamos las respuestas de la camara, galeria, speaker etc
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -292,6 +311,13 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
                     break;
 
+                case REQ_CODE_SPEECH_OUTPUT:
+                    if (data != null){
+                        ArrayList<String> voiceInText = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                        nomProd.setText(voiceInText.get(0));
+                    }
+                    break;
+
             }
         }
 
@@ -313,7 +339,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
 
     //<editor-fold desc="Verificaciones y agregar Producto">
-    public void check_exist_addProducto(String nombre, String marca, double precio, Categoria categoria, Supermercado supermercado, String imagen){
+    public void check_exist_addProducto(String nombre, String marca, double precio, Categoria categoria, Supermercado supermercado, String imagen, String unidad){
 
        listProductos =  SuperListaDbManager.getInstance().getAllProductos();
 
@@ -323,7 +349,8 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
                    && Objects.equals(listaProd.getMarca(), marca)
                    && Objects.equals(listaProd.getPrecio(), precio)
                    && Objects.equals(listaProd.getCategoria(), categoria)
-                   && Objects.equals(listaProd.getSupermercado(), supermercado)){
+                   && Objects.equals(listaProd.getSupermercado(), supermercado)
+                   && Objects.equals(listaProd.getUnidad(), unidad)){
 
                final CharSequence[] opcion = {"OK"};
                final AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
@@ -346,12 +373,12 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
        if (!validacionProd) {
 
-           Producto nuevoProd = new Producto(nombre, marca, precio, categoria, supermercado, imagen);
+           Producto nuevoProd = new Producto(nombre, marca, precio, categoria, supermercado, imagen, unidad);
            SuperListaDbManager.getInstance().addProducto(nuevoProd);
            Toast.makeText(getContext(), "Producto Agregado", Toast.LENGTH_SHORT).show();
 
-           //TODO: no me gusta como esta implementado limpiarCampos aca
-           limpiarCampos();
+           //TODO: no me gusta como esta implementado limpiarCampos aca, hay que ver si limpiamos los campos para que cargue otro o lo mandamos directamente al FagmentProdutos
+           //limpiarCampos();
            llamarFragmentProd();
 
        }
@@ -364,7 +391,8 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
         nomProd.getText().clear();
         valorPrecio.getText().clear();
-        imageProd.setImageResource(R.drawable.ic_local_grocery_store_black_24dp);
+        imageProd.setImageResource(R.drawable.addimage128);
+        setSpinnerUnidad();
         setSpinnerMarca();
         setSpinnerCategoria();
         setSpinnerSupermercado();
@@ -379,6 +407,42 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         ft.commit();
     }
 
+
+    //<editor-fold desc="Spinner Unidad">
+    private void setSpinnerUnidad(){
+
+        nombresUnidades = new ArrayList<String>();
+
+        listProductos2 =  SuperListaDbManager.getInstance().getAllProductos();
+
+        for (Producto listaUnid: listProductos2) {
+
+            nombresUnidades.add(listaUnid.getUnidad());
+        }
+
+        acomodarArrayList(nombresUnidades);
+
+        adapterUnidad = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, nombresUnidades);
+        adapterUnidad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sUnidad.setAdapter(adapterUnidad);
+
+
+        sUnidad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                cadUnidad = String.valueOf(sUnidad.getSelectedItem());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+    }
+    //</editor-fold>
 
     //<editor-fold desc="Spinner Categoria">
     private void setSpinnerCategoria(){
@@ -511,6 +575,27 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
             }
         });
 
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Voice to text">
+    private void btnOpenMic(){
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Hable ahora...");
+
+
+        try{
+            startActivityForResult(intent, REQ_CODE_SPEECH_OUTPUT);
+        } catch (ActivityNotFoundException anfe){
+            anfe.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        return false;
     }
     //</editor-fold>
 

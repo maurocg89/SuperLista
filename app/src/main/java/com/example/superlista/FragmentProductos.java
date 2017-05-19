@@ -191,7 +191,7 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.contenedor, fragmentoNewProd);
                 ft.commit();
-                //Snackbar.make(view, "aca va la accion", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
             }
         });
     }
