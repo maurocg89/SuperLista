@@ -52,10 +52,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="serif"
-                android:paddingLeft="@dimen/margen_derecho_header"
-                android:paddingRight="@dimen/margen_derecho_header"
+                android:layout_marginLeft="@dimen/margen_derecho_header"
+                android:layout_marginStart="@dimen/margen_derecho_header"
                 android:text="@string/text_informacion"
-                android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="italic"
                 tools:targetApi="jelly_bean" />
@@ -66,7 +65,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="serif"
                 android:text="@string/text_ubicacion"
-                android:textAlignment="center"
+                android:layout_marginLeft="@dimen/margen_derecho_header"
+                android:layout_marginStart="@dimen/margen_derecho_header"
                 android:textSize="18sp"
                 tools:targetApi="jelly_bean" />
 
@@ -86,9 +86,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="serif"
-
+                android:layout_marginLeft="@dimen/margen_derecho_header"
+                android:layout_marginStart="@dimen/margen_derecho_header"
                 android:text="@string/text_integrantes"
-                android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="italic"
                 tools:targetApi="jelly_bean" />
@@ -100,7 +100,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/margen_entre_items"
                 android:text="@string/boton_env_comentario"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                />
 
 
 

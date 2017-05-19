@@ -1,11 +1,15 @@
 package com.example.superlista;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,9 +17,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -31,14 +37,12 @@ import com.example.superlista.model.Supermercado;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Agregar relative layout checkable y sumar los totales. Agregar menu para borrar producto
 public class FragmentProductosDeLista extends Fragment {
 
     private ListView listView;
     private List<ProductoPorLista> productosPorLista;
     private ArrayList<ProductoPorLista> productosPorSuper;
     private ArrayList<ProductoPorLista> productosFaltantes;
-    //private ArrayAdapter<ProductoPorLista> myAdapter;
     private ProductosDeListaAdapter myAdapter;
 
     private String nombreLista;
@@ -48,6 +52,7 @@ public class FragmentProductosDeLista extends Fragment {
     private ImageView btnCarrefour;
     private FragmentPrecioListaSuper fragmentListaPorSuper;
 
+    private MenuItem mEditItem;
 
     @Nullable
     @Override
@@ -63,6 +68,7 @@ public class FragmentProductosDeLista extends Fragment {
         setHasOptionsMenu(true);
         setData();
         imageViewListeners();
+        listViewListeners();
         return view;
     }
 
@@ -77,16 +83,20 @@ public class FragmentProductosDeLista extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_productos, menu);
+        mEditItem = menu.findItem(R.id.action_editar_producto);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        System.out.println(item.getItemId());
         switch (item.getItemId()){
             case R.id.action_eliminar_producto: eliminarProducto(item); return true;
+            case R.id.action_editar_producto: modificarCantidadProducto(item); return true;
             default: return super.onOptionsItemSelected(item);
         }
     }
-
+    
     private void eliminarProducto(MenuItem item){
         SparseBooleanArray array = listView.getCheckedItemPositions();
         ArrayList<ProductoPorLista> seleccion = new ArrayList<>();
@@ -96,15 +106,81 @@ public class FragmentProductosDeLista extends Fragment {
             if(array.valueAt(i)) {
                 seleccion.add(myAdapter.getItem(pos));
             }
-            SuperListaDbManager.getInstance().deleteProductosDeLista(seleccion);
-            listView.clearChoices();
-
         }
+            SuperListaDbManager.getInstance().deleteProductosDeLista(seleccion);
+            productosPorLista.removeAll(seleccion);
+            myAdapter.notifyDataSetChanged();
+            listView.clearChoices();
+            mEditItem.setVisible(false);
+
     }
 
-    // TODO: Agregar un menu para poder modificar la cantidad cuando solo hay un producto seleccionado
-    
-    
+    private void modificarCantidadProducto(MenuItem item){
+        SparseBooleanArray array = listView.getCheckedItemPositions();
+        int pos1 = array.keyAt(0);
+        final ProductoPorLista productoPorLista = myAdapter.getItem(pos1);
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        final EditText cantidad = new EditText(getContext());
+        //cantidad.setLines(1);
+        // Sacar comentario cuando se cambie el tipo de dato de cantidad a double
+        //cantidad.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        cantidad.setInputType(InputType.TYPE_CLASS_NUMBER);
+        builder.setMessage("Cantidad en KG");//producto.getUnidad()
+        builder.setTitle("Cambiar cantidad del producto: "+productoPorLista.getProducto());
+        builder.setView(cantidad);
+
+        builder.setPositiveButton("Cambiar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try{
+                    SuperListaDbManager.getInstance().updateCantidadProductoLista(productoPorLista,
+                            Integer.parseInt(cantidad.getText().toString()));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                dialog.dismiss();
+                myAdapter.notifyDataSetChanged();
+                listView.clearChoices();
+                mEditItem.setVisible(false);
+            }
+
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.show();
+
+    }
+
+    private void elegirCantidadProducto(final Producto producto){
+
+
+
+
+
+    }
+
+    private void listViewListeners(){
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                int count = listView.getCheckedItemCount();
+                if (count == 1){
+                    mEditItem.setVisible(true);
+                }
+                else {
+                    mEditItem.setVisible(false);
+                }
+            }
+        });
+    }
+
     private void setData(){
         try {
             id_lista = getArguments().getInt(Lista._ID);
@@ -120,7 +196,6 @@ public class FragmentProductosDeLista extends Fragment {
             myAdapter = new ProductosDeListaAdapter(getActivity(), productosPorLista);
             myAdapter.notifyDataSetChanged();
             listView.setAdapter(myAdapter);
-
         }
     }
 
@@ -227,10 +302,12 @@ public class FragmentProductosDeLista extends Fragment {
         private Context context;
         private List<ProductoPorLista> productoPorListas;
         private LayoutInflater inflater;
+        private SparseBooleanArray mSelectedItemsIds;
 
         public ProductosDeListaAdapter(Context context, List<ProductoPorLista> productoPorListas){
             this.context = context;
             this.productoPorListas = productoPorListas;
+            mSelectedItemsIds = new SparseBooleanArray();
         }
 
         @Override
@@ -268,6 +345,36 @@ public class FragmentProductosDeLista extends Fragment {
 
             return view;
         }
+
+     /*   public void toggleSelection(int position){
+            selectView(position, !mSelectedItemsIds.get(position));
+        }
+
+        // Borra las selecciones
+        public void removeSelection(){
+            mSelectedItemsIds = new SparseBooleanArray();
+            notifyDataSetChanged();
+        }
+
+        // Agrega o borra la posicion seleccionada en el array SparseBoolean
+        public void selectView(int position, boolean value) {
+            if (value){
+                mSelectedItemsIds.put(position, value);
+            } else{
+                mSelectedItemsIds.delete(position);
+            }
+            notifyDataSetChanged();
+        }
+
+        // La cantidad de items seleccionados
+        public int getSelectedCount(){
+            return mSelectedItemsIds.size();
+        }
+
+        // Todos los ids de los items seleccionados
+        public SparseBooleanArray getSelectedIds(){
+            return mSelectedItemsIds;
+        }*/
     }
 
     private class ViewHolderProductoDeLista{

@@ -4,10 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
 
+    <item android:id="@+id/action_editar_producto"
+        android:title="editar"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_editar"
+        android:visible="false"
+        />
+
     <item android:id="@+id/action_eliminar_producto"
         android:title="@string/eliminar_producto"
         app:showAsAction="always"
         android:icon="@drawable/ic_delete"
         />
+
 
 </menu>

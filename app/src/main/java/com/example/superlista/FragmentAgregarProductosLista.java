@@ -196,6 +196,7 @@ public class FragmentAgregarProductosLista extends Fragment implements TextView.
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         final EditText cantidad = new EditText(getContext());
         //cantidad.setLines(1);
+        // Sacar comentario cuando se cambie el tipo de dato de cantidad a double
         //cantidad.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         cantidad.setInputType(InputType.TYPE_CLASS_NUMBER);
         builder.setMessage("Cantidad en KG");//producto.getUnidad()
@@ -205,7 +206,9 @@ public class FragmentAgregarProductosLista extends Fragment implements TextView.
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 try{
-                    agregarProductoALista(producto, Integer.parseInt(cantidad.getText().toString()));
+                    Producto prod = SuperListaDbManager.getInstance().getProductoByNombre(producto.getNombre(), producto.getMarca());
+                    ProductoPorLista prodLista = new ProductoPorLista(prod, lista, Integer.parseInt(cantidad.getText().toString()));
+                    SuperListaDbManager.getInstance().addProductoLista(prodLista);
                 }catch (Exception e){e.printStackTrace();}
                 Toast.makeText(getContext(), "Se ha agregado: "+producto, Toast.LENGTH_LONG).show();
                 dialog.dismiss();
@@ -224,12 +227,6 @@ public class FragmentAgregarProductosLista extends Fragment implements TextView.
 
     }
 
-    private void agregarProductoALista(Producto producto, int cantidad){
-        Producto prod = SuperListaDbManager.getInstance().getProductoByNombre(producto.getNombre(), producto.getMarca());
-        ProductoPorLista prodLista = new ProductoPorLista(prod, lista, cantidad);
-        SuperListaDbManager.getInstance().addProductoLista(prodLista);
-
-    }
 
     //<editor-fold desc="Voice to text">
     private void btnOpenMic(){

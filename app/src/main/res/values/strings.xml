@@ -37,7 +37,7 @@
     </string>
     <string name="text_ubicacion">Rosario-Santa Fe-Argentina</string>
     <string name="text_desarrolladores">Desarrolladores:</string>
-    <string name="text_integrantes">Borda Federico\nGrillo Mauro</string>
+    <string name="text_integrantes">Borda, Federico\nGrillo, Mauro</string>
     <string name="boton_env_comentario">Enviar Comentario</string>
 
     <!--STRINGS PARA EL xml form_agregar_lista -->

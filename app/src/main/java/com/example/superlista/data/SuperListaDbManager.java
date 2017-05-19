@@ -434,12 +434,10 @@ public class SuperListaDbManager {
         }
     }
 
-    // Modifica la cantidad de un producto de una lista
-    public void updateProductoLista(int id_producto_lista, int cantidad_nueva){
+    public void updateCantidadProductoLista(ProductoPorLista prod, int cantidad){
         try {
-            ProductoPorLista productoPorLista = getProductosDeListaById(id_producto_lista);
-            productoPorLista.setCantidad(cantidad_nueva);
-            getHelper().getProductoPorListaDao().update(productoPorLista);
+            prod.setCantidad(cantidad);
+            getHelper().getProductoPorListaDao().update(prod);
         }catch (SQLException e){
             e.printStackTrace();
         }

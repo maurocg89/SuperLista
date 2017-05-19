@@ -30,9 +30,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // TODO: Coto va con una sola t (cambiar en donde aparezca con 2), fijarse onBackPressed para salir de la aplicacion, agregar unidad en tabla productos, cambiar cantidad a double
     /* TODO: Fede:  Formularios para agregar  productos (imagen) y categorias. En nuevo producto poder agregar marca, comando de voz
+       TODO: Mauro: Fragment de listas (agregar productos a listas, action bar para borrar listas). Fragment Productos de Lista, si se agrega un producto que ya estaba en la lista, sumarle la cantidad
+       TODO: Implementacion de metodos en fragments para borrar productos de la base de datos
 
-       TODO: Mauro: Terminar activity productos(checkbox, imagen a la derecha). Fragment de listas (agregar productos a listas, action bar para borrar listas)
-       TODO: fragment de productos de lista (agregar checkable)*/
+       */
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +98,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.activity_principal, menu);   //aca hiria la configuracionde lo settings
-        return true;
+        return super.onCreateOptionsMenu(menu);
+        //return true;
     }
 
 
@@ -106,13 +108,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
       //  int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
       //  if (id == R.id.action_settings) {
-            return true;
+      //      return true;
       //  }
 
-      //  return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
 
