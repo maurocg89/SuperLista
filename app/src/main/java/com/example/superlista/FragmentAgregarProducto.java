@@ -71,8 +71,6 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     HashSet<String> hs;
 
-    private int request_code = 1;
-
     private static String APP_DIRECTORY = "SuperListaApp/";
     private static String MEDIA_DIRECTORY = APP_DIRECTORY + "PictureApp";
 
@@ -177,7 +175,6 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
         if (v == agregarProducto){
 
-
             nom = nomProd.getText().toString();
             aux= nom.trim();
 
@@ -195,13 +192,9 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
                 Toast.makeText(getContext(), "El Nombre no puede estar vacio", Toast.LENGTH_SHORT).show();
             }
 
-
         }else if(v == imageProd){
 
             mostrarOpciones();
-
-
-
         }
     }
 

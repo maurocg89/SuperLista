@@ -23,6 +23,9 @@ import com.example.superlista.data.SuperListaDbManager;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private long mLastPress = 0;    // Cuándo se pulsó atrás por última vez
+    private long mTimeLimit = 2000; // Límite de tiempo entre pulsaciones, en ms
+
     Fragment fragment = null;
 
     // TODO: Coto va con una sola t (cambiar en donde aparezca con 2), fijarse onBackPressed para salir de la aplicacion, agregar unidad en tabla productos, cambiar cantidad a double
@@ -64,7 +67,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
+        Toast onBackPressedToast = Toast.makeText(this,R.string.presionar_para_salir, Toast.LENGTH_SHORT);
+        long currentTime = System.currentTimeMillis();
+
+        if (currentTime - mLastPress > mTimeLimit){
+            onBackPressedToast.show();
+            mLastPress = currentTime;
+        } else {
+            onBackPressedToast.cancel();
+            super.onBackPressed();
+        }
+
+
+        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -72,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = new FragmentListas();
             ft.replace(R.id.contenedor, fragment);
             ft.commit();
-            //super.onBackPressed();
-        }
+           //super.onBackPressed();
+        }*/
     }
 
 
