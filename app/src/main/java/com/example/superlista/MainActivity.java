@@ -28,11 +28,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     Fragment fragment = null;
 
-    // TODO: Coto va con una sola t (cambiar en donde aparezca con 2), fijarse onBackPressed para salir de la aplicacion, agregar unidad en tabla productos, cambiar cantidad a double
-    /* TODO: Fede:  Formularios para agregar  productos (imagen) y categorias. En nuevo producto poder agregar marca, comando de voz
+    /* TODO: cambiar cantidad a double
+       TODO: Fede:  En nuevo producto poder agregar marca
        TODO: Mauro: Fragment de listas (agregar productos a listas, action bar para borrar listas). Fragment Productos de Lista, si se agrega un producto que ya estaba en la lista, sumarle la cantidad
        TODO: Implementacion de metodos en fragments para borrar productos de la base de datos
 
+        COSAS HECHAS: Coto va con una sola t (cambiar en donde aparezca con 2),
+            fijarse onBackPressed para salir de la aplicacion,
+            agregar unidad en tabla productos,
+            Formularios para agregar  productos (imagen) y categorias. ,
+            comando de voz
        */
 
 

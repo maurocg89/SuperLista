@@ -492,6 +492,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         }
 
         acomodarArrayList(nombresMarcas);
+        nombresMarcas.add(1, "Nueva Marca");
 
         adapterMarca = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, nombresMarcas);
         adapterMarca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -503,6 +504,10 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 cadMarca = String.valueOf(sMarca.getSelectedItem());
+                if (cadMarca == "Nueva Marca"){
+                    //TODO: FEDE aca tengo que haver el alert dialog personalizado
+                    Toast.makeText(getContext(), "Hola pianola", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

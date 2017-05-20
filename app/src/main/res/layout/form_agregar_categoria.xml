@@ -1,70 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/margen_entre_items"
-    android:orientation="vertical"
-    android:weightSum="1">
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/imageViewAddCategoria"
+    <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_weight="0.18"
-        app:srcCompat="@drawable/addcategoria" />
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        android:weightSum="1">
 
-    <TextView
-        android:id="@+id/textViewNombreFormCat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.12"
-        android:gravity="bottom"
-        android:text="@string/nombre"
-        android:textSize="24sp" />
+        <ImageView
+            android:id="@+id/imageViewAddCategoria"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:paddingTop="@dimen/margen_entre_items"
+            app:srcCompat="@drawable/addcategoria" />
 
-    <EditText
-        android:id="@+id/editTextNombreFormCat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.03"
-        android:ems="10"
-        android:gravity="bottom"
-        android:hint="@string/nombre_categoria"
-        android:inputType="textPersonName"
-        android:textSize="18sp"
-        android:textStyle="italic" />
+        <TextView
+            android:id="@+id/textViewNombreFormCat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.45"
+            android:gravity="bottom"
+            android:text="@string/nombre"
+            android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/textViewDescrCat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.12"
-        android:gravity="bottom"
-        android:text="@string/descr_categoria"
-        android:textSize="24sp" />
+        <EditText
+            android:id="@+id/editTextNombreFormCat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.03"
+            android:ems="10"
+            android:gravity="bottom"
+            android:hint="@string/nombre_categoria"
+            android:inputType="textPersonName"
+            android:textSize="18sp"
+            android:textStyle="italic" />
 
-    <EditText
-        android:id="@+id/editTextDescrCat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.03"
-        android:ems="10"
-        android:gravity="bottom"
-        android:hint="@string/text_descr_categoria"
-        android:inputType="textPersonName"
-        android:textSize="18sp"
-        android:textStyle="italic" />
+        <TextView
+            android:id="@+id/textViewDescrCat"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:gravity="bottom"
+            android:text="@string/descr_categoria"
+            android:textSize="24sp" />
 
-    <Button
-        android:id="@+id/buttonAgregar"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="30dp"
-        android:background="@android:color/holo_blue_dark"
-        android:text="@string/agregar"
-        android:textColor="@android:color/background_light" />
-</LinearLayout>
+        <EditText
+            android:id="@+id/editTextDescrCat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.20"
+            android:ems="10"
+            android:gravity="bottom"
+            android:hint="@string/text_descr_categoria"
+            android:inputType="textPersonName"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <Button
+            android:id="@+id/buttonAgregar"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="30dp"
+            android:background="@android:color/holo_blue_dark"
+            android:text="@string/agregar"
+            android:textColor="@android:color/background_light" />
+
+    </LinearLayout>
+
+</ScrollView>
