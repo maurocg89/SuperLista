@@ -63,7 +63,7 @@ public class ProductSearchAdapter extends BaseAdapter{
         Producto prod = data.get(position);
         holder.nombreProducto.setText(prod.getNombre());
         holder.marcaProducto.setText(prod.getMarca());
-        // TODO: Acá se le asigna la imagen al producto
+
         if(prod.getImagen() != null) {
             holder.imagenProducto.setImageURI(Uri.parse(prod.getImagen()));
         }

@@ -461,7 +461,7 @@ public class SuperListaDbManager {
         }
     }
 
-    public void updateCantidadProductoLista(ProductoPorLista prod, int cantidad){
+    public void updateCantidadProductoLista(ProductoPorLista prod, double cantidad){
         try {
             prod.setCantidad(cantidad);
             getHelper().getProductoPorListaDao().update(prod);

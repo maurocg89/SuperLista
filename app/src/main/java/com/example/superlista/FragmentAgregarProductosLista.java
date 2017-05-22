@@ -181,26 +181,28 @@ public class FragmentAgregarProductosLista extends Fragment implements TextView.
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 if (isSearching){
                     Producto prod = searchAdapter.getItem(position);
-                    elegirCantidadProducto(prod);
+                    String unidad = SuperListaDbManager.getInstance().getProductoByNombre(prod.getNombre(), prod.getMarca()).getUnidad();
+                    elegirCantidadProducto(prod, unidad);
                 } else {
                     //long idProd = productListAdapter.getItemId(position);
                     Producto prod = productListAdapter.getItem(position);
-                    elegirCantidadProducto(prod);
+                    String unidad = SuperListaDbManager.getInstance().getProductoByNombre(prod.getNombre(), prod.getMarca()).getUnidad();
+                    elegirCantidadProducto(prod, unidad);
                 }
             }
         });
 
     }
 
-    private void elegirCantidadProducto(final Producto producto){
+    private void elegirCantidadProducto(final Producto producto, String unidad){
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         final EditText cantidad = new EditText(getContext());
         //cantidad.setLines(1);
         // Sacar comentario cuando se cambie el tipo de dato de cantidad a double
-        //cantidad.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        cantidad.setInputType(InputType.TYPE_CLASS_NUMBER);
-        builder.setMessage("Cantidad en KG");//producto.getUnidad()
+        cantidad.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        builder.setMessage("Cantidad en "+unidad);
         builder.setTitle("Elije la cantidad");
         builder.setView(cantidad);
         builder.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
@@ -208,7 +210,7 @@ public class FragmentAgregarProductosLista extends Fragment implements TextView.
             public void onClick(DialogInterface dialog, int which) {
                 try{
                     Producto prod = SuperListaDbManager.getInstance().getProductoByNombre(producto.getNombre(), producto.getMarca());
-                    int cant = Integer.parseInt(cantidad.getText().toString());
+                    double cant = Double.parseDouble(cantidad.getText().toString());
                     boolean create = true;
                     // Si el producto ya está en la lista suma la cantidad
                     for (ProductoPorLista pr : productosPorLista) {
@@ -220,7 +222,7 @@ public class FragmentAgregarProductosLista extends Fragment implements TextView.
                         }
                     }
                     if (create) {
-                        ProductoPorLista prodLista = new ProductoPorLista(prod, lista, Integer.parseInt(cantidad.getText().toString()));
+                        ProductoPorLista prodLista = new ProductoPorLista(prod, lista, cant);
                         SuperListaDbManager.getInstance().addProductoLista(prodLista);
                     }
                 }catch (Exception e){e.printStackTrace();}

@@ -143,16 +143,25 @@ public class FragmentProductosDeLista extends Fragment {
 
     private void modificarCantidadProducto(MenuItem item){
         SparseBooleanArray array = listView.getCheckedItemPositions();
-        int pos1 = array.keyAt(0);
-        final ProductoPorLista productoPorLista = myAdapter.getItem(pos1);
+        ArrayList<ProductoPorLista> seleccion = new ArrayList<>();
+        for (int i = 0; i < array.size(); i++){
+            // Posicion del contacto en el adaptador
+            int pos = array.keyAt(i);
+            if(array.valueAt(i)) {
+                seleccion.add(myAdapter.getItem(pos));
+            }
+        }
+        final ProductoPorLista productoPorLista = seleccion.get(0);
+        String unidad = SuperListaDbManager.getInstance().getProductoByNombre(productoPorLista.getProducto().getNombre(),
+                productoPorLista.getProducto().getMarca()).getUnidad();
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         final EditText cantidad = new EditText(getContext());
         //cantidad.setLines(1);
-        // Sacar comentario cuando se cambie el tipo de dato de cantidad a double
-        //cantidad.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        cantidad.setInputType(InputType.TYPE_CLASS_NUMBER);
-        builder.setMessage("Cantidad en KG");//producto.getUnidad()
+
+        cantidad.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        builder.setMessage("Cantidad en "+unidad);//producto.getUnidad()
         builder.setTitle("Cambiar cantidad del producto: "+productoPorLista.getProducto());
         builder.setView(cantidad);
 
@@ -177,6 +186,9 @@ public class FragmentProductosDeLista extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
+                /*myAdapter.notifyDataSetChanged();
+                listView.clearChoices();
+                mEditItem.setVisible(false);*/
             }
         });
 
@@ -225,7 +237,7 @@ public class FragmentProductosDeLista extends Fragment {
 
         double total = 0;
         for (ProductoPorLista prod: productosPorLista) {
-            int cantidad = prod.getCantidad();
+            double cantidad = prod.getCantidad();
             Producto p = SuperListaDbManager.getInstance().getProductoByNombreSuper(prod.getProducto().getNombre(),
                     prod.getProducto().getMarca(), id_super);
             if (p == null){

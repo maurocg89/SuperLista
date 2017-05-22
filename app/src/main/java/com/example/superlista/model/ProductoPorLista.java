@@ -19,7 +19,7 @@ public class ProductoPorLista implements Parcelable {
     private int id_producto_lista;
 
     @DatabaseField(columnName = COLUMNA_CANTIDAD, canBeNull = false, defaultValue = "0")
-    private int cantidad;
+    private double cantidad;
 
     // Foreign keys
     @DatabaseField(columnName = COLUMNA_PRODUCTO_FKEY, foreign = true, foreignAutoRefresh = true)
@@ -31,7 +31,7 @@ public class ProductoPorLista implements Parcelable {
     public ProductoPorLista() {
     }
 
-    public ProductoPorLista(Producto producto, Lista lista, int cantidad) {
+    public ProductoPorLista(Producto producto, Lista lista, double cantidad) {
         this.producto = producto;
         this.lista = lista;
         this.cantidad = cantidad;
@@ -55,11 +55,11 @@ public class ProductoPorLista implements Parcelable {
         this.lista = lista;
     }
 
-    public int getCantidad() {
+    public double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
 
@@ -76,7 +76,10 @@ public class ProductoPorLista implements Parcelable {
     //<editor-fold desc="toString equals y hashCode">
     @Override
     public String toString() {
-        return producto + " x"+cantidad;
+        if (producto.getUnidad().contains("un")){
+            return producto + " x"+(int)cantidad;
+        }
+        return producto + " x"+cantidad + " " + producto.getUnidad();
     }
 
     @Override
@@ -113,7 +116,7 @@ public class ProductoPorLista implements Parcelable {
         this.id_producto_lista = in.readInt();
         this.producto = in.readParcelable(Producto.class.getClassLoader());
         this.lista = in.readParcelable(Lista.class.getClassLoader());
-        this.cantidad = in.readInt();
+        this.cantidad = in.readDouble();
     }
 
     @Override
@@ -126,7 +129,7 @@ public class ProductoPorLista implements Parcelable {
         parcel.writeInt(id_producto_lista);
         parcel.writeParcelable(producto, i);
         parcel.writeParcelable(lista, i);
-        parcel.writeInt(cantidad);
+        parcel.writeDouble(cantidad);
     }
     //</editor-fold>
 }
