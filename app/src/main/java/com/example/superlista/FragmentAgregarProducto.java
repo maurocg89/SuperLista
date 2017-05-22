@@ -3,7 +3,6 @@ package com.example.superlista;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
@@ -25,7 +24,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ScrollingView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -221,16 +219,16 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     private void mostrarOpciones(){
 
-        final CharSequence[] opcion = {"Tomar Foto", "Elegir de Galeria", "Cancelar"};
+        final CharSequence[] opcion = {"-Tomar Foto", "-Elegir de Galeria", "-Cancelar"};
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Elije una Opción:");
         builder.setItems(opcion, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (opcion[which] == "Tomar Foto"){
+                if (opcion[which] == "-Tomar Foto"){
                     abrirCamara();
-                }else if(opcion[which] == "Elegir de Galeria"){
+                }else if(opcion[which] == "-Elegir de Galeria"){
                     //ACTION_PICK tiene la opcion de abrir un archivo, y external content uri lanza el volumen de almacenamiento del dispositivo
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*"); //aca le decimos que muestre todos los archivos de tipo imagen
@@ -505,8 +503,10 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
                 cadMarca = String.valueOf(sMarca.getSelectedItem());
                 if (cadMarca == "Nueva Marca"){
-                    //TODO: FEDE aca tengo que haver el alert dialog personalizado
-                    Toast.makeText(getContext(), "Hola pianola", Toast.LENGTH_SHORT).show();
+
+                    //dialogoPersonalizado();
+
+                    //Toast.makeText(getContext(), "Hola pianola", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -602,7 +602,26 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         return false;
     }
+
+
     //</editor-fold>
 
+    /*
+    public void dialogoPersonalizado() {
+        FragmentAlertDialogAddMarca dialogoPersonalizado = new FragmentAlertDialogAddMarca();
+        dialogoPersonalizado.show(getFragmentManager(), "personalizado");
 
+        Fragment frag = getFragmentManager().findFragmentByTag("personalizado");
+
+        if (frag != null) {
+            getFragmentManager().beginTransaction().remove(frag).commit();
+        }
+    }
+
+    @Override
+    public void FinalizaCuadroDialogo(String texto) {
+        Toast.makeText(getContext(), texto ,Toast.LENGTH_SHORT).show();
+    }
+
+    */
 }

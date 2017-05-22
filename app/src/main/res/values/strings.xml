@@ -62,6 +62,9 @@
     <string name="valor_precio">0</string>
     <string name="unidad">Unidad:</string>
 
+    <!--STRINGS PARA EL xml alert_dialog_add_marca -->
+    <string name="hint_edit_marca">Escribe la marca aquí.</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
