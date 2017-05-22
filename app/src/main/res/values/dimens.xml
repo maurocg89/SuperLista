@@ -8,4 +8,5 @@
     <dimen name="margen_inf_header">3dp</dimen>
     <dimen name="margen_derecho_header">8dp</dimen>
     <dimen name="margen_entre_items">12dp</dimen>
+    <dimen name="margen_arriba">20dp</dimen>
 </resources>
