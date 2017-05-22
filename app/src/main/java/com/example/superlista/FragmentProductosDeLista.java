@@ -98,20 +98,46 @@ public class FragmentProductosDeLista extends Fragment {
     }
     
     private void eliminarProducto(MenuItem item){
-        SparseBooleanArray array = listView.getCheckedItemPositions();
-        ArrayList<ProductoPorLista> seleccion = new ArrayList<>();
-        for (int i = 0; i < array.size(); i++){
-            // Posicion del contacto en el adaptador
-            int pos = array.keyAt(i);
-            if(array.valueAt(i)) {
-                seleccion.add(myAdapter.getItem(pos));
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Desea eliminar el/los producto(s) seleccionado(s)?");
+        builder.setTitle("Eliminar");
+
+        builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try{
+                    SparseBooleanArray array = listView.getCheckedItemPositions();
+                    ArrayList<ProductoPorLista> seleccion = new ArrayList<>();
+                    for (int i = 0; i < array.size(); i++){
+                        // Posicion del contacto en el adaptador
+                        int pos = array.keyAt(i);
+                        if(array.valueAt(i)) {
+                            seleccion.add(myAdapter.getItem(pos));
+                        }
+                    }
+                    SuperListaDbManager.getInstance().deleteProductosDeLista(seleccion);
+                    productosPorLista.removeAll(seleccion);
+                    myAdapter.notifyDataSetChanged();
+                    listView.clearChoices();
+                    mEditItem.setVisible(false);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                dialog.dismiss();
+
             }
-        }
-            SuperListaDbManager.getInstance().deleteProductosDeLista(seleccion);
-            productosPorLista.removeAll(seleccion);
-            myAdapter.notifyDataSetChanged();
-            listView.clearChoices();
-            mEditItem.setVisible(false);
+
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.show();
 
     }
 
@@ -158,14 +184,6 @@ public class FragmentProductosDeLista extends Fragment {
 
     }
 
-    private void elegirCantidadProducto(final Producto producto){
-
-
-
-
-
-    }
-
     private void listViewListeners(){
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -189,10 +207,9 @@ public class FragmentProductosDeLista extends Fragment {
         }
 
         if (id_lista != 0){
-            // productos = SuperListaDbManager.getInstance().getProductosPorLista(id_lista);
-            //    SuperListaDbManager.getInstance().getProductoById(productosPorLista.get(0).getProducto().getId_producto());
-            productosPorLista = SuperListaDbManager.getInstance().getAllProductosListas(id_lista);
-           // myAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, productosPorLista);
+            // Borro los productos que están en null
+            SuperListaDbManager.getInstance().deleteProductosDeListas();
+            productosPorLista = SuperListaDbManager.getInstance().getAllProductosDeLista(id_lista);
             myAdapter = new ProductosDeListaAdapter(getActivity(), productosPorLista);
             myAdapter.notifyDataSetChanged();
             listView.setAdapter(myAdapter);

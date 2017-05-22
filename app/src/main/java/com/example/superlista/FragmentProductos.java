@@ -1,8 +1,10 @@
 package com.example.superlista;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Debug;
@@ -18,6 +20,7 @@ import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -30,6 +33,7 @@ import android.widget.Toast;
 import android.widget.AdapterView;
 
 import com.example.superlista.model.Categoria;
+import com.example.superlista.model.ProductoPorLista;
 import com.example.superlista.utils.ProductListAdapter;
 import com.example.superlista.data.SuperListaDbManager;
 import com.example.superlista.model.Producto;
@@ -225,7 +229,7 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
         productListAdapter.toggleSelection(position);
         boolean hasCheckedItems = productListAdapter.getSelectedCount() > 0; // Se fija si hay algun item seleccionado
         if (hasCheckedItems && mActionMode == null){
-            mActionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(new ToolBarActionModeCallback(getActivity(), productListAdapter, productos));
+            mActionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(new ToolBarActionModeCallback(getActivity(), productListAdapter, productos, this));
         } else if (!hasCheckedItems && mActionMode != null){
             // no hay ningun item seleccionado, termino el action mode
             mActionMode.finish();
@@ -247,18 +251,48 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
         }
     }
 
-    // TODO: Falta implementacion para borrar productos de la base de datos
-    public void deleteRows(){
-        SparseBooleanArray seleceted = productListAdapter.getSelectedIds();
-        for (int i = (seleceted.size() - 1); i >= 0; i--){
-            if (seleceted.valueAt(i)){
-                productos.remove(seleceted.keyAt(i));
-                productListAdapter.notifyDataSetChanged();
-            }
-        }
+    public void eliminarProducto(MenuItem item, Context context){
 
-        Toast.makeText(getActivity(), seleceted.size() + " productos eliminados", Toast.LENGTH_LONG).show();
-        mActionMode.finish();
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("Desea eliminar el/los producto(s) seleccionado(s)?");
+        builder.setTitle("Eliminar");
+
+        builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try{
+                    SparseBooleanArray array = productListAdapter.getSelectedIds();
+                    ArrayList<Producto> seleccion = new ArrayList<>();
+                    List<ProductoPorLista> productosPorLista = SuperListaDbManager.getInstance().getAllProductosListas();
+                    for (int i = 0; i < array.size(); i++){
+                        // Posicion del contacto en el adaptador
+                        int pos = array.keyAt(i);
+                        if(array.valueAt(i)) {
+                            seleccion.add(productListAdapter.getItem(pos));
+                        }
+                    }
+                    SuperListaDbManager.getInstance().deleteProductosByNombre(seleccion);
+                    productos.removeAll(seleccion);
+                    productListAdapter.notifyDataSetChanged();
+                    mActionMode.finish();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                dialog.dismiss();
+
+            }
+
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.show();
+
     }
     //</editor-fold>
 

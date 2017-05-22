@@ -17,11 +17,13 @@ public class ToolBarActionModeCallback implements ActionMode.Callback {
     private Context context;
     private ProductListAdapter adapter;
     private List<Producto> mensajes;
+    private FragmentProductos fragmentProductos;
 
-    public ToolBarActionModeCallback(Context context, ProductListAdapter adapter, List<Producto> mensajes) {
+    public ToolBarActionModeCallback(Context context, ProductListAdapter adapter, List<Producto> mensajes, FragmentProductos fragmentProductos) {
         this.context = context;
         this.adapter = adapter;
         this.mensajes = mensajes;
+        this.fragmentProductos = fragmentProductos;
 
     }
 
@@ -41,9 +43,10 @@ public class ToolBarActionModeCallback implements ActionMode.Callback {
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_eliminar_producto:
-                FragmentProductos fragment = new FragmentProductos();
-                //fragment.deleteRows();
-                break;
+                /*FragmentProductos fragment = new FragmentProductos();
+                fragment.eliminarProducto(item, this.context);*/
+                fragmentProductos.eliminarProducto(item, this.context);
+                return true;
         }
 
         return false;
@@ -52,8 +55,9 @@ public class ToolBarActionModeCallback implements ActionMode.Callback {
     @Override
     public void onDestroyActionMode(ActionMode mode) {
         adapter.removeSelection();
-        FragmentProductos fragmentProductos = new FragmentProductos();
-        fragmentProductos.setNullToActionMode();
+       /* FragmentProductos fragmentProductos = new FragmentProductos();
+        fragmentProductos.setNullToActionMode();*/
+       fragmentProductos.setNullToActionMode();
 
     }
 }

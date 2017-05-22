@@ -132,8 +132,7 @@ public class ProductListAdapter extends BaseAdapter{
     private class ViewHolderProducto{
         TextView nombreProducto;
         TextView marcaProducto;
-        // CheckBox checkBox;
-         ImageView imagenProducto;
+        ImageView imagenProducto;
     }
 
 }
