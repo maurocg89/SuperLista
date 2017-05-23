@@ -28,7 +28,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     Fragment fragment = null;
 
-    /* TODO: cambiar cantidad a double. Agregar margenes superiores para que se vea mejor
+    /* TODO: Agregar margenes superiores para que se vea mejor
+       TODO: Falta arreglar para que se vean las imagenes de los productos
        TODO: Fede:  En nuevo producto poder agregar marca
 
         COSAS HECHAS: Coto va con una sola t (cambiar en donde aparezca con 2),

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.superlista.R;
+import com.example.superlista.data.SuperListaDbManager;
 import com.example.superlista.model.Producto;
 
 import java.util.List;
@@ -86,11 +87,10 @@ public class ProductListAdapter extends BaseAdapter{
         Producto prod = data.get(position);
         holder.nombreProducto.setText(prod.getNombre());
         holder.marcaProducto.setText(prod.getMarca());
-
-        // TODO: Fede acá se le asignaría la imagen al producto
-        if(prod.getImagen() != null) {
+        /*String imagen = SuperListaDbManager.getInstance().getProductoByNombre(prod.getNombre(), prod.getMarca()).getImagen();
+        if(imagen != null) {
             holder.imagenProducto.setImageURI(Uri.parse(prod.getImagen()));
-        }
+        }*/
         // Cambia el color de fondo de los items seleccionados
         convertView.setBackgroundColor(mSelectedItemsIds.get(position) ? Color.parseColor("#a9a9a9") : Color.TRANSPARENT);
 
