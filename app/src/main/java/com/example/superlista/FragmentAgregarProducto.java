@@ -4,6 +4,7 @@ package com.example.superlista;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -72,7 +74,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     private ArrayAdapter<String> adapterUnidad;
     private ArrayAdapter adapterCategoria;
-    private ArrayAdapter<String> adapterMarca;
+    private ArrayAdapter adapterMarca;
     private ArrayAdapter<String> adapterSuper ;
 
     HashSet<String> hs;
@@ -86,7 +88,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
     private final int PHOTO_CODE = 200; // sirve para cuando mandemos a llamar la aplicacion de fotos
     private final int SELECT_PICTURE = 300;
 
-    private String cadCategoria, cadUnidad, cadMarca, cadSuper, mPath, direccion_imagen, nom, aux;    //mPath lo voy a usar para saber en que ruta se guardo la imagen
+    private String cadCategoria, cadUnidad, cadMarca, cadSuper, mPath, direccion_imagen, nom, aux, cadNuevaMarca;    //mPath lo voy a usar para saber en que ruta se guardo la imagen
     private Categoria categoria;
     private Supermercado supermercado;
     private boolean validacionProd = true;
@@ -502,11 +504,58 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 cadMarca = String.valueOf(sMarca.getSelectedItem());
-                if (cadMarca == "Nueva Marca"){
+                if (Objects.equals(cadMarca, "Nueva Marca")){
 
-                    //dialogoPersonalizado();
+                    View v = LayoutInflater.from(getActivity()).inflate(R.layout.alert_dialog_add_marca, null);
 
-                    //Toast.makeText(getContext(), "Hola pianola", Toast.LENGTH_SHORT).show();
+                    final EditText mEditText = (EditText) v.findViewById(R.id.edit_text_marca);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setView(v);
+                    builder.setTitle("Agregar Marca:")
+                            .setPositiveButton("Agregar", null)//sobreescribo el metodo setPositiveButton para que no se cierre el alertDialog si se produce una invalidacion
+                            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    //builder.show();
+                    final AlertDialog dialog = builder.create();
+
+                    dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface dialogInterface) {
+                            Button positivo = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                            positivo.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    cadNuevaMarca = mEditText.getText().toString();
+                                    if(cadNuevaMarca.trim().length() > 0){
+
+                                        for (int i = 1; i <nombresMarcas.size(); i ++){
+                                            if (Objects.equals(cadNuevaMarca, nombresMarcas.get(i))){
+                                                Toast.makeText(getContext(), "Marca existente." , Toast.LENGTH_SHORT).show();
+                                                validacionProd = true;
+                                                break;
+                                            }else{
+                                                validacionProd =  false;
+                                            }
+                                        }
+                                        if (!validacionProd){
+                                            nombresMarcas.add(0, cadNuevaMarca);
+                                            Toast.makeText(getContext(), "Marca agregada" , Toast.LENGTH_SHORT).show();
+                                            dialog.dismiss();
+                                        }
+
+                                    }else{
+                                        Toast.makeText(getContext(), "Debe colocar una Marca.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                    dialog.show();
+
                 }
             }
 
@@ -606,22 +655,12 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     //</editor-fold>
 
-    /*
-    public void dialogoPersonalizado() {
-        FragmentAlertDialogAddMarca dialogoPersonalizado = new FragmentAlertDialogAddMarca();
-        dialogoPersonalizado.show(getFragmentManager(), "personalizado");
 
-        Fragment frag = getFragmentManager().findFragmentByTag("personalizado");
 
-        if (frag != null) {
-            getFragmentManager().beginTransaction().remove(frag).commit();
-        }
-    }
 
-    @Override
-    public void FinalizaCuadroDialogo(String texto) {
-        Toast.makeText(getContext(), texto ,Toast.LENGTH_SHORT).show();
-    }
 
-    */
+
+
+
+
 }
