@@ -18,6 +18,7 @@
     <!--STRINGS PARA EL MENU PRODUCTOS -->
     <string name="eliminar_producto">Eliminar Producto</string>
     <string name="modificar_producto">Modificar Producto</string>
+    <string name="editar_producto">Modificar</string>
 
     <!--STRINGS PARA EL FRAGMENT PRODUCTO -->
     <string name="buscar">Buscar</string>
@@ -45,6 +46,7 @@
     <string name="nombre">Nombre:</string>
     <string name="nombre_lista">escribe aqui el nombre</string>
     <string name="agregar">AGREGAR</string>
+    <string name="cancelar">Cancelar</string>
 
     <!--STRINGS PARA EL xml form_agregar_categoria -->
     <string name="nueva_categoria">Nueva Categoria</string>

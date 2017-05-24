@@ -197,20 +197,24 @@ public class FragmentAgregarProductosLista extends Fragment implements TextView.
     private void elegirCantidadProducto(final Producto producto, String unidad){
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        final EditText cantidad = new EditText(getContext());
+        final EditText etCantidad = new EditText(getContext());
         //cantidad.setLines(1);
         // Sacar comentario cuando se cambie el tipo de dato de cantidad a double
-        cantidad.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-
+        etCantidad.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         builder.setMessage("Cantidad en "+unidad);
         builder.setTitle("Elije la cantidad");
-        builder.setView(cantidad);
+        builder.setView(etCantidad);
         builder.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 try{
                     Producto prod = SuperListaDbManager.getInstance().getProductoByNombre(producto.getNombre(), producto.getMarca());
-                    double cant = Double.parseDouble(cantidad.getText().toString());
+                    String cantidad = etCantidad.getText().toString();
+                    if (cantidad.trim().length() == 0){
+                        Toast.makeText(getContext(), "Debe introducir una cantidad válida", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    double cant = Double.parseDouble(cantidad);
                     boolean create = true;
                     // Si el producto ya está en la lista suma la cantidad
                     for (ProductoPorLista pr : productosPorLista) {

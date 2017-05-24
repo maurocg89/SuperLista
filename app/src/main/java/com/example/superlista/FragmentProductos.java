@@ -141,6 +141,9 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
 
             @Override
             public void afterTextChanged(Editable editable) {
+                if (mActionMode != null){
+                    mActionMode.finish();
+                }
                 if (etSearch.getText().length() != 0){
                     isSearching = true;
                     String spnId = etSearch.getText().toString();
@@ -207,9 +210,28 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 // Si se esta buscando un producto se desactiva el actionmode
-                if (isSearching){return;}
+              /*  if (isSearching && mActionMode != null){
+                    //mActionMode.finish();
+                    return;
+                }*/
                 if (mActionMode != null){
                     onListItemSelect(position);
+                } else{
+                    FragmentProducto fragmentProducto = new FragmentProducto();
+                    Bundle bundle = new Bundle();
+                    Producto prod = null;
+                    if (isSearching){
+                        prod = searchAdapter.getItem(position);
+                        prod = SuperListaDbManager.getInstance().getProductoByNombre(prod.getNombre(), prod.getMarca());
+                    } else {
+                        prod = productListAdapter.getItem(position);
+                        prod = SuperListaDbManager.getInstance().getProductoByNombre(prod.getNombre(), prod.getMarca());
+                    }
+                    bundle.putParcelable("producto", prod);
+                    fragmentProducto.setArguments(bundle);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.contenedor, fragmentProducto);
+                    ft.commit();
                 }
             }
         });

@@ -117,6 +117,23 @@ public class SuperListaDbManager {
         return productos;
     }
 
+    public ArrayList<String> getAllMarcasProductoDistinct(){
+        QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
+        queryBuilder.distinct().selectColumns(Producto.COLUMNA_MARCA);
+        List<Producto> productos = null;
+        ArrayList<String> marcas = new ArrayList<>();
+        try {
+            productos = queryBuilder.query();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        for (Producto p : productos) {
+            marcas.add(p.getMarca());
+        }
+
+        return marcas;
+    }
+
     // TODO: No setea los ids de los productos solo la marca y el nombre
     public List<Producto> getAllProductosByNameDistinct(){
         QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
@@ -132,6 +149,8 @@ public class SuperListaDbManager {
         return productos;
     }
 
+
+
     public Producto getProductoById(int id_producto){
         Producto producto = null;
         try {
@@ -140,6 +159,18 @@ public class SuperListaDbManager {
             e.printStackTrace();
         }
         return producto;
+    }
+
+    public List<Producto> getProductosByName(String nombre, String marca){
+        QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
+        List<Producto> productos = null;
+        try {
+            queryBuilder.where().eq(Producto.COLUMNA_NOMBRE, nombre).and().eq(Producto.COLUMNA_MARCA, marca);
+            productos = queryBuilder.query();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return productos;
     }
 
     public Producto getProductoByNombre(String nombre, String marca){
@@ -225,7 +256,7 @@ public class SuperListaDbManager {
         }
     }
 
-    public void updateProducto(int id_producto, String nombre_nuevo, String marca_nueva, double precio_nuevo, Categoria categoria_nueva, Supermercado supermercado_nuevo){
+    public void updateProducto(int id_producto, String nombre_nuevo, String marca_nueva, double precio_nuevo, Categoria categoria_nueva, Supermercado supermercado_nuevo, String unidad, String imagen){
         try {
             Producto producto = getProductoById(id_producto);
             producto.setNombre(nombre_nuevo);
@@ -233,6 +264,8 @@ public class SuperListaDbManager {
             producto.setPrecio(precio_nuevo);
             producto.setCategoria(categoria_nueva);
             producto.setSupermercado(supermercado_nuevo);
+            producto.setUnidad(unidad);
+            //producto.setImagen(imagen);
             getHelper().getProductoDao().update(producto);
         }catch (SQLException e){
             e.printStackTrace();

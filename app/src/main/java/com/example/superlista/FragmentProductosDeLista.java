@@ -89,7 +89,6 @@ public class FragmentProductosDeLista extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        System.out.println(item.getItemId());
         switch (item.getItemId()){
             case R.id.action_eliminar_producto: eliminarProducto(item); return true;
             case R.id.action_editar_producto: modificarCantidadProducto(item); return true;

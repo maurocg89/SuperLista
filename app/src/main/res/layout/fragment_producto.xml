@@ -1,35 +1,282 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <LinearLayout
+        android:id="@+id/linearProducto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        app:srcCompat="@drawable/ic_local_grocery_store_black_24dp" />
+        android:layout_margin="@dimen/fab_margin"
+        android:orientation="vertical"
+        android:weightSum="1">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Precio Coto: " />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Precio La Gallega: " />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textViewModificarNombreProd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:text="Nombre"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:gravity="center"/>
+            <EditText
+                android:id="@+id/editTextModificarNombreProd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:visibility="invisible"
+                android:ems="10"
+                android:hint="@string/nombre"
+                android:inputType="textPersonName" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Precio Carrefour: " />
+            <ImageView
+                android:id="@+id/imageViewMicrofono"
+                android:layout_width="59dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/editTextNombreProd"
+                android:contentDescription=""
+                android:visibility="invisible"
+                app:srcCompat="@drawable/ic_microphone"
+                tools:ignore="ContentDescription" />
 
-</LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.63"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            tools:ignore="InefficientWeight">
+
+            <ImageView
+                android:id="@+id/imageViewModificarFotoProd"
+                android:layout_width="match_parent"
+                android:layout_height="164dp"
+                app:srcCompat="@drawable/addimage128" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:id="@+id/textViewPrecioCoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:text="Precio Coto: "
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+            <EditText
+                android:id="@+id/editTextValorPrecioCoto"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="@string/valor_precio"
+                android:inputType="numberDecimal"
+                android:textSize="16sp"
+                android:enabled="false"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:id="@+id/textViewPrecioLaGallega"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:text="Precio La Gallega: "
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+            <EditText
+                android:id="@+id/editTextValorPrecioLaGallega"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="@string/valor_precio"
+                android:inputType="numberDecimal"
+                android:textSize="16sp"
+                android:enabled="false"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:id="@+id/textViewPrecioCarrefour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:text="Precio Carrefour: "
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+            <EditText
+                android:id="@+id/editTextValorPrecioCarrefour"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="@string/valor_precio"
+                android:inputType="numberDecimal"
+                android:textSize="16sp"
+                android:enabled="false"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:id="@+id/textViewPrecioOtro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:text="Precio Otro: "
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+            <EditText
+                android:id="@+id/editTextValorPrecioOtro"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="@string/valor_precio"
+                android:inputType="numberDecimal"
+                android:textSize="16sp"
+                android:enabled="false"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="0.27"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewModificarUnidad"
+                android:layout_width="141dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="@string/unidad"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/spinnerModificarUnidad"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                tools:ignore="InefficientWeight"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="0.27"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textViewModifcarCategoria"
+                android:layout_width="141dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="@string/categoria"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/spinnerModifcarCategoria"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="0.27"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewModificarMarca"
+                android:layout_width="141dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="@string/marca"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/spinnerModificarMarca"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonModificarProd"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="30dp"
+                android:background="@android:color/holo_blue_dark"
+                android:text="@string/editar_producto"
+                android:textColor="@android:color/background_light"
+                android:visibility="invisible"/>
+            <Button
+                android:id="@+id/buttonCancelarModifProd"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="30dp"
+                android:background="@android:color/holo_blue_dark"
+                android:text="@string/cancelar"
+                android:textColor="@android:color/background_light"
+                android:visibility="invisible"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -410,7 +410,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     //<editor-fold desc="Spinner Unidad">
     private void setSpinnerUnidad(){
-
+    // TODO: usar el array de unidades de la clase productos
         nombresUnidades = new ArrayList<String>();
 
         listProductos2 =  SuperListaDbManager.getInstance().getAllProductos();
@@ -481,7 +481,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     //<editor-fold desc="Spinner Marca">
     private void setSpinnerMarca(){
-
+        // TODO: usar metodo getAllMarcasDistinct() 
         nombresMarcas = new ArrayList<String>();
 
         listProductos =  SuperListaDbManager.getInstance().getAllProductos();

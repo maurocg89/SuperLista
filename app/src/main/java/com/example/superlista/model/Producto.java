@@ -18,6 +18,7 @@ public class Producto implements Parcelable{
     public static final String COLUMNA_CATEGORIA_FKEY = "id_categoria";
     public static final String COLUMNA_IMAGEN_PROD = "imagen_producto";
     public static final String COLUMNA_UNIDAD_PROD = "unidad";
+    public static final String[] UNIDADES = new String[]{"Kg", "Unidades"};
 
     @DatabaseField(generatedId = true, columnName = _ID)
     private int id_producto;

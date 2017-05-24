@@ -21,6 +21,7 @@ public class Supermercado implements Parcelable{
     public static final int ID_LA_GALLEGA = 1;
     public static final int ID_COTO = 2;
     public static final int ID_CARREFOUR = 3;
+    public static final int ID_OTRO = 4;
 
     @DatabaseField(generatedId = true, columnName = _ID)
     private int id_supermercado;
