@@ -14,6 +14,8 @@ public class Categoria implements Parcelable{
     public static final String COLUMNA_NOMBRE = "nombre";
     public static final String COLUMNA_DESCRIPCION = "descripcion";
 
+    public static final int ID_CATEGORIA_OTROS = 1;
+
     @DatabaseField(generatedId = true, columnName = _ID)
     private int id_categoria;
 

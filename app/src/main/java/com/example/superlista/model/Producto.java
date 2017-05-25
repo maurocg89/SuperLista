@@ -11,10 +11,12 @@ public class Producto implements Parcelable{
 
     // Nombre de columnas de la tabla en la base de datos
     public static final String _ID = "id_producto";
-    public static final String COLUMNA_SUPER_FKEY = "id_super";
     public static final String COLUMNA_NOMBRE = "nombre";
-    public static final String COLUMNA_MARCA = "marca";
-    public static final String COLUMNA_PRECIO = "precio";
+    public static final String COLUMNA_MARCA_FKEY = "id_marca";
+    public static final String COLUMNA_PRECIO_COTO = "precio_coto";
+    public static final String COLUMNA_PRECIO_LA_GALLEGA = "precio_la_gallega";
+    public static final String COLUMNA_PRECIO_CARREFOUR = "precio_carrefour";
+    public static final String COLUMNA_PRECIO_OTRO = "precio_otro";
     public static final String COLUMNA_CATEGORIA_FKEY = "id_categoria";
     public static final String COLUMNA_IMAGEN_PROD = "imagen_producto";
     public static final String COLUMNA_UNIDAD_PROD = "unidad";
@@ -26,18 +28,17 @@ public class Producto implements Parcelable{
     @DatabaseField(columnName = COLUMNA_NOMBRE, canBeNull = false, uniqueCombo = true)
     private String nombre;
 
-    @DatabaseField(columnName = COLUMNA_MARCA, uniqueCombo = true)
-    private String marca;
+    @DatabaseField(columnName = COLUMNA_PRECIO_COTO, canBeNull = false, defaultValue = "0")
+    private double precio_coto;
 
-    @DatabaseField(columnName = COLUMNA_PRECIO, canBeNull = false, defaultValue = "0")
-    private double precio;
+    @DatabaseField(columnName = COLUMNA_PRECIO_LA_GALLEGA, canBeNull = false, defaultValue = "0")
+    private double precio_la_gallega;
 
-    // Foreign Keys
-    @DatabaseField(foreign = true, columnName = COLUMNA_CATEGORIA_FKEY, foreignAutoRefresh = true)
-    private Categoria categoria;
+    @DatabaseField(columnName = COLUMNA_PRECIO_CARREFOUR, canBeNull = false, defaultValue = "0")
+    private double precio_carrefour;
 
-    @DatabaseField(foreign = true, columnName = COLUMNA_SUPER_FKEY, uniqueCombo = true, foreignAutoRefresh = true)
-    private Supermercado supermercado;
+    @DatabaseField(columnName = COLUMNA_PRECIO_OTRO, canBeNull = false, defaultValue = "0")
+    private double precio_otro;
 
     @DatabaseField(columnName = COLUMNA_IMAGEN_PROD)
     private String imagen;
@@ -45,14 +46,25 @@ public class Producto implements Parcelable{
     @DatabaseField(columnName = COLUMNA_UNIDAD_PROD)
     private String unidad;
 
+
+    @DatabaseField(foreign = true, columnName = COLUMNA_CATEGORIA_FKEY, foreignAutoRefresh = true)
+    private Categoria categoria;
+
+    @DatabaseField(foreign = true, columnName = COLUMNA_MARCA_FKEY, uniqueCombo = true, foreignAutoRefresh = true)
+    private Marca marca;
+
+
     public Producto(){}
 
-    public Producto(String nombre, String marca, double precio, Categoria categoria, Supermercado supermercado, String imagen, String unidad){
+    public Producto(String nombre, Marca marca, double precio_coto, double precio_la_gallega, double precio_carrefour,
+                    double precio_otro, Categoria categoria, String imagen, String unidad){
         this.nombre = nombre;
         this.marca = marca;
-        this.precio = precio;
+        this.precio_coto = precio_coto;
+        this.precio_la_gallega = precio_la_gallega;
+        this.precio_carrefour = precio_carrefour;
+        this.precio_otro = precio_otro;
         this.categoria = categoria;
-        this.supermercado = supermercado;
         this.imagen = imagen;
         this.unidad = unidad;
     }
@@ -74,20 +86,44 @@ public class Producto implements Parcelable{
         this.nombre = nombre;
     }
 
-    public String getMarca() {
+    public Marca getMarca() {
         return marca;
     }
 
-    public void setMarca(String marca) {
+    public void setMarca(Marca marca) {
         this.marca = marca;
     }
 
-    public double getPrecio() {
-        return precio;
+    public double getPrecio_coto() {
+        return precio_coto;
     }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
+    public void setPrecio_coto(double precio_coto) {
+        this.precio_coto = precio_coto;
+    }
+
+    public double getPrecio_la_gallega() {
+        return precio_la_gallega;
+    }
+
+    public void setPrecio_la_gallega(double precio_la_gallega) {
+        this.precio_la_gallega = precio_la_gallega;
+    }
+
+    public double getPrecio_carrefour() {
+        return precio_carrefour;
+    }
+
+    public void setPrecio_carrefour(double precio_carrefour) {
+        this.precio_carrefour = precio_carrefour;
+    }
+
+    public double getPrecio_otro() {
+        return precio_otro;
+    }
+
+    public void setPrecio_otro(double precio_otro) {
+        this.precio_otro = precio_otro;
     }
 
     public Categoria getCategoria() {
@@ -96,14 +132,6 @@ public class Producto implements Parcelable{
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
-    }
-
-    public Supermercado getSupermercado() {
-        return supermercado;
-    }
-
-    public void setSupermercado(Supermercado supermercado) {
-        this.supermercado = supermercado;
     }
 
     public String getImagen() {
@@ -134,39 +162,28 @@ public class Producto implements Parcelable{
         Producto producto = (Producto) o;
 
         if (id_producto != producto.id_producto) return false;
-        if (Double.compare(producto.precio, precio) != 0) return false;
         if (!nombre.equals(producto.nombre)) return false;
-        if (marca != null ? !marca.equals(producto.marca) : producto.marca != null) return false;
-        if (categoria != null ? !categoria.equals(producto.categoria) : producto.categoria != null)
-            return false;
-        if (supermercado != null ? !supermercado.equals(producto.supermercado) : producto.supermercado != null)
-            return false;
-        if (imagen != null ? !imagen.equals(producto.imagen) : producto.imagen != null)
-            return false;
-        return unidad.equals(producto.unidad);
+        if (!categoria.equals(producto.categoria)) return false;
+        return marca.equals(producto.marca);
 
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = id_producto;
+        int result = id_producto;
         result = 31 * result + nombre.hashCode();
-        result = 31 * result + (marca != null ? marca.hashCode() : 0);
-        temp = Double.doubleToLongBits(precio);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (categoria != null ? categoria.hashCode() : 0);
-        result = 31 * result + (supermercado != null ? supermercado.hashCode() : 0);
-        result = 31 * result + (imagen != null ? imagen.hashCode() : 0);
         result = 31 * result + unidad.hashCode();
+        result = 31 * result + categoria.hashCode();
+        result = 31 * result + marca.hashCode();
         return result;
     }
-
     //</editor-fold>
 
     @Override
     public String toString() {
+        if (marca.getNombre().equalsIgnoreCase("ninguna")){
+            return nombre;
+        }
         return nombre + " " + marca;
     }
 
@@ -187,10 +204,12 @@ public class Producto implements Parcelable{
     public Producto (Parcel in){
         this.id_producto = in.readInt();
         this.nombre = in.readString();
-        this.marca = in.readString();
-        this.precio = in.readDouble();
+        this.marca = in.readParcelable(Marca.class.getClassLoader());
+        this.precio_coto = in.readDouble();
+        this.precio_carrefour = in.readDouble();
+        this.precio_la_gallega = in.readDouble();
+        this.precio_otro = in.readDouble();
         this.categoria = in.readParcelable(Categoria.class.getClassLoader());
-        this.supermercado = in.readParcelable(Supermercado.class.getClassLoader());
         this.imagen = in.readString();
         this.unidad = in.readString();
     }
@@ -204,10 +223,12 @@ public class Producto implements Parcelable{
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id_producto);
         parcel.writeString(nombre);
-        parcel.writeString(marca);
-        parcel.writeDouble(precio);
+        parcel.writeDouble(precio_coto);
+        parcel.writeDouble(precio_carrefour);
+        parcel.writeDouble(precio_la_gallega);
+        parcel.writeDouble(precio_otro);
         parcel.writeParcelable(categoria, i);
-        parcel.writeParcelable(supermercado, i);
+        parcel.writeParcelable(marca, i);
         parcel.writeString(imagen);
         parcel.writeString(unidad);
     }

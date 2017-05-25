@@ -80,7 +80,14 @@ public class Supermercado implements Parcelable{
 
     //</editor-fold>
 
-    //<editor-fold desc="Equals y Hash Code">
+    //<editor-fold desc="ToString, Equals y Hash Code">
+
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -98,7 +98,7 @@ public class FragmentAgregarProductosLista extends Fragment implements TextView.
         lista = SuperListaDbManager.getInstance().getListaById(id_lista);
         productosPorLista = SuperListaDbManager.getInstance().getAllProductosDeLista(id_lista);
 
-        productos = SuperListaDbManager.getInstance().getAllProductosByNameDistinct();
+        productos = SuperListaDbManager.getInstance().getAllProductos();
         productListAdapter = new ProductListAdapter(getActivity(), productos);
         searchAdapter = new ProductSearchAdapter(getActivity());
 
@@ -181,13 +181,11 @@ public class FragmentAgregarProductosLista extends Fragment implements TextView.
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 if (isSearching){
                     Producto prod = searchAdapter.getItem(position);
-                    String unidad = SuperListaDbManager.getInstance().getProductoByNombre(prod.getNombre(), prod.getMarca()).getUnidad();
-                    elegirCantidadProducto(prod, unidad);
+                    elegirCantidadProducto(prod, prod.getUnidad());
                 } else {
                     //long idProd = productListAdapter.getItemId(position);
                     Producto prod = productListAdapter.getItem(position);
-                    String unidad = SuperListaDbManager.getInstance().getProductoByNombre(prod.getNombre(), prod.getMarca()).getUnidad();
-                    elegirCantidadProducto(prod, unidad);
+                    elegirCantidadProducto(prod, prod.getUnidad());
                 }
             }
         });
@@ -208,7 +206,7 @@ public class FragmentAgregarProductosLista extends Fragment implements TextView.
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 try{
-                    Producto prod = SuperListaDbManager.getInstance().getProductoByNombre(producto.getNombre(), producto.getMarca());
+                    //Producto prod = SuperListaDbManager.getInstance().getProductoByNombre(producto.getNombre(), producto.getMarca());
                     String cantidad = etCantidad.getText().toString();
                     if (cantidad.trim().length() == 0){
                         Toast.makeText(getContext(), "Debe introducir una cantidad válida", Toast.LENGTH_LONG).show();
@@ -218,15 +216,16 @@ public class FragmentAgregarProductosLista extends Fragment implements TextView.
                     boolean create = true;
                     // Si el producto ya está en la lista suma la cantidad
                     for (ProductoPorLista pr : productosPorLista) {
-                        if (pr.getProducto().getNombre().equals(prod.getNombre())
-                                && pr.getProducto().getMarca().equals(prod.getMarca())){
+                        //if (pr.getProducto().getNombre().equals(producto.getNombre())
+                          //      && pr.getProducto().getMarca().equals(producto.getMarca())){
+                            if (pr.getProducto().getId_producto() == producto.getId_producto()){
                             SuperListaDbManager.getInstance().updateCantidadProductoLista(pr, cant + pr.getCantidad());
                             create = false;
                             break;
                         }
                     }
                     if (create) {
-                        ProductoPorLista prodLista = new ProductoPorLista(prod, lista, cant);
+                        ProductoPorLista prodLista = new ProductoPorLista(producto, lista, cant);
                         SuperListaDbManager.getInstance().addProductoLista(prodLista);
                     }
                 }catch (Exception e){e.printStackTrace();}

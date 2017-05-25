@@ -1,5 +1,8 @@
 package com.example.superlista;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,27 +21,27 @@ import android.widget.TextView;
 
 import com.example.superlista.data.SuperListaDbManager;
 import com.example.superlista.model.Categoria;
+import com.example.superlista.model.Marca;
 import com.example.superlista.model.Producto;
 import com.example.superlista.model.Supermercado;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentProducto extends Fragment {
 
     private Producto producto;
-    private List<Producto> productos;
     private TextView tvNombreProducto;
     private ImageView ivImagenProducto;
     private Spinner spMarcaProducto, spUnidadProducto, spCategoriaProducto;
     private EditText etNombreProducto, etPrecioProductoCoto, etPrecioProductoLaGallega, etPrecioProductoCarrefour, etPrecioProductoOtro;
     private Button buttonModificar, buttonCancelar;
     private MenuItem mEditItem;
-    private ArrayAdapter<String> adapterMarcas, adapterUnidad;
+    private ArrayAdapter<String> adapterUnidad;
+    private ArrayAdapter<Marca> adapterMarcas;
     private ArrayAdapter<Categoria> adapterCategorias;
 
-    // boton agregar producto a super, para habilitar la modificacion del precio
-    // falta alertdialog para confirmar los cambios
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -95,6 +98,10 @@ public class FragmentProducto extends Fragment {
         spUnidadProducto.setEnabled(toggle);
         spCategoriaProducto.setEnabled(toggle);
         spMarcaProducto.setEnabled(toggle);
+        etPrecioProductoLaGallega.setEnabled(toggle);
+        etPrecioProductoCoto.setEnabled(toggle);
+        etPrecioProductoCarrefour.setEnabled(toggle);
+        etPrecioProductoOtro.setEnabled(toggle);
         if (toggle) {
             tvNombreProducto.setVisibility(View.INVISIBLE);
             etNombreProducto.setVisibility(View.VISIBLE);
@@ -106,41 +113,25 @@ public class FragmentProducto extends Fragment {
             buttonModificar.setVisibility(View.INVISIBLE);
             buttonCancelar.setVisibility(View.INVISIBLE);
         }
-        for (Producto p : productos) {
-            if (p.getSupermercado() != null && p.getSupermercado().getId_supermercado() == Supermercado.ID_COTO){
-                etPrecioProductoCoto.setEnabled(toggle);
-            } else if (p.getSupermercado() != null && p.getSupermercado().getId_supermercado() == Supermercado.ID_LA_GALLEGA){
-                etPrecioProductoLaGallega.setEnabled(toggle);
-            } else if (p.getSupermercado() != null && p.getSupermercado().getId_supermercado() == Supermercado.ID_CARREFOUR){
-                etPrecioProductoCarrefour.setEnabled(toggle);
-            } else if(p.getSupermercado().getId_supermercado() == Supermercado.ID_OTRO){
-                etPrecioProductoOtro.setEnabled(toggle);
-            }
-        }
 
 
     }
 
     public void setData(){
         producto = getArguments().getParcelable("producto");
-        productos = SuperListaDbManager.getInstance().getProductosByName(producto.getNombre(), producto.getMarca());
-        tvNombreProducto.setText(producto.toString());
-        etNombreProducto.setText(producto.getNombre());
-        setSpinnerUnidad();
-        setSpinnerMarcas();
-        setSpinnerCategorias();
-        setButtonsListeners();
+        if (producto != null) {
+            tvNombreProducto.setText(producto.toString());
+            etNombreProducto.setText(producto.getNombre());
+            etPrecioProductoCoto.setText(String.valueOf(producto.getPrecio_coto()));
+            etPrecioProductoLaGallega.setText(String.valueOf(producto.getPrecio_la_gallega()));
+            etPrecioProductoCarrefour.setText(String.valueOf(producto.getPrecio_carrefour()));
+            etPrecioProductoOtro.setText(String.valueOf(producto.getPrecio_otro()));
 
-        for (Producto p : productos) {
-            if (p.getSupermercado() != null && p.getSupermercado().getId_supermercado() == Supermercado.ID_COTO){
-                etPrecioProductoCoto.setText(String.valueOf(p.getPrecio()));
-            } else if (p.getSupermercado() != null && p.getSupermercado().getId_supermercado() == Supermercado.ID_LA_GALLEGA){
-                etPrecioProductoLaGallega.setText(String.valueOf(p.getPrecio()));
-            } else if (p.getSupermercado() != null && p.getSupermercado().getId_supermercado() == Supermercado.ID_CARREFOUR){
-                etPrecioProductoCarrefour.setText(String.valueOf(p.getPrecio()));
-            } else {
-                etPrecioProductoOtro.setText(String.valueOf(p.getPrecio()));
-            }
+            setSpinnerUnidad();
+            setSpinnerMarcas();
+            setSpinnerCategorias();
+            setButtonsListeners();
+
         }
 
     }
@@ -156,6 +147,7 @@ public class FragmentProducto extends Fragment {
         buttonModificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 modificarProducto();
             }
         });
@@ -177,7 +169,7 @@ public class FragmentProducto extends Fragment {
         adapterCategorias.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategoriaProducto.setAdapter(adapterCategorias);
 
-        Categoria categoria = SuperListaDbManager.getInstance().getProductoByNombre(producto.getNombre(), producto.getMarca()).getCategoria();
+        Categoria categoria = producto.getCategoria();
 
         int pos = adapterCategorias.getPosition(categoria);
         spCategoriaProducto.setSelection(pos);
@@ -185,45 +177,83 @@ public class FragmentProducto extends Fragment {
     }
 
     private void setSpinnerMarcas(){
-        ArrayList<String> marcas = SuperListaDbManager.getInstance().getAllMarcasProductoDistinct();
+        List<Marca> marcas = SuperListaDbManager.getInstance().getAllMarcas();
         adapterMarcas = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, marcas);
         adapterMarcas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spMarcaProducto.setAdapter(adapterMarcas);
 
-        String marca = producto.getMarca();
+        Marca marca = producto.getMarca();
         int pos = adapterMarcas.getPosition(marca);
         spMarcaProducto.setSelection(pos);
 
     }
 
-    public void eliminarProducto(MenuItem item){}
+    public void eliminarProducto(MenuItem item){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Desea eliminar el producto "+producto.toString()+"?");
+        builder.setTitle("Eliminar Producto");
+
+        builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                try {
+                    SuperListaDbManager.getInstance().deleteProducto(producto);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    dialogInterface.dismiss();
+                    // TODO: 24/05/2017 Mandar a framgent productos
+                }
+
+            }
+        });
+
+    }
 
     public void modificarProducto(){
-        double precioCoto,precioLaGallega,precioCarrefour,precioOtro;
-        precioCoto = Double.parseDouble(etPrecioProductoCoto.getText().toString());
-        precioLaGallega = Double.parseDouble(etPrecioProductoLaGallega.getText().toString());
-        precioCarrefour = Double.parseDouble(etPrecioProductoCarrefour.getText().toString());
-        precioOtro = Double.parseDouble(etPrecioProductoOtro.getText().toString());
-        String unidad = spUnidadProducto.getSelectedItem().toString();
-        String marca = adapterMarcas.getItem(spMarcaProducto.getSelectedItemPosition());
-        Categoria categoria = adapterCategorias.getItem(spCategoriaProducto.getSelectedItemPosition());
-        String nombre = etNombreProducto.getText().toString();
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Desea modificar el producto "+producto.toString()+"?");
+        builder.setTitle("Modificar Producto");
 
-        for (Producto p : productos) {
-            if (p.getSupermercado().getId_supermercado() == Supermercado.ID_COTO){
-                SuperListaDbManager.getInstance().updateProducto(p.getId_producto(), nombre, marca, precioCoto, categoria,
-                        p.getSupermercado(), unidad, "imagen");
-            } else if (p.getSupermercado().getId_supermercado() == Supermercado.ID_CARREFOUR){
-                SuperListaDbManager.getInstance().updateProducto(p.getId_producto(), nombre, marca, precioCarrefour, categoria,
-                        p.getSupermercado(), unidad, "imagen");
-            } else if (p.getSupermercado().getId_supermercado() == Supermercado.ID_LA_GALLEGA) {
-                SuperListaDbManager.getInstance().updateProducto(p.getId_producto(), nombre, marca, precioLaGallega, categoria,
-                        p.getSupermercado(), unidad, "imagen");
-            } else if (p.getSupermercado().getId_supermercado() == Supermercado.ID_OTRO) {
-                SuperListaDbManager.getInstance().updateProducto(p.getId_producto(), nombre, marca, precioOtro, categoria,
-                        p.getSupermercado(), unidad, "imagen");
+        builder.setPositiveButton("Modificar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                double precioCoto,precioLaGallega,precioCarrefour,precioOtro;
+                precioCoto = Double.parseDouble(etPrecioProductoCoto.getText().toString());
+                precioLaGallega = Double.parseDouble(etPrecioProductoLaGallega.getText().toString());
+                precioCarrefour = Double.parseDouble(etPrecioProductoCarrefour.getText().toString());
+                precioOtro = Double.parseDouble(etPrecioProductoOtro.getText().toString());
+
+                String unidad = spUnidadProducto.getSelectedItem().toString();
+                Marca marca = adapterMarcas.getItem(spMarcaProducto.getSelectedItemPosition());
+                Categoria categoria = adapterCategorias.getItem(spCategoriaProducto.getSelectedItemPosition());
+                String nombre = etNombreProducto.getText().toString();
+
+                try {
+                    SuperListaDbManager.getInstance().updateProducto(producto.getId_producto(), nombre, marca, precioCoto,
+                            precioLaGallega, precioCarrefour, precioOtro, categoria, unidad, "imagen");
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                finally {
+                    // TODO: 24/05/2017 Mandar a framgent productos
+                    dialogInterface.dismiss();
+                }
             }
-        }
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.show();
+
+
     }
 
 }

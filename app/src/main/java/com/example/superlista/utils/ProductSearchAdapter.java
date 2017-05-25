@@ -61,8 +61,14 @@ public class ProductSearchAdapter extends BaseAdapter{
             holder = (ViewHolderProducto) convertView.getTag();
         }
         Producto prod = data.get(position);
+        String marcaProd = prod.getMarca().getNombre();
         holder.nombreProducto.setText(prod.getNombre());
-        holder.marcaProducto.setText(prod.getMarca());
+        if (marcaProd.equalsIgnoreCase("ninguna")){
+            holder.marcaProducto.setText("");
+        } else {
+            holder.marcaProducto.setText(prod.getMarca().toString());
+        }
+
 
         if(prod.getImagen() != null) {
             holder.imagenProducto.setImageURI(Uri.parse(prod.getImagen()));

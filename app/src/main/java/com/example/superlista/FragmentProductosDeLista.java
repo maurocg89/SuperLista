@@ -151,8 +151,9 @@ public class FragmentProductosDeLista extends Fragment {
             }
         }
         final ProductoPorLista productoPorLista = seleccion.get(0);
-        String unidad = SuperListaDbManager.getInstance().getProductoByNombre(productoPorLista.getProducto().getNombre(),
-                productoPorLista.getProducto().getMarca()).getUnidad();
+        //String unidad = SuperListaDbManager.getInstance().getProductoByNombre(productoPorLista.getProducto().getNombre(),
+        //       productoPorLista.getProducto().getMarca()).getUnidad();
+        String unidad = productoPorLista.getProducto().getUnidad();
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         final EditText cantidad = new EditText(getContext());
@@ -169,7 +170,7 @@ public class FragmentProductosDeLista extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 try{
                     SuperListaDbManager.getInstance().updateCantidadProductoLista(productoPorLista,
-                            Integer.parseInt(cantidad.getText().toString()));
+                            Double.parseDouble(cantidad.getText().toString()));
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -235,17 +236,43 @@ public class FragmentProductosDeLista extends Fragment {
         if (productosPorLista.size() == 0){return 0;}
 
         double total = 0;
+
         for (ProductoPorLista prod: productosPorLista) {
             double cantidad = prod.getCantidad();
-            Producto p = SuperListaDbManager.getInstance().getProductoByNombreSuper(prod.getProducto().getNombre(),
-                    prod.getProducto().getMarca(), id_super);
-            if (p == null){
-                productosFaltantes.add(prod);
-            } else {
-                total += p.getPrecio() * cantidad;
-                prod.getProducto().setPrecio(p.getPrecio());
-                productosPorSuper.add(prod);
+
+            if (id_super == Supermercado.ID_COTO){
+                if (prod.getProducto().getPrecio_coto() > 0){
+                    total += prod.getProducto().getPrecio_coto() * cantidad;
+                    productosPorSuper.add(prod);
+                } else {
+                    productosFaltantes.add(prod);
+                }
             }
+            else if (id_super == Supermercado.ID_LA_GALLEGA){
+                if (prod.getProducto().getPrecio_la_gallega() > 0){
+                    total += prod.getProducto().getPrecio_la_gallega() * cantidad;
+                    productosPorSuper.add(prod);
+                } else {
+                    productosFaltantes.add(prod);
+                }
+            }
+            else if (id_super == Supermercado.ID_CARREFOUR){
+                if (prod.getProducto().getPrecio_carrefour() > 0){
+                    total += prod.getProducto().getPrecio_carrefour() * cantidad;
+                    productosPorSuper.add(prod);
+                } else {
+                    productosFaltantes.add(prod);
+                }
+            }
+            else if (id_super == Supermercado.ID_OTRO){
+                if (prod.getProducto().getPrecio_otro() > 0){
+                    total += prod.getProducto().getPrecio_otro() * cantidad;
+                    productosPorSuper.add(prod);
+                } else {
+                    productosFaltantes.add(prod);
+                }
+            }
+
         }
         return total;
     }
@@ -257,7 +284,7 @@ public class FragmentProductosDeLista extends Fragment {
         btnLaGallega.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bundle.putString(Supermercado.COLUMNA_NOMBRE,"La Gallega");
+                bundle.putInt(Supermercado._ID,  Supermercado.ID_LA_GALLEGA);
                 bundle.putDouble("Total", getTotal(Supermercado.ID_LA_GALLEGA));
                 bundle.putParcelableArrayList("Productos", productosPorSuper);
                 bundle.putParcelableArrayList("Productos Faltantes", productosFaltantes);
@@ -274,7 +301,7 @@ public class FragmentProductosDeLista extends Fragment {
             @Override
             public void onClick(View view) {
 
-                bundle.putString(Supermercado.COLUMNA_NOMBRE,"Coto");
+                bundle.putInt(Supermercado._ID,  Supermercado.ID_COTO);
                 bundle.putDouble("Total", getTotal(Supermercado.ID_COTO));
                 bundle.putParcelableArrayList("Productos", productosPorSuper);
                 bundle.putParcelableArrayList("Productos Faltantes", productosFaltantes);
@@ -291,7 +318,7 @@ public class FragmentProductosDeLista extends Fragment {
             @Override
             public void onClick(View view) {
 
-                bundle.putString(Supermercado.COLUMNA_NOMBRE,"Carrefour");
+                bundle.putInt(Supermercado._ID, Supermercado.ID_CARREFOUR);
                 bundle.putDouble("Total", getTotal(Supermercado.ID_CARREFOUR));
                 bundle.putParcelableArrayList("Productos", productosPorSuper);
                 bundle.putParcelableArrayList("Productos Faltantes", productosFaltantes);
@@ -302,6 +329,7 @@ public class FragmentProductosDeLista extends Fragment {
                 ft.commit();
             }
         });
+        // TODO: 24/05/2017 Agregar super otro
     }
 
     private void llamarFloatingButtonAction(View vista) {

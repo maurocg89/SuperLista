@@ -21,7 +21,7 @@ import com.example.superlista.model.Supermercado;
 import java.util.ArrayList;
 import java.util.List;
 
-
+// TODO: 24/05/2017 setear precio por unidad
 public class FragmentPrecioListaSuper extends Fragment {
 
     private ListView listView;
@@ -30,7 +30,7 @@ public class FragmentPrecioListaSuper extends Fragment {
     private ArrayList<ProductoPorLista> productosFaltantes;
     //private ArrayAdapter<ProductoPorLista> myAdapter;
     private PrecioListaSuperAdapter myAdapter;
-    private String supermercado;
+    private Supermercado supermercado;
 
     @Nullable
     @Override
@@ -47,8 +47,7 @@ public class FragmentPrecioListaSuper extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        supermercado = getArguments().getString(Supermercado.COLUMNA_NOMBRE);
-        getActivity().setTitle(supermercado);
+        getActivity().setTitle(supermercado.getNombre());
     }
 
     private void setData(){
@@ -57,18 +56,20 @@ public class FragmentPrecioListaSuper extends Fragment {
         productosFaltantes = new ArrayList<>();
 
         try {
-
+            int id_super = getArguments().getInt(Supermercado._ID);
+            supermercado = SuperListaDbManager.getInstance().getSupermercadoById(id_super);
             total = getArguments().getDouble("Total", 0);
             productoPorListasSupers = getArguments().getParcelableArrayList("Productos");
             productosFaltantes = getArguments().getParcelableArrayList("Productos Faltantes");
-            for (ProductoPorLista ppl: productosFaltantes) {
-                ppl.getProducto().setPrecio(0);
-                ppl.getProducto().setNombre("Producto Faltante: "+ppl.getProducto().getNombre());
-                productoPorListasSupers.add(ppl);
+            if (productosFaltantes.size() > 0) {
+                for (ProductoPorLista ppl : productosFaltantes) {
+                    ppl.getProducto().setNombre("Producto Faltante: " + ppl.getProducto().getNombre());
+                    productoPorListasSupers.add(ppl);
+                }
             }
-            myAdapter = new PrecioListaSuperAdapter(getActivity(), productoPorListasSupers);
-
+            myAdapter = new PrecioListaSuperAdapter(getActivity(), productoPorListasSupers, supermercado);
             listView.setAdapter(myAdapter);
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -81,11 +82,13 @@ public class FragmentPrecioListaSuper extends Fragment {
         private Context context;
         private ArrayList<ProductoPorLista> productoPorListas;
         private LayoutInflater inflater;
+        private Supermercado supermercado;
 
 
-        public PrecioListaSuperAdapter(Context context, ArrayList<ProductoPorLista> productoPorListas){
+        public PrecioListaSuperAdapter(Context context, ArrayList<ProductoPorLista> productoPorListas, Supermercado supermercado){
             this.context = context;
             this.productoPorListas = productoPorListas;
+            this.supermercado = supermercado;
         }
 
         @Override
@@ -122,7 +125,22 @@ public class FragmentPrecioListaSuper extends Fragment {
 
             ProductoPorLista productoPorLista = productoPorListas.get(i);
             holder.producto.setText(productoPorLista.toString());
-            holder.precioTotal.setText(String.valueOf(productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio()));
+            switch (supermercado.getId_supermercado()){
+                case Supermercado.ID_COTO: holder.precioTotal.setText(String.valueOf
+                        (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_coto()));
+                    break;
+                case Supermercado.ID_LA_GALLEGA: holder.precioTotal.setText(String.valueOf
+                        (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_la_gallega()));
+                    break;
+                case Supermercado.ID_CARREFOUR: holder.precioTotal.setText(String.valueOf
+                        (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_carrefour()));
+                    break;
+                case Supermercado.ID_OTRO: holder.precioTotal.setText(String.valueOf
+                        (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_otro()));
+                    break;
+                default: holder.precioTotal.setText("0");
+                    break;
+            }
             return view;
         }
     }

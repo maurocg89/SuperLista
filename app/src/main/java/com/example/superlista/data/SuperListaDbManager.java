@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.superlista.model.Categoria;
 import com.example.superlista.model.Lista;
+import com.example.superlista.model.Marca;
 import com.example.superlista.model.Producto;
 import com.example.superlista.model.ProductoPorLista;
 import com.example.superlista.model.Supermercado;
@@ -117,38 +118,22 @@ public class SuperListaDbManager {
         return productos;
     }
 
-    public ArrayList<String> getAllMarcasProductoDistinct(){
-        QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
-        queryBuilder.distinct().selectColumns(Producto.COLUMNA_MARCA);
-        List<Producto> productos = null;
-        ArrayList<String> marcas = new ArrayList<>();
-        try {
-            productos = queryBuilder.query();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        for (Producto p : productos) {
-            marcas.add(p.getMarca());
-        }
 
-        return marcas;
-    }
-
-    // TODO: No setea los ids de los productos solo la marca y el nombre
-    public List<Producto> getAllProductosByNameDistinct(){
+    // No setea los ids de los productos solo la marca y el nombre
+   /* public List<Producto> getAllProductosByNameDistinct(){
         QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
-        queryBuilder.distinct().selectColumns(Producto.COLUMNA_MARCA, Producto.COLUMNA_NOMBRE);
+        queryBuilder.distinct().selectColumns(Producto.COLUMNA_MARCA_FKEY, Producto.COLUMNA_NOMBRE);
         List<Producto> productos = null;
         try {
             /*GenericRawResults<String[]> rawResults =
-                    getHelper().getProductoDao().queryRaw("SELECT DISTINCT "+Producto.COLUMNA_NOMBRE+" FROM producto");*/
+                    getHelper().getProductoDao().queryRaw("SELECT DISTINCT "+Producto.COLUMNA_NOMBRE+" FROM producto");
             productos = queryBuilder.query();
         }catch (SQLException e){
             e.printStackTrace();
         }
         return productos;
     }
-
+*/
 
 
     public Producto getProductoById(int id_producto){
@@ -161,24 +146,13 @@ public class SuperListaDbManager {
         return producto;
     }
 
-    public List<Producto> getProductosByName(String nombre, String marca){
-        QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
-        List<Producto> productos = null;
-        try {
-            queryBuilder.where().eq(Producto.COLUMNA_NOMBRE, nombre).and().eq(Producto.COLUMNA_MARCA, marca);
-            productos = queryBuilder.query();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return productos;
-    }
 
-    public Producto getProductoByNombre(String nombre, String marca){
+    public Producto getProductoByNombre(String nombre, Marca marca){
         QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
         //List<Producto> productos = null;
         Producto producto = null;
         try {
-            queryBuilder.where().eq(Producto.COLUMNA_NOMBRE, nombre).and().eq(Producto.COLUMNA_MARCA, marca);
+            queryBuilder.where().eq(Producto.COLUMNA_NOMBRE, nombre).and().eq(Producto.COLUMNA_MARCA_FKEY, marca.getId_Marca());
             producto = queryBuilder.queryForFirst();
             //productos = queryBuilder.query();
         }catch (SQLException e){
@@ -188,7 +162,7 @@ public class SuperListaDbManager {
     }
 
 
-    public Producto getProductoByNombreSuper(String nombre, String marca, int id_super){
+  /*  public Producto getProductoByNombreSuper(String nombre, String marca, int id_super){
         QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
        // QueryBuilder<Supermercado, Integer> queryBuilderSuper = getHelper().getSupermercadoDao().queryBuilder();
         Producto producto = null;
@@ -210,7 +184,7 @@ public class SuperListaDbManager {
         }
         return producto;
     }
-
+*/
     public void addProducto(Producto producto){
         try {
             getHelper().getProductoDao().create(producto);
@@ -227,6 +201,14 @@ public class SuperListaDbManager {
         }
     }
 */
+    public void deleteProducto(Producto producto){
+        try {
+            getHelper().getProductoDao().delete(producto);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
     public void deleteProductoById(int id_producto){
         try {
             getHelper().getProductoDao().deleteById(id_producto);
@@ -243,7 +225,7 @@ public class SuperListaDbManager {
         }
     }
 
-    public void deleteProductosByNombre(ArrayList<Producto>productos){
+    /*public void deleteProductosByNombre(ArrayList<Producto>productos){
         DeleteBuilder<Producto, Integer> deleteBuilder = getHelper().getProductoDao().deleteBuilder();
         try {
             for (Producto p: productos) {
@@ -254,16 +236,20 @@ public class SuperListaDbManager {
         }catch (SQLException e){
             e.printStackTrace();
         }
-    }
+    }*/
 
-    public void updateProducto(int id_producto, String nombre_nuevo, String marca_nueva, double precio_nuevo, Categoria categoria_nueva, Supermercado supermercado_nuevo, String unidad, String imagen){
+    public void updateProducto(int id_producto, String nombre_nuevo, Marca marca_nueva, double precio_coto_nuevo,
+                               double precio_la_gallega_nuevo, double precio_carrefour_nuevo, double precio_otro_nuevo,
+                               Categoria categoria_nueva, String unidad, String imagen){
         try {
             Producto producto = getProductoById(id_producto);
             producto.setNombre(nombre_nuevo);
             producto.setMarca(marca_nueva);
-            producto.setPrecio(precio_nuevo);
+            producto.setPrecio_coto(precio_coto_nuevo);
+            producto.setPrecio_la_gallega(precio_la_gallega_nuevo);
+            producto.setPrecio_carrefour(precio_carrefour_nuevo);
+            producto.setPrecio_otro(precio_otro_nuevo);
             producto.setCategoria(categoria_nueva);
-            producto.setSupermercado(supermercado_nuevo);
             producto.setUnidad(unidad);
             //producto.setImagen(imagen);
             getHelper().getProductoDao().update(producto);
@@ -273,12 +259,11 @@ public class SuperListaDbManager {
 
     }
 
-    public List<Producto> getProductoByCategoriaDistinct(int id_categoria){
+    public List<Producto> getProductoByCategoria(int id_categoria){
         List<Producto> productos = null;
         try {
             QueryBuilder<Producto, Integer> queryBuilder = getHelper().getProductoDao().queryBuilder();
             queryBuilder.where().eq(Producto.COLUMNA_CATEGORIA_FKEY, id_categoria);
-            queryBuilder.distinct().selectColumns(Producto.COLUMNA_NOMBRE, Producto.COLUMNA_MARCA);
             /*GenericRawResults<String[]> rawResults =
                     getHelper().getProductoDao().queryRaw("SELECT DISTINCT "+Producto.COLUMNA_NOMBRE+" FROM producto");*/
             productos = queryBuilder.query();
@@ -289,6 +274,58 @@ public class SuperListaDbManager {
     }
 
     // </editor-fold>
+
+    //<editor-fold desc="Acciones Marcas">
+    public List<Marca> getAllMarcas(){
+        List<Marca> marcas = null;
+        try {
+            marcas = getHelper().getMarcaDao().queryForAll();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return marcas;
+    }
+
+    public Marca getMarcaById(int id_marca){
+        Marca marca = null;
+        try {
+            marca = getHelper().getMarcaDao().queryForId(id_marca);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return marca;
+    }
+
+    public Marca getMarcaByNombre(String nombre_marca){
+        Marca marca = null;
+        QueryBuilder<Marca, Integer> queryBuilder = getHelper().getMarcaDao().queryBuilder();
+        try {
+            queryBuilder.where().eq(Marca.COLUMNA_NOMBRE, nombre_marca);
+            marca = queryBuilder.queryForFirst();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return marca;
+    }
+
+    public void addMarca(Marca marca){
+        try {
+            getHelper().getMarcaDao().create(marca);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteMarca(int id_marca){
+        try {
+            getHelper().getMarcaDao().deleteById(id_marca);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    //</editor-fold>
 
     // <editor-fold desc = "Acciones Categorias">
     public List<Categoria> getAllCategorias(){
@@ -409,9 +446,6 @@ public class SuperListaDbManager {
         return productos;
 
     }
-
-    //// TODO: Cambiar modelo producto, agregar 4 precios (uno por super)
-
 
     // Devuelve todos los productos de una lista
     public List<Producto> getProductosPorLista(int id_lista){

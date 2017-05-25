@@ -100,10 +100,10 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
             e.printStackTrace();
         }
         if (cod_categoria != 0) {
-            productos = SuperListaDbManager.getInstance().getProductoByCategoriaDistinct(cod_categoria);
+            productos = SuperListaDbManager.getInstance().getProductoByCategoria(cod_categoria);
         }
         else{
-            productos = SuperListaDbManager.getInstance().getAllProductosByNameDistinct();
+            productos = SuperListaDbManager.getInstance().getAllProductos();
         }
 
         productListAdapter = new ProductListAdapter(getActivity(), productos);
@@ -222,10 +222,12 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
                     Producto prod = null;
                     if (isSearching){
                         prod = searchAdapter.getItem(position);
-                        prod = SuperListaDbManager.getInstance().getProductoByNombre(prod.getNombre(), prod.getMarca());
+                        // TODO: 24/05/2017 Probar si guarda los ids de productos
+                        System.out.println(prod.getId_producto());
+                        //prod = SuperListaDbManager.getInstance().getProductoByNombre(prod.getNombre(), prod.getMarca());
                     } else {
                         prod = productListAdapter.getItem(position);
-                        prod = SuperListaDbManager.getInstance().getProductoByNombre(prod.getNombre(), prod.getMarca());
+                        //prod = SuperListaDbManager.getInstance().getProductoByNombre(prod.getNombre(), prod.getMarca());
                     }
                     bundle.putParcelable("producto", prod);
                     fragmentProducto.setArguments(bundle);
@@ -285,7 +287,7 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
                 try{
                     SparseBooleanArray array = productListAdapter.getSelectedIds();
                     ArrayList<Producto> seleccion = new ArrayList<>();
-                    List<ProductoPorLista> productosPorLista = SuperListaDbManager.getInstance().getAllProductosListas();
+                    //List<ProductoPorLista> productosPorLista = SuperListaDbManager.getInstance().getAllProductosListas();
                     for (int i = 0; i < array.size(); i++){
                         // Posicion del contacto en el adaptador
                         int pos = array.keyAt(i);
@@ -293,7 +295,7 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
                             seleccion.add(productListAdapter.getItem(pos));
                         }
                     }
-                    SuperListaDbManager.getInstance().deleteProductosByNombre(seleccion);
+                    SuperListaDbManager.getInstance().deleteProductos(seleccion);
                     productos.removeAll(seleccion);
                     productListAdapter.notifyDataSetChanged();
                     mActionMode.finish();

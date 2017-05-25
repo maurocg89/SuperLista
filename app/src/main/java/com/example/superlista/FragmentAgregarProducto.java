@@ -1,7 +1,6 @@
 package com.example.superlista;
 
 
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -44,6 +43,7 @@ import android.widget.Toast;
 
 import com.example.superlista.data.SuperListaDbManager;
 import com.example.superlista.model.Categoria;
+import com.example.superlista.model.Marca;
 import com.example.superlista.model.Producto;
 import com.example.superlista.model.Supermercado;
 
@@ -61,23 +61,18 @@ import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 
-public class FragmentAgregarProducto extends Fragment implements View.OnClickListener, TextView.OnEditorActionListener{
+public class FragmentAgregarProducto extends Fragment implements View.OnClickListener, TextView.OnEditorActionListener {
 
     Fragment fragmento = null;
 
     private List<Categoria> listCategorias;
-    private List<Producto> listProductos;
-    private List<Producto> listProductos2;
     private List<Supermercado> listSupers;
-
-    private ArrayList<String> nombresCategorias, nombresMarcas, nombresSupers, nombresUnidades;
+    private List<Marca> marcas;
 
     private ArrayAdapter<String> adapterUnidad;
-    private ArrayAdapter adapterCategoria;
-    private ArrayAdapter adapterMarca;
-    private ArrayAdapter<String> adapterSuper ;
-
-    HashSet<String> hs;
+    private ArrayAdapter<Categoria> adapterCategoria;
+    private ArrayAdapter<Marca> adapterMarca;
+    private ArrayAdapter<Supermercado> adapterSuper;
 
     private static String APP_DIRECTORY = "SuperListaApp/";
     private static String MEDIA_DIRECTORY = APP_DIRECTORY + "PictureApp";
@@ -88,18 +83,16 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
     private final int PHOTO_CODE = 200; // sirve para cuando mandemos a llamar la aplicacion de fotos
     private final int SELECT_PICTURE = 300;
 
-    private String cadCategoria, cadUnidad, cadMarca, cadSuper, mPath, direccion_imagen, nom, aux, cadNuevaMarca;    //mPath lo voy a usar para saber en que ruta se guardo la imagen
+    private String mPath, unidad, direccion_imagen, nombreProducto, aux; //mPath lo voy a usar para saber en que ruta se guardo la imagen
     private Categoria categoria;
     private Supermercado supermercado;
-    private boolean validacionProd = true;
+    private Marca marca;
 
     private LinearLayout linearLayoutProd;
     private EditText nomProd, valorPrecio;
     private Button agregarProducto;
     private Spinner sCategoria, sMarca, sSupermercado, sUnidad;
     private ImageView imageProd, botonMicrofono;
-
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -117,28 +110,25 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
     }
 
 
-
-    private void iniciarIU(View vista){
-
+    private void iniciarIU(View vista) {
 
         linearLayoutProd = (LinearLayout) vista.findViewById(R.id.linearProducto);
 
         botonMicrofono = (ImageView) vista.findViewById(R.id.imageViewMicrofono);
         botonMicrofono.setOnClickListener(this);
 
-        nomProd =  (EditText) vista.findViewById(R.id.editTextNombreProd);
-        valorPrecio =  (EditText) vista.findViewById(R.id.editTextValorPrecio);
+        nomProd = (EditText) vista.findViewById(R.id.editTextNombreProd);
+        valorPrecio = (EditText) vista.findViewById(R.id.editTextValorPrecio);
 
         imageProd = (ImageView) vista.findViewById(R.id.imageViewFotoProd);
         imageProd.setOnClickListener(this);
 
 
-        if (mayRequestStoragePermission()){
+        if (mayRequestStoragePermission()) {
             imageProd.setEnabled(true);
-        }else{
+        } else {
             imageProd.setEnabled(false);
         }
-
 
 
         agregarProducto = (Button) vista.findViewById(R.id.buttonAgregarProd);
@@ -159,67 +149,55 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     private boolean mayRequestStoragePermission() {//con este metodo le otorgo los permisos de acuerdo a la version de android
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M){// toda version menor a la 6.0 no necesita permisos, los mismo son agarrados del manifest
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {// toda version menor a la 6.0 no necesita permisos, los mismo son agarrados del manifest
 
             return true;
         }
         if (((ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) == PackageManager.PERMISSION_GRANTED)
-                && ((ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)) == PackageManager.PERMISSION_GRANTED)){
-                //si los permisos ya estan aceptados regresamos un true
+                && ((ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)) == PackageManager.PERMISSION_GRANTED)) {
+            //si los permisos ya estan aceptados regresamos un true
             return true;
-         }
-         if((shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) || (shouldShowRequestPermissionRationale(CAMERA))){
-             Snackbar.make(linearLayoutProd, "Los permisos son nacesarios para poder usar la app", Snackbar.LENGTH_INDEFINITE)
-                     .setAction(android.R.string.ok, new View.OnClickListener() {
-                         @Override
-                         public void onClick(View v) {
-                             requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
-                         }
-                     }).show();
+        }
+        if ((shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) || (shouldShowRequestPermissionRationale(CAMERA))) {
+            Snackbar.make(linearLayoutProd, "Los permisos son nacesarios para poder usar la app", Snackbar.LENGTH_INDEFINITE)
+                    .setAction(android.R.string.ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+                        }
+                    }).show();
 
-         }else{
-             requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
-         }
+        } else {
+            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+        }
 
-       return false;
+        return false;
     }
-
 
     @Override
     public void onClick(View v) {
 
-        if (v == agregarProducto){
+        if (v == agregarProducto) {
 
-            nom = nomProd.getText().toString();
-            aux= nom.trim();
+            nombreProducto = nomProd.getText().toString();
+            aux = nombreProducto.trim();
 
-            if (aux.length() > 0){ //verificacion para que el campo nombre no sea vacio
-
-                check_exist_addProducto(
-                        nom,
-                        cadMarca,
-                        Double.parseDouble(valorPrecio.getText().toString()),
-                        categoria,
-                        supermercado,
-                        direccion_imagen,
-                        cadUnidad
-                );
-            }else{
+            if (aux.length() > 0) { //verificacion para que el campo nombre no sea vacio
+                check_exist_addProducto(nombreProducto, marca);
+            } else {
                 Toast.makeText(getContext(), "El Nombre no puede estar vacio", Toast.LENGTH_SHORT).show();
             }
 
-        }else if(v == imageProd){
+        } else if (v == imageProd) {
 
             mostrarOpciones();
 
-        }else if(v == botonMicrofono){
+        } else if (v == botonMicrofono) {
             btnOpenMic();
         }
     }
 
-
-
-    private void mostrarOpciones(){
+    private void mostrarOpciones() {
 
         final CharSequence[] opcion = {"-Tomar Foto", "-Elegir de Galeria", "-Cancelar"};
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -228,14 +206,14 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (opcion[which] == "-Tomar Foto"){
+                if (opcion[which] == "-Tomar Foto") {
                     abrirCamara();
-                }else if(opcion[which] == "-Elegir de Galeria"){
+                } else if (opcion[which] == "-Elegir de Galeria") {
                     //ACTION_PICK tiene la opcion de abrir un archivo, y external content uri lanza el volumen de almacenamiento del dispositivo
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*"); //aca le decimos que muestre todos los archivos de tipo imagen
                     startActivityForResult(intent.createChooser(intent, "Selecciona app de imágen:"), SELECT_PICTURE);
-                }else{
+                } else {
                     dialog.dismiss(); // esta perteneceria a la opcion de cancelar
                 }
             }
@@ -250,11 +228,11 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY); //file guarda toda la ruta del almacenamiento externo del dispositivo
         boolean isDirectoryCreated = file.exists(); //esto nos va a decir si PictureApp ya esta creado
 
-        if (!isDirectoryCreated){
+        if (!isDirectoryCreated) {
             isDirectoryCreated = file.mkdirs();
         }
 
-        if (isDirectoryCreated){
+        if (isDirectoryCreated) {
             Long timestamp = System.currentTimeMillis() / 1000; //con esto obtengo la fecha
             String imageName = timestamp.toString() + ".jpg"; //aca asigno el nombre a la imagen y le pongo la extension jpg
 
@@ -271,14 +249,13 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     }
 
-
     @Override
     //con el metodo onActivityResult manejamos las respuestas de la camara, galeria, speaker etc
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK){//el RESULT_OK significa si la respuesta que nos llega esta bien o sea sin errores
-            switch (requestCode){
+        if (resultCode == RESULT_OK) {//el RESULT_OK significa si la respuesta que nos llega esta bien o sea sin errores
+            switch (requestCode) {
                 case PHOTO_CODE:
                     //el Scan lo que hace es que una vez que guarda la imagen, escanea la ruta ya que sino la misma no apararece en la galeria
                     MediaScannerConnection.scanFile(
@@ -289,8 +266,8 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
                                 @Override
                                 public void onScanCompleted(String path, Uri uri) {
                                     //estos logs son meramente informativos
-                                    Log.i("Almacenamiento Externo", "Escaneada " + path );
-                                    Log.i("Almacenamiento Externo", "-> Uri = " + uri );
+                                    Log.i("Almacenamiento Externo", "Escaneada " + path);
+                                    Log.i("Almacenamiento Externo", "-> Uri = " + uri);
                                     direccion_imagen = uri.toString();
                                 }
                             });
@@ -298,7 +275,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
                     //una vez escaneada la hay que ponerlo en el imageview
                     Bitmap bitmap = BitmapFactory.decodeFile(mPath); // lo que hace esta linea es traer la ruta en donde esta la imagen y la decodifica y la guarda en un bitmap
                     imageProd.setImageBitmap(bitmap);
-                    Log.i("mPath", "Escaneada " + mPath );
+                    Log.i("mPath", "Escaneada " + mPath);
 
                     break;
 
@@ -312,7 +289,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
                     break;
 
                 case REQ_CODE_SPEECH_OUTPUT:
-                    if (data != null){
+                    if (data != null) {
                         ArrayList<String> voiceInText = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                         nomProd.setText(voiceInText.get(0));
                     }
@@ -323,13 +300,12 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == MY_PERMISSIONS){
-            if (grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == MY_PERMISSIONS) {
+            if (grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(getContext(), "Permisos Aceptados", Toast.LENGTH_SHORT).show();
                 imageProd.setEnabled(true);
             }
@@ -337,57 +313,50 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
     }
 
 
-
     //<editor-fold desc="Verificaciones y agregar Producto">
-    public void check_exist_addProducto(String nombre, String marca, double precio, Categoria categoria, Supermercado supermercado, String imagen, String unidad){
+    public void check_exist_addProducto(String nombre, Marca m) {
+        Producto prod = SuperListaDbManager.getInstance().getProductoByNombre(nombre, m);
+        if (prod != null) {
+            final CharSequence[] opcion = {"OK"};
+            final AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
+            builder2.setTitle("Ya hay registrado un producto de igual nombre");
+            builder2.setItems(opcion, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (opcion[which] == "OK") {
+                        dialog.dismiss();
+                    }
+                }
+            });
+            builder2.show();
+        } else {
+            unidad = sUnidad.getSelectedItem().toString();
+            categoria = adapterCategoria.getItem(sCategoria.getSelectedItemPosition());
+            marca = adapterMarca.getItem(sMarca.getSelectedItemPosition());
+            supermercado = adapterSuper.getItem(sSupermercado.getSelectedItemPosition());
+            double precio = Double.parseDouble(valorPrecio.getText().toString());
 
-       listProductos =  SuperListaDbManager.getInstance().getAllProductos();
+            Producto nuevoProd = new Producto(nombreProducto, marca, 0, 0, 0, 0, categoria, unidad, "direccion_imagen");
+            switch (supermercado.getId_supermercado()){
+                case Supermercado.ID_COTO: nuevoProd.setPrecio_coto(precio); break;
+                case Supermercado.ID_CARREFOUR: nuevoProd.setPrecio_carrefour(precio); break;
+                case Supermercado.ID_LA_GALLEGA: nuevoProd.setPrecio_la_gallega(precio); break;
+                case Supermercado.ID_OTRO: nuevoProd.setPrecio_otro(precio); break;
+            }
+            SuperListaDbManager.getInstance().addProducto(nuevoProd);
+            Toast.makeText(getContext(), "Producto Agregado", Toast.LENGTH_SHORT).show();
 
-       for (Producto listaProd: listProductos) {
+            //TODO: no me gusta como esta implementado limpiarCampos aca, hay que ver si limpiamos los campos para que cargue otro o lo mandamos directamente al FagmentProdutos
+            //limpiarCampos();
+            llamarFragmentProd();
+        }
+    }
 
-           if(Objects.equals(listaProd.getNombre(), nombre)
-                   && Objects.equals(listaProd.getMarca(), marca)
-                   && Objects.equals(listaProd.getPrecio(), precio)
-                   && Objects.equals(listaProd.getCategoria(), categoria)
-                   && Objects.equals(listaProd.getSupermercado(), supermercado)
-                   && Objects.equals(listaProd.getUnidad(), unidad)){
 
-               final CharSequence[] opcion = {"OK"};
-               final AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
-               builder2.setTitle("Ya hay registrado un producto igual");
-               builder2.setItems(opcion, new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialog, int which) {
-                       if (opcion[which] == "OK") {
-                           dialog.dismiss();
-                       }
-                   }
-               });
-               builder2.show();
-               validacionProd = true;
-               break;
-           }else{
-               validacionProd = false;
-           }
-       }
-
-       if (!validacionProd) {
-
-           Producto nuevoProd = new Producto(nombre, marca, precio, categoria, supermercado, imagen, unidad);
-           SuperListaDbManager.getInstance().addProducto(nuevoProd);
-           Toast.makeText(getContext(), "Producto Agregado", Toast.LENGTH_SHORT).show();
-
-           //TODO: no me gusta como esta implementado limpiarCampos aca, hay que ver si limpiamos los campos para que cargue otro o lo mandamos directamente al FagmentProdutos
-           //limpiarCampos();
-           llamarFragmentProd();
-
-       }
-
-   }
     //</editor-fold>
 
 
-    public void limpiarCampos(){//metodo que setea todos los campos nuevamente por default
+    public void limpiarCampos() {//metodo que setea todos los campos nuevamente por default
 
         nomProd.getText().clear();
         valorPrecio.getText().clear();
@@ -399,112 +368,54 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     }
 
-    public void llamarFragmentProd(){
+    public void llamarFragmentProd() {
 
         fragmento = new FragmentProductos();
-        FragmentTransaction ft =  getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.contenedor, fragmento);
         ft.commit();
     }
 
+    //<editor-fold desc="Spinners">
+    private void setSpinnerUnidad() {
 
-    //<editor-fold desc="Spinner Unidad">
-    private void setSpinnerUnidad(){
-    // TODO: usar el array de unidades de la clase productos
-        nombresUnidades = new ArrayList<String>();
-
-        listProductos2 =  SuperListaDbManager.getInstance().getAllProductos();
-
-        for (Producto listaUnid: listProductos2) {
-
-            nombresUnidades.add(listaUnid.getUnidad());
-        }
-
-        acomodarArrayList(nombresUnidades);
-
-        adapterUnidad = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, nombresUnidades);
+        adapterUnidad = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, Producto.UNIDADES);
         adapterUnidad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sUnidad.setAdapter(adapterUnidad);
 
-
-        sUnidad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                cadUnidad = String.valueOf(sUnidad.getSelectedItem());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-
     }
-    //</editor-fold>
 
-    //<editor-fold desc="Spinner Categoria">
-    private void setSpinnerCategoria(){
-
-        nombresCategorias = new ArrayList<String>();
-
+    private void setSpinnerCategoria() {
         listCategorias = SuperListaDbManager.getInstance().getAllCategorias();
 
-        for (Categoria listaCat: listCategorias) {
-
-            nombresCategorias.add(listaCat.getNombre());
-        }
-        Collections.sort(nombresCategorias);
-
-        adapterCategoria = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, nombresCategorias);
+        adapterCategoria = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, listCategorias);
         adapterCategoria.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sCategoria.setAdapter(adapterCategoria);
-
-        sCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                cadCategoria = String.valueOf(sCategoria.getSelectedItem());
-                categoria = SuperListaDbManager.getInstance().getCategoriaByNombre(cadCategoria);
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        // Asigno la opcion "otros" por defecto
+        int pos = adapterCategoria.getPosition(SuperListaDbManager.getInstance().getCategoriaById(Categoria.ID_CATEGORIA_OTROS));
+        sCategoria.setSelection(pos);
 
     }
-    //</editor-fold>
 
-    //<editor-fold desc="Spinner Marca">
-    private void setSpinnerMarca(){
-        // TODO: usar metodo getAllMarcasDistinct() 
-        nombresMarcas = new ArrayList<String>();
+    private void setSpinnerMarca() {
+        marcas = SuperListaDbManager.getInstance().getAllMarcas();
+        Marca nuevaMarca = new Marca("Nueva Marca");
+        marcas.add(0, nuevaMarca);
 
-        listProductos =  SuperListaDbManager.getInstance().getAllProductos();
-
-        for (Producto listaMar: listProductos) {
-
-            nombresMarcas.add(listaMar.getMarca());
-        }
-
-        acomodarArrayList(nombresMarcas);
-        nombresMarcas.add(1, "Nueva Marca");
-
-        adapterMarca = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, nombresMarcas);
+        adapterMarca = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, marcas);
         adapterMarca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sMarca.setAdapter(adapterMarca);
-
+        // Asigno la opcion "ninguna" por defecto
+        int pos = adapterMarca.getPosition(SuperListaDbManager.getInstance().getMarcaById(Marca.ID_MARCA_NINGUNA));
+        sMarca.setSelection(pos);
 
         sMarca.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                cadMarca = String.valueOf(sMarca.getSelectedItem());
-                if (Objects.equals(cadMarca, "Nueva Marca")){
+                marca = adapterMarca.getItem(sMarca.getSelectedItemPosition());
+                //if (marcaSelected != null){}
+                if (marca.getNombre().equalsIgnoreCase("Nueva Marca")) {
 
                     View v = LayoutInflater.from(getActivity()).inflate(R.layout.alert_dialog_add_marca, null);
 
@@ -528,25 +439,23 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
                             positivo.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    cadNuevaMarca = mEditText.getText().toString();
-                                    if(cadNuevaMarca.trim().length() > 0){
-
-                                        for (int i = 1; i <nombresMarcas.size(); i ++){
-                                            if (Objects.equals(cadNuevaMarca, nombresMarcas.get(i))){
-                                                Toast.makeText(getContext(), "Marca existente." , Toast.LENGTH_SHORT).show();
-                                                validacionProd = true;
-                                                break;
-                                            }else{
-                                                validacionProd =  false;
-                                            }
-                                        }
-                                        if (!validacionProd){
-                                            nombresMarcas.add(0, cadNuevaMarca);
-                                            Toast.makeText(getContext(), "Marca agregada" , Toast.LENGTH_SHORT).show();
+                                    String nuevaMarca = mEditText.getText().toString();
+                                    Marca validMarca;
+                                    if (nuevaMarca.trim().length() > 0) {
+                                        // Busca en la base de datos si hay alguna marca con ese nombre
+                                        validMarca = SuperListaDbManager.getInstance().getMarcaByNombre(nuevaMarca);
+                                        if (validMarca != null) {
+                                            Toast.makeText(getContext(), "Marca existente.", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Marca marcaNueva = new Marca(nuevaMarca);
+                                            SuperListaDbManager.getInstance().addMarca(marcaNueva);
+                                            // TODO: 24/05/2017 Fijarse si hay que actualizar el adaptador
+                                            marcas.add(0, marcaNueva);
+                                            Toast.makeText(getContext(), "Marca agregada", Toast.LENGTH_SHORT).show();
                                             dialog.dismiss();
                                         }
 
-                                    }else{
+                                    } else {
                                         Toast.makeText(getContext(), "Debe colocar una Marca.", Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -567,82 +476,30 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
 
     }
-    //</editor-fold>
 
-    //<editor-fold desc="Acomodar ArrayList">
-    private void acomodarArrayList (ArrayList<String> arrayList){
-
-        //elimino elementos duplicados del ArrayList
-        hs = new HashSet<String>();
-        hs.addAll(arrayList);
-        arrayList.clear();
-        arrayList.add(0, "-Otro-");
-        arrayList.addAll(hs);
-
-        //ordeno alfabeticamente los elementos del ArrayList
-        Collections.sort(arrayList);
-
-        //elimino campos vacios del ArrayList
-        for (int i = 0; i < arrayList.size(); i++) {
-
-            if(arrayList.get(i).trim().length() == 0){
-                arrayList.remove(i);
-            }
-        }
-    }
-    //</editor-fold>
-
-    //<editor-fold desc="Spinner Supermercado">
-    private void setSpinnerSupermercado(){
-
-        nombresSupers = new ArrayList<String>();
-
+    private void setSpinnerSupermercado() {
         listSupers = SuperListaDbManager.getInstance().getAllSupermercados();
 
-        for (Supermercado listaSup: listSupers) {
-
-            nombresSupers.add(listaSup.getNombre());
-        }
-        Collections.sort(nombresSupers);
-
-        adapterSuper = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, nombresSupers);
+        adapterSuper = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, listSupers);
         adapterSuper.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sSupermercado.setAdapter(adapterSuper);
-
-        sSupermercado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                cadSuper = String.valueOf(sSupermercado.getSelectedItem());
-                supermercado = SuperListaDbManager.getInstance().getSupermercadoByNombre(cadSuper);
-               /* for (Supermercado listaSup: listSupers) {
-                    if (listaSup.getNombre().equals(cadSuper)){
-                        numberIDsup =  listaSup.getId_supermercado();
-                        break;
-                    }
-                }*/
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        // Asigno la opcion "otro" por defecto
+        int pos = adapterSuper.getPosition(SuperListaDbManager.getInstance().getSupermercadoById(Supermercado.ID_OTRO));
+        sSupermercado.setSelection(pos);
 
     }
     //</editor-fold>
 
     //<editor-fold desc="Voice to text">
-    private void btnOpenMic(){
+    private void btnOpenMic() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Hable ahora...");
 
-
-        try{
+        try {
             startActivityForResult(intent, REQ_CODE_SPEECH_OUTPUT);
-        } catch (ActivityNotFoundException anfe){
+        } catch (ActivityNotFoundException anfe) {
             anfe.printStackTrace();
         }
     }
@@ -654,13 +511,6 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
 
     //</editor-fold>
-
-
-
-
-
-
-
 
 
 }

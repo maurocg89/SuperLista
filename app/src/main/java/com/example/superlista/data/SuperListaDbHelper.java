@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteException;
 import com.example.superlista.FragmentListas;
 import com.example.superlista.model.Categoria;
 import com.example.superlista.model.Lista;
+import com.example.superlista.model.Marca;
 import com.example.superlista.model.Producto;
 import com.example.superlista.model.ProductoPorLista;
 import com.example.superlista.model.Supermercado;
@@ -24,7 +25,7 @@ import java.io.OutputStream;
 public class SuperListaDbHelper extends OrmLiteSqliteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "superLista.db";
+    private static final String DATABASE_NAME = "superListaV2.db";
     String DATABASE_PATH = null;
     private final Context myContext;
     private SQLiteDatabase myDataBase;
@@ -35,6 +36,7 @@ public class SuperListaDbHelper extends OrmLiteSqliteOpenHelper {
     private Dao<Lista, Integer> listaDao = null;
     private Dao<Supermercado, Integer> supermercadoDao = null;
     private Dao<ProductoPorLista, Integer> productoPorListaDao = null;
+    private Dao<Marca, Integer> marcaDao = null;
 
 
     public SuperListaDbHelper(Context context){
@@ -163,6 +165,16 @@ public class SuperListaDbHelper extends OrmLiteSqliteOpenHelper {
             }
         }
         return productoPorListaDao;
+    }
+    public Dao<Marca, Integer> getMarcaDao() {
+        if (marcaDao == null) {
+            try {
+                marcaDao = getDao(Marca.class);
+            }catch (java.sql.SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return marcaDao;
     }
 
     @Override

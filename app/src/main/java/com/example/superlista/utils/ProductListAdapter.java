@@ -85,14 +85,19 @@ public class ProductListAdapter extends BaseAdapter{
         }
 
         Producto prod = data.get(position);
+        String marcaProd = prod.getMarca().getNombre();
         holder.nombreProducto.setText(prod.getNombre());
-        holder.marcaProducto.setText(prod.getMarca());
+        if (marcaProd.equalsIgnoreCase("ninguna")){
+            holder.marcaProducto.setText("");
+        } else {
+            holder.marcaProducto.setText(prod.getMarca().toString());
+        }
         /*String imagen = SuperListaDbManager.getInstance().getProductoByNombre(prod.getNombre(), prod.getMarca()).getImagen();
         if(imagen != null) {
             holder.imagenProducto.setImageURI(Uri.parse(prod.getImagen()));
         }*/
         // Cambia el color de fondo de los items seleccionados
-        convertView.setBackgroundColor(mSelectedItemsIds.get(position) ? Color.parseColor("#a9a9a9") : Color.TRANSPARENT);
+        convertView.setBackgroundColor(mSelectedItemsIds.get(position) ? 0x9934B5E4 : Color.TRANSPARENT);
 
 
         return convertView;
