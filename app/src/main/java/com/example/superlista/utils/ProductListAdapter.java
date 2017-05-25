@@ -3,6 +3,7 @@ package com.example.superlista.utils;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,6 +93,16 @@ public class ProductListAdapter extends BaseAdapter{
         } else {
             holder.marcaProducto.setText(prod.getMarca().toString());
         }
+
+        if(prod.getImagen() != null) {
+            String direc_imagen = prod.getImagen();
+            Uri imagen = Uri.parse(direc_imagen);
+
+            Log.i("imagen", "resultado: " + imagen);
+
+            holder.imagenProducto.setImageURI(imagen);
+        }
+
         /*String imagen = SuperListaDbManager.getInstance().getProductoByNombre(prod.getNombre(), prod.getMarca()).getImagen();
         if(imagen != null) {
             holder.imagenProducto.setImageURI(Uri.parse(prod.getImagen()));

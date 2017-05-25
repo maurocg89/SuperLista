@@ -87,6 +87,7 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle(R.string.item_productos);
         if (cod_categoria != 0){
+
             Categoria categoria = SuperListaDbManager.getInstance().getCategoriaById(cod_categoria);
             getActivity().setTitle("Productos de " + categoria.getNombre());
         }

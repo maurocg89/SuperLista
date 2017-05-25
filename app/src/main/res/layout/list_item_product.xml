@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:layout_toLeftOf="@+id/list_item_imagen"
-        android:layout_toRightOf="@+id/checkBoxProducto">
+        >
 
         <TextView
             android:id="@+id/list_item_texto"

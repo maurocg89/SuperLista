@@ -49,6 +49,8 @@ import com.example.superlista.model.Supermercado;
 
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -99,6 +101,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         View view = inflater.inflate(R.layout.form_nuevo_producto, container, false);
 
         iniciarIU(view);  //metodo que relaciona la parte logica con la grafica
+
 
         return view;
     }
@@ -286,6 +289,12 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
                     direccion_imagen = path.toString();
 
+                    /*
+                    de esta manera vuelvo a convertir el string a uri y se lo asigno a una imagen
+
+                    Uri fede = Uri.parse(direccion_imagen);
+                    imagen.setImageURI(fede);
+                    */
                     break;
 
                 case REQ_CODE_SPEECH_OUTPUT:
@@ -336,7 +345,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
             supermercado = adapterSuper.getItem(sSupermercado.getSelectedItemPosition());
             double precio = Double.parseDouble(valorPrecio.getText().toString());
 
-            Producto nuevoProd = new Producto(nombreProducto, marca, 0, 0, 0, 0, categoria, unidad, "direccion_imagen");
+            Producto nuevoProd = new Producto(nombreProducto, marca, 0, 0, 0, 0, categoria, unidad, direccion_imagen);
             switch (supermercado.getId_supermercado()){
                 case Supermercado.ID_COTO: nuevoProd.setPrecio_coto(precio); break;
                 case Supermercado.ID_CARREFOUR: nuevoProd.setPrecio_carrefour(precio); break;
@@ -451,6 +460,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
                                             SuperListaDbManager.getInstance().addMarca(marcaNueva);
                                             // TODO: 24/05/2017 Fijarse si hay que actualizar el adaptador
                                             marcas.add(0, marcaNueva);
+                                            sMarca.setSelection(0);
                                             Toast.makeText(getContext(), "Marca agregada", Toast.LENGTH_SHORT).show();
                                             dialog.dismiss();
                                         }

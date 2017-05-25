@@ -71,7 +71,11 @@ public class ProductSearchAdapter extends BaseAdapter{
 
 
         if(prod.getImagen() != null) {
-            holder.imagenProducto.setImageURI(Uri.parse(prod.getImagen()));
+
+            String direc_imagen = prod.getImagen();
+            Uri imagen = Uri.parse(direc_imagen);
+            holder.imagenProducto.setImageURI(imagen);
+            //holder.imagenProducto.setImageURI(Uri.parse(prod.getImagen()));
         }
         return convertView;
     }
