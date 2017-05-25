@@ -251,7 +251,7 @@ public class SuperListaDbManager {
             producto.setPrecio_otro(precio_otro_nuevo);
             producto.setCategoria(categoria_nueva);
             producto.setUnidad(unidad);
-            //producto.setImagen(imagen);
+            producto.setImagen(imagen);
             getHelper().getProductoDao().update(producto);
         }catch (SQLException e){
             e.printStackTrace();
