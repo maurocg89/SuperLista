@@ -53,6 +53,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -345,7 +346,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
             supermercado = adapterSuper.getItem(sSupermercado.getSelectedItemPosition());
             double precio = Double.parseDouble(valorPrecio.getText().toString());
 
-            Producto nuevoProd = new Producto(nombreProducto, marca, 0, 0, 0, 0, categoria, unidad, direccion_imagen);
+            Producto nuevoProd = new Producto(nombreProducto, marca, 0, 0, 0, 0, categoria, direccion_imagen, unidad);
             switch (supermercado.getId_supermercado()){
                 case Supermercado.ID_COTO: nuevoProd.setPrecio_coto(precio); break;
                 case Supermercado.ID_CARREFOUR: nuevoProd.setPrecio_carrefour(precio); break;
@@ -387,7 +388,6 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     //<editor-fold desc="Spinners">
     private void setSpinnerUnidad() {
-
         adapterUnidad = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, Producto.UNIDADES);
         adapterUnidad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sUnidad.setAdapter(adapterUnidad);
@@ -396,6 +396,23 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     private void setSpinnerCategoria() {
         listCategorias = SuperListaDbManager.getInstance().getAllCategorias();
+
+        Comparator<Categoria>comparator = new Comparator<Categoria>() {
+            @Override
+            public int compare(Categoria s, Categoria t1) {
+                // Pongo la categoria otros primera en la lsita
+                if (s.getId_categoria() == Categoria.ID_CATEGORIA_OTROS){
+                    return -1;
+                }
+                else if (t1.getId_categoria() == Categoria.ID_CATEGORIA_OTROS){
+                    return 1;
+                }
+                return s.getNombre().compareToIgnoreCase(t1.getNombre());
+            }
+        };
+
+        Collections.sort(listCategorias, comparator);
+
 
         adapterCategoria = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, listCategorias);
         adapterCategoria.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -408,12 +425,28 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     private void setSpinnerMarca() {
         marcas = SuperListaDbManager.getInstance().getAllMarcas();
+        Comparator<Marca>comparator = new Comparator<Marca>() {
+            @Override
+            public int compare(Marca s, Marca t1) {
+                if (s.getId_Marca() == Marca.ID_MARCA_NINGUNA){
+                    return -1;
+                }
+                else if (t1.getId_Marca() == Marca.ID_MARCA_NINGUNA){
+                    return 1;
+                }
+                return s.getNombre().compareToIgnoreCase(t1.getNombre());
+            }
+        };
+
+        Collections.sort(marcas, comparator);
+
         Marca nuevaMarca = new Marca("Nueva Marca");
         marcas.add(0, nuevaMarca);
 
         adapterMarca = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, marcas);
         adapterMarca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sMarca.setAdapter(adapterMarca);
+
         // Asigno la opcion "ninguna" por defecto
         int pos = adapterMarca.getPosition(SuperListaDbManager.getInstance().getMarcaById(Marca.ID_MARCA_NINGUNA));
         sMarca.setSelection(pos);
@@ -489,10 +522,25 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     private void setSpinnerSupermercado() {
         listSupers = SuperListaDbManager.getInstance().getAllSupermercados();
+        Comparator<Supermercado>comparator = new Comparator<Supermercado>() {
+            @Override
+            public int compare(Supermercado s, Supermercado t1) {
+                if (s.getId_supermercado() == Supermercado.ID_OTRO){
+                    return -1;
+                }
+                else if (t1.getId_supermercado() == Supermercado.ID_OTRO){
+                    return 1;
+                }
+                return s.getNombre().compareToIgnoreCase(t1.getNombre());
+            }
+        };
+
+        Collections.sort(listSupers, comparator);
 
         adapterSuper = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, listSupers);
         adapterSuper.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sSupermercado.setAdapter(adapterSuper);
+
         // Asigno la opcion "otro" por defecto
         int pos = adapterSuper.getPosition(SuperListaDbManager.getInstance().getSupermercadoById(Supermercado.ID_OTRO));
         sSupermercado.setSelection(pos);

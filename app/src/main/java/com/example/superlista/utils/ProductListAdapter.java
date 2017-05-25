@@ -97,19 +97,11 @@ public class ProductListAdapter extends BaseAdapter{
         if(prod.getImagen() != null) {
             String direc_imagen = prod.getImagen();
             Uri imagen = Uri.parse(direc_imagen);
-
-            Log.i("imagen", "resultado: " + imagen);
-
             holder.imagenProducto.setImageURI(imagen);
         }
 
-        /*String imagen = SuperListaDbManager.getInstance().getProductoByNombre(prod.getNombre(), prod.getMarca()).getImagen();
-        if(imagen != null) {
-            holder.imagenProducto.setImageURI(Uri.parse(prod.getImagen()));
-        }*/
         // Cambia el color de fondo de los items seleccionados
         convertView.setBackgroundColor(mSelectedItemsIds.get(position) ? 0x9934B5E4 : Color.TRANSPARENT);
-
 
         return convertView;
     }
