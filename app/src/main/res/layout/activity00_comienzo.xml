@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:contentDescription=""
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/bienvenido03"
+        app:srcCompat="@drawable/bienvenido05"
         tools:ignore="ContentDescription" />
 
 </FrameLayout>

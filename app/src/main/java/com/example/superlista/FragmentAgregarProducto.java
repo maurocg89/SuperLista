@@ -493,9 +493,10 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
                                             SuperListaDbManager.getInstance().addMarca(marcaNueva);
                                             // TODO: 24/05/2017 Fijarse si hay que actualizar el adaptador
                                             marcas.add(0, marcaNueva);
-                                            sMarca.setSelection(0);
+
                                             Toast.makeText(getContext(), "Marca agregada", Toast.LENGTH_SHORT).show();
                                             dialog.dismiss();
+                                            sMarca.setSelection(0);
                                         }
 
                                     } else {

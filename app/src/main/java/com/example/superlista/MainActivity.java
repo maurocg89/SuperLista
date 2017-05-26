@@ -1,6 +1,7 @@
 package com.example.superlista;
 
 
+import android.net.Uri;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 
@@ -12,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -29,13 +31,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Fragment fragment = null;
 
     /* TODO: Agregar margenes superiores para que se vea mejor
-       TODO: Falta arreglar para que se vean las imagenes de los productos
-       TODO: Fede:  En nuevo producto poder agregar marca
-        COSAS HECHAS: Coto va con una sola t (cambiar en donde aparezca con 2),
+       TODO: Ver el tema de adaptar la aplicacoin para distintas pantallas
+       TODO: Al seleccionar un producto de la lista de productos que muestre la imagen del mismo, y permitir modificar la imagen
+       TODO: setear en la base las imagenes de los productos ya guardados
+        COSAS HECHAS:
+            Coto va con una sola t (cambiar en donde aparezca con 2),
             fijarse onBackPressed para salir de la aplicacion,
             agregar unidad en tabla productos,
             Formularios para agregar  productos (imagen) y categorias. ,
             comando de voz
+            Falta arreglar para que se vean las imagenes de los productos
+             En nuevo producto poder agregar marca
        */
 
 
@@ -66,6 +72,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         //ft.replace(R.id.contenedor, fragment);
         //ft.commit();
+
+        /*
+        ésto lo probe para extraer la ubicacion del la imagen para guardarla en la BD
+
+        Log.i("serenisima ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.lechelaserenisima).toString());
+        Log.i("manzana ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.manzana).toString());
+        Log.i("sancor ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.lechesancor).toString());
+        Log.i("pepsi ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.pepsi225).toString());
+        Log.i("coca ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.cocacola225).toString());
+        */
+
+
+
+
 
     }
 
