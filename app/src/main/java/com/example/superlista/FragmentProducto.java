@@ -3,6 +3,7 @@ package com.example.superlista;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -42,6 +43,8 @@ public class FragmentProducto extends Fragment {
     private ArrayAdapter<Marca> adapterMarcas;
     private ArrayAdapter<Categoria> adapterCategorias;
 
+    // TODO: 25/05/2017 Agregar para cambiar la imagen del producto 
+    
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -126,6 +129,7 @@ public class FragmentProducto extends Fragment {
             etPrecioProductoLaGallega.setText(String.valueOf(producto.getPrecio_la_gallega()));
             etPrecioProductoCarrefour.setText(String.valueOf(producto.getPrecio_carrefour()));
             etPrecioProductoOtro.setText(String.valueOf(producto.getPrecio_otro()));
+            ivImagenProducto.setImageURI(Uri.parse(producto.getImagen()));
 
             setSpinnerUnidad();
             setSpinnerMarcas();
@@ -207,6 +211,8 @@ public class FragmentProducto extends Fragment {
 
             }
         });
+
+        builder.show();
 
     }
 

@@ -33,17 +33,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /* TODO: Agregar margenes superiores para que se vea mejor
        TODO: Ver el tema de adaptar la aplicacoin para distintas pantallas
        TODO: Al seleccionar un producto de la lista de productos que muestre la imagen del mismo, y permitir modificar la imagen
-       TODO: setear en la base las imagenes de los productos ya guardados
-        COSAS HECHAS:
-            Coto va con una sola t (cambiar en donde aparezca con 2),
-            fijarse onBackPressed para salir de la aplicacion,
-            agregar unidad en tabla productos,
-            Formularios para agregar  productos (imagen) y categorias. ,
-            comando de voz
-            Falta arreglar para que se vean las imagenes de los productos
-             En nuevo producto poder agregar marca
-       */
-
+       TODO: sacar nuestros nombres de la imagen principal
+       TODO: en fragments productos y categorias agregar un linearlayout para el floating button
+*/
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -82,13 +74,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Log.i("pepsi ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.pepsi225).toString());
         Log.i("coca ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.cocacola225).toString());
         */
-
-
-
-
-
+        // TODO: 26/05/2017 Crear carpeta de recursos para las imagenes de los productos
     }
 
+    //TODO: Mandar a fragment anterior, implementar pilas de fragment (backstack manipulation)
 
     public void onBackPressed() {
 
@@ -97,6 +86,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         long currentTime = System.currentTimeMillis();
 
         if (currentTime - mLastPress > mTimeLimit){
+            // mandar a fragment listas
+            FragmentTransaction ft =  getSupportFragmentManager().beginTransaction();
+            fragment = new FragmentListas();
+            ft.replace(R.id.contenedor, fragment);
+            ft.commit();
             onBackPressedToast.show();
             mLastPress = currentTime;
         } else {

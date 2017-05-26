@@ -279,7 +279,8 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
                     //una vez escaneada la hay que ponerlo en el imageview
                     Bitmap bitmap = BitmapFactory.decodeFile(mPath); // lo que hace esta linea es traer la ruta en donde esta la imagen y la decodifica y la guarda en un bitmap
-
+                    imageProd.setImageBitmap(bitmap);
+                    Log.i("mPath", "Escaneada " + mPath);
                     /*
                     int width = bitmap.getWidth();
                     int height = bitmap.getHeight();
@@ -302,8 +303,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
                     String as = (Uri.parse("android.resource://com.example.superlista/" + imageProd.getDrawable()).toString());
                     */
-                    //imageProd.setImageBitmap(bitmap);
-                    Log.i("mPath", "Escaneada " + mPath);
+
                     //Log.i("AS ES", "Escaneada " + as);
 
                     break;
@@ -420,8 +420,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
             SuperListaDbManager.getInstance().addProducto(nuevoProd);
             Toast.makeText(getContext(), "Producto Agregado", Toast.LENGTH_SHORT).show();
 
-            //TODO: no me gusta como esta implementado limpiarCampos aca, hay que ver si limpiamos los campos para que cargue otro o lo mandamos directamente al FagmentProdutos
-            //limpiarCampos();
+
             llamarFragmentProd();
         }
     }
@@ -429,18 +428,6 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     //</editor-fold>
 
-
-    public void limpiarCampos() {//metodo que setea todos los campos nuevamente por default
-
-        nomProd.getText().clear();
-        valorPrecio.getText().clear();
-        imageProd.setImageResource(R.drawable.addimage128);
-        setSpinnerUnidad();
-        setSpinnerMarca();
-        setSpinnerCategoria();
-        setSpinnerSupermercado();
-
-    }
 
     public void llamarFragmentProd() {
 
@@ -555,12 +542,12 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
                                         } else {
                                             Marca marcaNueva = new Marca(nuevaMarca);
                                             SuperListaDbManager.getInstance().addMarca(marcaNueva);
-                                            // TODO: 24/05/2017 Fijarse si hay que actualizar el adaptador
                                             marcas.add(0, marcaNueva);
-
+                                            adapterMarca.notifyDataSetChanged();
                                             Toast.makeText(getContext(), "Marca agregada", Toast.LENGTH_SHORT).show();
                                             dialog.dismiss();
                                             sMarca.setSelection(0);
+                                            //sMarca.setAdapter(adapterMarca);
                                         }
 
                                     } else {

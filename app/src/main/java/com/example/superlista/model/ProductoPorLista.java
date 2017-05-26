@@ -8,12 +8,13 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "producto_por_lista")
 public class ProductoPorLista implements Parcelable {
-    // TODO: Cambiar tipo de dato de columna cantidad a double
     // Nombre de columnas de la tabla en la base de datos
     public static final String _ID = "id_producto_lista";
     public static final String COLUMNA_PRODUCTO_FKEY = "id_producto";
     public static final String COLUMNA_LISTA_FKEY = "id_lista";
     public static final String COLUMNA_CANTIDAD = "cantidad";
+    public static final String UNIDAD = "Un.";
+    public static final String KILOS = "Kg.";
 
     @DatabaseField(columnName = _ID, generatedId = true)
     private int id_producto_lista;
@@ -74,9 +75,10 @@ public class ProductoPorLista implements Parcelable {
     //</editor-fold>
 
     //<editor-fold desc="toString equals y hashCode">
+    // TODO: Cuando paso al fragment precio lista super, me aparece la unidad en el nombre del producto
     @Override
     public String toString() {
-        if (producto.getUnidad().contains("un")){
+        if (producto.getUnidad().contains(ProductoPorLista.UNIDAD)){
             return producto + " x"+(int)cantidad;
         }
         return producto + " x"+cantidad + " " + producto.getUnidad();
