@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -278,8 +279,32 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
                     //una vez escaneada la hay que ponerlo en el imageview
                     Bitmap bitmap = BitmapFactory.decodeFile(mPath); // lo que hace esta linea es traer la ruta en donde esta la imagen y la decodifica y la guarda en un bitmap
-                    imageProd.setImageBitmap(bitmap);
+
+                    /*
+                    int width = bitmap.getWidth();
+                    int height = bitmap.getHeight();
+
+                    int newWidth = 200;
+                    int newHeight = 200;
+
+                    float scaleWidth = ((float) newWidth) / width;
+                    float scaleHeight = ((float) newHeight) / height;
+
+                    Matrix matrix = new Matrix();
+                    // resize the Bitmap
+                    matrix.postScale(scaleWidth, scaleHeight);
+
+                    // volvemos a crear la imagen con los nuevos valores
+                    Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+
+
+                    imageProd.setImageBitmap(resizedBitmap);
+
+                    String as = (Uri.parse("android.resource://com.example.superlista/" + imageProd.getDrawable()).toString());
+                    */
+                    //imageProd.setImageBitmap(bitmap);
                     Log.i("mPath", "Escaneada " + mPath);
+                    //Log.i("AS ES", "Escaneada " + as);
 
                     break;
 
@@ -309,6 +334,45 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         }
 
     }
+
+
+    /*reescalado de la imagen
+
+    public static Drawable resizeImage(Context ctx, int resId, int w, int h) {
+
+          // cargamos la imagen de origen
+          Bitmap BitmapOrg = BitmapFactory.decodeResource(ctx.getResources(), resId);
+
+          int width = BitmapOrg.getWidth();
+          int height = BitmapOrg.getHeight();
+          int newWidth = w;
+          int newHeight = h;
+
+          // calculamos el escalado de la imagen destino
+          float scaleWidth = ((float) newWidth) / width;
+          float scaleHeight = ((float) newHeight) / height;
+
+          // para poder manipular la imagen
+          // debemos crear una matriz
+
+          Matrix matrix = new Matrix();
+          // resize the Bitmap
+          matrix.postScale(scaleWidth, scaleHeight);
+
+          // volvemos a crear la imagen con los nuevos valores
+          Bitmap resizedBitmap = Bitmap.createBitmap(BitmapOrg, 0, 0,
+                                                     width, height, matrix, true);
+
+          // si queremos poder mostrar nuestra imagen tenemos que crear un
+          // objeto drawable y así asignarlo a un botón, imageview...
+          return new BitmapDrawable(resizedBitmap);
+
+        }
+
+
+
+
+    */
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
