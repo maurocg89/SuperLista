@@ -33,8 +33,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /* TODO: Agregar margenes superiores para que se vea mejor
        TODO: Ver el tema de adaptar la aplicacoin para distintas pantallas
        TODO: Al seleccionar un producto de la lista de productos que muestre la imagen del mismo, y permitir modificar la imagen
-       TODO: sacar nuestros nombres de la imagen principal
+
        TODO: en fragments productos y categorias agregar un linearlayout para el floating button
+
+
+       TODO: MAURO, estuve leyendo y no se puede crear subcarpetas en drawable porque despues no hay manera de referenciar las imagenes contenidas, el compilador no toma las subcarpetas
+       TODO: MAURO  lo que estuve viendo que hacen es poner un prefijo al nombre de la imagen, asi que lo voy a implemtar asi
+
+       COSAS HECHAS:
+        sacar nuestros nombres de la imagen principal
+        le saque el borde rojo al icono
+        coloco prefijo a imagen de productos y le saco el fondo
+        saco el fondo de los logos de supermercado
+        arreglo algunos margenes
+
 */
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +80,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         /*
         ésto lo probe para extraer la ubicacion del la imagen para guardarla en la BD
 
-        Log.i("serenisima ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.lechelaserenisima).toString());
-        Log.i("manzana ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.manzana).toString());
-        Log.i("sancor ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.lechesancor).toString());
-        Log.i("pepsi ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.pepsi225).toString());
-        Log.i("coca ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.cocacola225).toString());
+        Log.i("serenisima ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_lechelaserenisima).toString());
+        Log.i("manzana ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_manzana).toString());
+        Log.i("sancor ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_lechesancor).toString());
+        Log.i("pepsi ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_pepsi225).toString());
+        Log.i("coca ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_cocacola225).toString());
         */
         // TODO: 26/05/2017 Crear carpeta de recursos para las imagenes de los productos
+
+        Log.i("serenisima ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_lechelaserenisima).toString());
+        Log.i("manzana ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_manzana).toString());
+        Log.i("sancor ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_lechesancor).toString());
+        Log.i("pepsi ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_pepsi225).toString());
+        Log.i("coca ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_cocacola225).toString());
+
+
     }
 
     //TODO: Mandar a fragment anterior, implementar pilas de fragment (backstack manipulation)

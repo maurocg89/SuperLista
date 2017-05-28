@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     android:orientation="vertical">
 
     <TextView
@@ -9,9 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingTop="10dp"
         android:paddingLeft="10dp"
-        android:textColor="@android:color/black" />
+        android:paddingTop="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="16dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,9 +26,9 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:paddingLeft="10dp"
-            android:textColor="@color/colorPrimaryDark"
             android:text="Ver Productos"
-            android:textAppearance="@android:style/TextAppearance.Small"/>
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@color/colorPrimaryDark" />
     </LinearLayout>
 
 </LinearLayout>

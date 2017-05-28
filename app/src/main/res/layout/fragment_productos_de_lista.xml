@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -15,15 +16,8 @@
         <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="1.33"
             android:orientation="vertical">
-
-            <ListView
-                android:id="@+id/lvProductosDeLista"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:choiceMode="multipleChoice"
-                android:paddingTop="@dimen/activity_vertical_margin" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/boton_de_accion_productos"
@@ -36,37 +30,43 @@
                 app:elevation="0dp"
                 app:srcCompat="@mipmap/icono_add" />
 
+            <ListView
+                android:id="@+id/lvProductosDeLista"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:choiceMode="multipleChoice"
+                android:paddingTop="@dimen/activity_vertical_margin" />
+
         </android.support.design.widget.CoordinatorLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_weight="7" >
+            android:layout_height="109dp"
+            android:layout_margin="5dp"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/imgBtnLaGallega"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@mipmap/logo_la_gallega"
-                android:contentDescription="Total La Gallega" />
+                android:contentDescription="Total La Gallega"
+                app:srcCompat="@mipmap/logo_la_gallega" />
 
             <ImageView
                 android:id="@+id/imgBtnCoto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@mipmap/logo_coto"
-                android:contentDescription="Total Coto" />
+                android:contentDescription="Total Coto"
+                app:srcCompat="@mipmap/logo_coto" />
 
             <ImageView
                 android:id="@+id/imgBtnCarrefour"
-                android:layout_width="match_parent"
+                android:layout_width="123dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:srcCompat="@mipmap/logo_carrefour"
-                android:contentDescription="Total Carregour"/>
+                android:contentDescription="Total Carregour"
+                app:srcCompat="@mipmap/logo_carrefour" />
 
 
         </LinearLayout>
