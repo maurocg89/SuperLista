@@ -37,12 +37,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
        TODO: en fragments productos y categorias agregar un linearlayout para el floating button
 
-       TODO: NO SE PUEDEN AGREGAR PRODUCTOS A LA LISTA
-
-
-       TODO: MAURO, estuve leyendo y no se puede crear subcarpetas en drawable porque despues no hay manera de referenciar las imagenes contenidas, el compilador no toma las subcarpetas
-       TODO: MAURO  lo que estuve viendo que hacen es poner un prefijo al nombre de la imagen, asi que lo voy a implemtar asi
-
        COSAS HECHAS:
         sacar nuestros nombres de la imagen principal
         le saque el borde rojo al icono
@@ -91,11 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Log.i("pepsi ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_pepsi225).toString());
         Log.i("coca ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_cocacola225).toString());
         */
-        // TODO: 26/05/2017 Crear carpeta de recursos para las imagenes de los productos
-
-
-
-
 
 
         //VERIFICAR PARA QUE LAS IMAGENES LAS GUARDE EN EL TELEFONO Y EN LA BASE SE GUARDE LA REFERENCI A ESAS

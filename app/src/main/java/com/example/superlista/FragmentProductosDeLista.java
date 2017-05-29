@@ -334,11 +334,10 @@ public class FragmentProductosDeLista extends Fragment {
 
     private void llamarFloatingButtonAction(View vista) {
 
-        FloatingActionButton fab = (FloatingActionButton) vista.findViewById(R.id.boton_de_accion_productos);
+        FloatingActionButton fab = (FloatingActionButton) vista.findViewById(R.id.boton_agregar_productos_listas);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Bundle bundle = new Bundle();
                 bundle.putInt(Lista._ID, id_lista);
                 FragmentAgregarProductosLista fragmentoNewProd = new FragmentAgregarProductosLista();
@@ -348,7 +347,6 @@ public class FragmentProductosDeLista extends Fragment {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.contenedor, fragmentoNewProd);
                 ft.commit();
-                //Snackbar.make(view, "aca va la accion", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
     }
