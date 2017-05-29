@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.superlista.data.SuperListaDbManager;
@@ -30,11 +31,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     Fragment fragment = null;
 
-    /* TODO: Agregar margenes superiores para que se vea mejor
+    /*
        TODO: Ver el tema de adaptar la aplicacoin para distintas pantallas
        TODO: Al seleccionar un producto de la lista de productos que muestre la imagen del mismo, y permitir modificar la imagen
 
        TODO: en fragments productos y categorias agregar un linearlayout para el floating button
+
+       TODO: NO SE PUEDEN AGREGAR PRODUCTOS A LA LISTA
 
 
        TODO: MAURO, estuve leyendo y no se puede crear subcarpetas en drawable porque despues no hay manera de referenciar las imagenes contenidas, el compilador no toma las subcarpetas
@@ -46,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         coloco prefijo a imagen de productos y le saco el fondo
         saco el fondo de los logos de supermercado
         arreglo algunos margenes
+         Agregar margenes superiores para que se vea mejor
+         se arreglo el error de OutOfMemoryError
 
 */
 
@@ -88,12 +93,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         */
         // TODO: 26/05/2017 Crear carpeta de recursos para las imagenes de los productos
 
-        Log.i("serenisima ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_lechelaserenisima).toString());
-        Log.i("manzana ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_manzana).toString());
-        Log.i("sancor ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_lechesancor).toString());
-        Log.i("pepsi ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_pepsi225).toString());
-        Log.i("coca ",Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.imagen_producto_cocacola225).toString());
 
+
+
+
+
+        //VERIFICAR PARA QUE LAS IMAGENES LAS GUARDE EN EL TELEFONO Y EN LA BASE SE GUARDE LA REFERENCI A ESAS
 
     }
 

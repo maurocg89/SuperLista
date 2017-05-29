@@ -5,9 +5,11 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -49,7 +51,11 @@ import com.example.superlista.model.Producto;
 import com.example.superlista.model.Supermercado;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -59,6 +65,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
 
 import static android.app.Activity.RESULT_OK;
 import static android.Manifest.permission.CAMERA;
@@ -273,54 +280,19 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
                                     //estos logs son meramente informativos
                                     Log.i("Almacenamiento Externo", "Escaneada " + path);
                                     Log.i("Almacenamiento Externo", "-> Uri = " + uri);
-                                    direccion_imagen = uri.toString();
+
                                 }
                             });
 
-                    //una vez escaneada la hay que ponerlo en el imageview
-                    Bitmap bitmap = BitmapFactory.decodeFile(mPath); // lo que hace esta linea es traer la ruta en donde esta la imagen y la decodifica y la guarda en un bitmap
-                    imageProd.setImageBitmap(bitmap);
-                    Log.i("mPath", "Escaneada " + mPath);
-                    /*
-                    int width = bitmap.getWidth();
-                    int height = bitmap.getHeight();
-
-                    int newWidth = 200;
-                    int newHeight = 200;
-
-                    float scaleWidth = ((float) newWidth) / width;
-                    float scaleHeight = ((float) newHeight) / height;
-
-                    Matrix matrix = new Matrix();
-                    // resize the Bitmap
-                    matrix.postScale(scaleWidth, scaleHeight);
-
-                    // volvemos a crear la imagen con los nuevos valores
-                    Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-
-
-                    imageProd.setImageBitmap(resizedBitmap);
-
-                    String as = (Uri.parse("android.resource://com.example.superlista/" + imageProd.getDrawable()).toString());
-                    */
-
-                    //Log.i("AS ES", "Escaneada " + as);
-
+                    imageProd.setImageBitmap(escaladoDeImagen(mPath));
                     break;
 
                 case SELECT_PICTURE:
+
                     Uri path = data.getData();// en esta linea trae la ruta de la imagen pero en uri que es otro formato
-                    imageProd.setImageURI(path);
-                    Log.i("SELECT_PICTURE ", "-> Uri = " + path);
+                    String pathCompleto = getRealPathFromURI(path);
 
-                    direccion_imagen = path.toString();
-
-                    /*
-                    de esta manera vuelvo a convertir el string a uri y se lo asigno a una imagen
-
-                    Uri fede = Uri.parse(direccion_imagen);
-                    imagen.setImageURI(fede);
-                    */
+                    imageProd.setImageBitmap(escaladoDeImagen(pathCompleto));
                     break;
 
                 case REQ_CODE_SPEECH_OUTPUT:
@@ -335,44 +307,70 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     }
 
+    public Bitmap escaladoDeImagen(String ruta_imagen){
 
-    /*reescalado de la imagen
+        //reescalo la imagen
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options(); //llamo al metodo de opciones de imagen
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(ruta_imagen, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
 
-    public static Drawable resizeImage(Context ctx, int resId, int w, int h) {
+        int factorEscala = Math.min(photoW/200, photoH/200);
 
-          // cargamos la imagen de origen
-          Bitmap BitmapOrg = BitmapFactory.decodeResource(ctx.getResources(), resId);
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = factorEscala;
+        bmOptions.inPurgeable = true;
 
-          int width = BitmapOrg.getWidth();
-          int height = BitmapOrg.getHeight();
-          int newWidth = w;
-          int newHeight = h;
+        Bitmap imagenBitmap = BitmapFactory.decodeFile(ruta_imagen, bmOptions);
 
-          // calculamos el escalado de la imagen destino
-          float scaleWidth = ((float) newWidth) / width;
-          float scaleHeight = ((float) newHeight) / height;
+        //Le asigno un nuevo nombre y lo guardo en su nueva ruta
+        Long timestamp = System.currentTimeMillis() / 1000;
+        String nombreImagen = timestamp.toString() + ".jpg";
+        String nuevaRutaDestino = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY + File.separator + nombreImagen;
+        Uri.parse(nuevaRutaDestino);
+        File archivo = new File(nuevaRutaDestino);
 
-          // para poder manipular la imagen
-          // debemos crear una matriz
-
-          Matrix matrix = new Matrix();
-          // resize the Bitmap
-          matrix.postScale(scaleWidth, scaleHeight);
-
-          // volvemos a crear la imagen con los nuevos valores
-          Bitmap resizedBitmap = Bitmap.createBitmap(BitmapOrg, 0, 0,
-                                                     width, height, matrix, true);
-
-          // si queremos poder mostrar nuestra imagen tenemos que crear un
-          // objeto drawable y así asignarlo a un botón, imageview...
-          return new BitmapDrawable(resizedBitmap);
-
+        FileOutputStream salida = null;
+        try {
+            salida = new FileOutputStream(archivo);
+            imagenBitmap.compress(Bitmap.CompressFormat.JPEG, 100, salida);
+            salida.flush();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
+        direccion_imagen = nuevaRutaDestino;
+
+        Log.i("Direccion Path ", "-> " + ruta_imagen);
+        Log.i("Direccion Uri ", "-> " + nuevaRutaDestino);
+        Log.i("Direccion Final ", "-> " + direccion_imagen);
+
+        return imagenBitmap;
+    }
+
+
+    private String getRealPathFromURI(Uri contentURI) {// metodo que ve devuelve la ruta completa de la Uri
+        String resultado;
+        Cursor cursor = getContext().getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            resultado = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            resultado = cursor.getString(idx);
+            cursor.close();
+        }
+        return resultado;
+    }
 
 
 
-    */
+
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/margen_arriba"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/linearProducto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="vertical"
         android:weightSum="1">
 
@@ -83,8 +85,8 @@
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"
-                android:text="@string/valor_precio"
                 android:inputType="numberDecimal"
+                android:text="@string/valor_precio"
                 android:textSize="16sp" />
 
         </LinearLayout>
