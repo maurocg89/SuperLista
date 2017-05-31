@@ -21,14 +21,12 @@ import com.example.superlista.model.Supermercado;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: 24/05/2017 setear precio por unidad
 public class FragmentPrecioListaSuper extends Fragment {
 
     private ListView listView;
     private TextView tvTotal;
     private ArrayList<ProductoPorLista> productoPorListasSupers;
     private ArrayList<ProductoPorLista> productosFaltantes;
-    //private ArrayAdapter<ProductoPorLista> myAdapter;
     private PrecioListaSuperAdapter myAdapter;
     private Supermercado supermercado;
 
@@ -50,7 +48,7 @@ public class FragmentPrecioListaSuper extends Fragment {
         getActivity().setTitle(supermercado.getNombre());
     }
 
-    private void setData(){
+    private void setData() {
         double total = 0;
         productoPorListasSupers = new ArrayList<>();
         productosFaltantes = new ArrayList<>();
@@ -70,14 +68,14 @@ public class FragmentPrecioListaSuper extends Fragment {
             myAdapter = new PrecioListaSuperAdapter(getActivity(), productoPorListasSupers, supermercado);
             listView.setAdapter(myAdapter);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        tvTotal.setText("Total: "+total);
+        tvTotal.setText("Total: " + total);
     }
 
-    private class PrecioListaSuperAdapter extends BaseAdapter{
+    private class PrecioListaSuperAdapter extends BaseAdapter {
 
         private Context context;
         private ArrayList<ProductoPorLista> productoPorListas;
@@ -85,7 +83,7 @@ public class FragmentPrecioListaSuper extends Fragment {
         private Supermercado supermercado;
 
 
-        public PrecioListaSuperAdapter(Context context, ArrayList<ProductoPorLista> productoPorListas, Supermercado supermercado){
+        public PrecioListaSuperAdapter(Context context, ArrayList<ProductoPorLista> productoPorListas, Supermercado supermercado) {
             this.context = context;
             this.productoPorListas = productoPorListas;
             this.supermercado = supermercado;
@@ -111,7 +109,7 @@ public class FragmentPrecioListaSuper extends Fragment {
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             ViewHolderPrecioListaSuper holder;
 
-            if (view == null){
+            if (view == null) {
                 holder = new ViewHolderPrecioListaSuper();
                 view = inflater.inflate(R.layout.list_item_precio_por_super, null);
                 holder.producto = (TextView) view.findViewById(R.id.lista_por_super_producto);
@@ -119,33 +117,44 @@ public class FragmentPrecioListaSuper extends Fragment {
                 holder.textoPrecioPorUnidad = (TextView) view.findViewById(R.id.lista_por_super_texto_precio_unidad);
                 holder.precioPorUnidad = (TextView) view.findViewById(R.id.lista_por_super_precio_unidad);
                 view.setTag(holder);
-            }else{
+            } else {
                 holder = (ViewHolderPrecioListaSuper) view.getTag();
             }
 
             ProductoPorLista productoPorLista = productoPorListas.get(i);
             holder.producto.setText(productoPorLista.toString());
-            switch (supermercado.getId_supermercado()){
-                case Supermercado.ID_COTO: holder.precioTotal.setText(String.valueOf
-                        (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_coto()));
+            holder.textoPrecioPorUnidad.setText("Precio por " + productoPorLista.getProducto().getUnidad());
+
+            switch (supermercado.getId_supermercado()) {
+                case Supermercado.ID_COTO:
+                    holder.precioTotal.setText(String.valueOf
+                            (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_coto()));
+                    holder.precioPorUnidad.setText(String.valueOf(productoPorLista.getProducto().getPrecio_coto()));
                     break;
-                case Supermercado.ID_LA_GALLEGA: holder.precioTotal.setText(String.valueOf
-                        (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_la_gallega()));
+                case Supermercado.ID_LA_GALLEGA:
+                    holder.precioTotal.setText(String.valueOf
+                            (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_la_gallega()));
+                    holder.precioPorUnidad.setText(String.valueOf(productoPorLista.getProducto().getPrecio_la_gallega()));
                     break;
-                case Supermercado.ID_CARREFOUR: holder.precioTotal.setText(String.valueOf
-                        (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_carrefour()));
+                case Supermercado.ID_CARREFOUR:
+                    holder.precioTotal.setText(String.valueOf
+                            (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_carrefour()));
+                    holder.precioPorUnidad.setText(String.valueOf(productoPorLista.getProducto().getPrecio_carrefour()));
                     break;
-                case Supermercado.ID_OTRO: holder.precioTotal.setText(String.valueOf
-                        (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_otro()));
+                case Supermercado.ID_OTRO:
+                    holder.precioTotal.setText(String.valueOf
+                            (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_otro()));
+                    holder.precioPorUnidad.setText(String.valueOf(productoPorLista.getProducto().getPrecio_otro()));
                     break;
-                default: holder.precioTotal.setText("0");
+                default:
+                    holder.precioTotal.setText("0");
                     break;
             }
             return view;
         }
     }
 
-    private class ViewHolderPrecioListaSuper{
+    private class ViewHolderPrecioListaSuper {
         TextView producto;
         TextView precioTotal;
         TextView textoPrecioPorUnidad;

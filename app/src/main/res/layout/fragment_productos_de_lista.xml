@@ -64,11 +64,19 @@
 
             <ImageView
                 android:id="@+id/imgBtnCarrefour"
-                android:layout_width="123dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:contentDescription="Total Carregour"
                 app:srcCompat="@mipmap/logo_carrefour" />
 
+            <ImageView
+                android:id="@+id/imgBtnOtro"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="Total Otro"
+                app:srcCompat="@mipmap/icon_chinese" />
 
         </LinearLayout>
 

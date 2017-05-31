@@ -223,8 +223,6 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
                     Producto prod = null;
                     if (isSearching){
                         prod = searchAdapter.getItem(position);
-                        // TODO: 24/05/2017 Probar si guarda los ids de productos
-                        System.out.println(prod.getId_producto());
                         //prod = SuperListaDbManager.getInstance().getProductoByNombre(prod.getNombre(), prod.getMarca());
                     } else {
                         prod = productListAdapter.getItem(position);

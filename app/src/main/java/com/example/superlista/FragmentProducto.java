@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -105,6 +106,7 @@ public class FragmentProducto extends Fragment {
         etPrecioProductoCoto.setEnabled(toggle);
         etPrecioProductoCarrefour.setEnabled(toggle);
         etPrecioProductoOtro.setEnabled(toggle);
+        ivImagenProducto.setEnabled(toggle);
         if (toggle) {
             tvNombreProducto.setVisibility(View.INVISIBLE);
             etNombreProducto.setVisibility(View.VISIBLE);
@@ -135,8 +137,13 @@ public class FragmentProducto extends Fragment {
             setSpinnerMarcas();
             setSpinnerCategorias();
             setButtonsListeners();
+            setImageListener();
 
         }
+
+    }
+
+    public void setImageListener(){
 
     }
 
@@ -206,7 +213,11 @@ public class FragmentProducto extends Fragment {
                     e.printStackTrace();
                 }finally {
                     dialogInterface.dismiss();
-                    // TODO: 24/05/2017 Mandar a framgent productos
+                    FragmentProductos fragmentProductos = new FragmentProductos();
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.contenedor, fragmentProductos);
+                    ft.commit();
                 }
 
             }
@@ -244,8 +255,12 @@ public class FragmentProducto extends Fragment {
                     e.printStackTrace();
                 }
                 finally {
-                    // TODO: 24/05/2017 Mandar a framgent productos
                     dialogInterface.dismiss();
+                    FragmentProductos fragmentProductos = new FragmentProductos();
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.contenedor, fragmentProductos);
+                    ft.commit();
                 }
             }
         });

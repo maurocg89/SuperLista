@@ -37,7 +37,6 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/top"
         android:orientation="vertical">
 
         <ListView
@@ -55,7 +54,5 @@
             app:backgroundTint="@android:color/holo_blue_light"
             app:elevation="0dp"
             app:srcCompat="@mipmap/icono_add" />
-
     </android.support.design.widget.CoordinatorLayout>
-
 </LinearLayout>

@@ -50,6 +50,7 @@ public class FragmentProductosDeLista extends Fragment {
     private ImageView btnCoto;
     private ImageView btnLaGallega;
     private ImageView btnCarrefour;
+    private ImageView btnOtro;
     private FragmentPrecioListaSuper fragmentListaPorSuper;
 
     private MenuItem mEditItem;
@@ -64,6 +65,7 @@ public class FragmentProductosDeLista extends Fragment {
         btnCoto = (ImageView) view.findViewById(R.id.imgBtnCoto);
         btnCarrefour = (ImageView) view.findViewById(R.id.imgBtnCarrefour);
         btnLaGallega = (ImageView) view.findViewById(R.id.imgBtnLaGallega);
+        btnOtro = (ImageView) view.findViewById(R.id.imgBtnOtro);
 
         setHasOptionsMenu(true);
         setData();
@@ -329,7 +331,23 @@ public class FragmentProductosDeLista extends Fragment {
                 ft.commit();
             }
         });
-        // TODO: 24/05/2017 Agregar super otro
+
+        btnOtro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                bundle.putInt(Supermercado._ID, Supermercado.ID_OTRO);
+                bundle.putDouble("Total", getTotal(Supermercado.ID_OTRO));
+                bundle.putParcelableArrayList("Productos", productosPorSuper);
+                bundle.putParcelableArrayList("Productos Faltantes", productosFaltantes);
+                fragmentListaPorSuper.setArguments(bundle);
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.contenedor, fragmentListaPorSuper);
+                ft.commit();
+            }
+        });
+
     }
 
     private void llamarFloatingButtonAction(View vista) {

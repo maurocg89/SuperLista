@@ -75,7 +75,6 @@ public class ProductoPorLista implements Parcelable {
     //</editor-fold>
 
     //<editor-fold desc="toString equals y hashCode">
-    // TODO: Cuando paso al fragment precio lista super, me aparece la unidad en el nombre del producto
     @Override
     public String toString() {
         if (producto.getUnidad().contains(ProductoPorLista.UNIDAD)){

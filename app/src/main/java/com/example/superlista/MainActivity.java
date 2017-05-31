@@ -35,10 +35,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
        TODO: Ver el tema de adaptar la aplicacoin para distintas pantallas
        TODO: Al seleccionar un producto de la lista de productos que muestre la imagen del mismo, y permitir modificar la imagen
 
-       TODO: en fragments productos y categorias agregar un linearlayout para el floating button
-
-
-
 */
 
     protected void onCreate(Bundle savedInstanceState) {
