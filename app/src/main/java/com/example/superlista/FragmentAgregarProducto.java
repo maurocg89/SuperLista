@@ -3,16 +3,13 @@ package com.example.superlista;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -26,7 +23,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -51,21 +47,16 @@ import com.example.superlista.model.Producto;
 import com.example.superlista.model.Supermercado;
 
 
-import java.io.ByteArrayOutputStream;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
-import java.util.Random;
 
 import static android.app.Activity.RESULT_OK;
 import static android.Manifest.permission.CAMERA;
@@ -307,6 +298,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
     }
 
+    //<editor-fold desc="Escalado de la Imagen y Guardado en nueva Ruta">
     public Bitmap escaladoDeImagen(String ruta_imagen){
 
         //reescalo la imagen
@@ -350,6 +342,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
         return imagenBitmap;
     }
+    //</editor-fold>
 
 
     private String getRealPathFromURI(Uri contentURI) {// metodo que ve devuelve la ruta completa de la Uri
