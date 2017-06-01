@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/linearProducto"
+        android:id="@+id/linearFragmentProducto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
@@ -47,12 +47,12 @@
                 android:inputType="textPersonName" />
 
             <ImageView
-                android:id="@+id/imageViewMicrofono"
+                android:id="@+id/imageViewModificarProdMicrofono"
                 android:layout_width="59dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/editTextNombreProd"
+                android:layout_alignTop="@+id/editTextModificarNombreProd"
                 android:contentDescription=""
                 android:visibility="invisible"
                 app:srcCompat="@drawable/ic_microphone"

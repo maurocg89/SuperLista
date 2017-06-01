@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     /*
        TODO: Ver el tema de adaptar la aplicacoin para distintas pantallas
-       TODO: Al seleccionar un producto de la lista de productos que muestre la imagen del mismo, y permitir modificar la imagen
 
 */
 
@@ -176,10 +175,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toast onBackPressedToast = Toast.makeText(this,R.string.presionar_para_salir, Toast.LENGTH_SHORT);
         long currentTime = System.currentTimeMillis();
-
-        if (currentTime - mLastPress > mTimeLimit){
+        super.onBackPressed();
+      /*  if (currentTime - mLastPress > mTimeLimit){
             // mandar a fragment listas
-            FragmentTransaction ft =  getSupportFragmentManager().beginTransaction();
+           /* FragmentTransaction ft =  getSupportFragmentManager().beginTransaction();
             fragment = new FragmentListas();
             ft.replace(R.id.contenedor, fragment);
             ft.commit();
@@ -189,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             onBackPressedToast.cancel();
             super.onBackPressed();
         }
-
+*/
 
         /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -263,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (fragment != null){
             FragmentTransaction ft =  getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.contenedor, fragment);
+            ft.addToBackStack(null);
             ft.commit();
         }
 
