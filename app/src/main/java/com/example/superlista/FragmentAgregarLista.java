@@ -5,6 +5,8 @@ package com.example.superlista;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,8 @@ import java.util.Objects;
 
 
 public class FragmentAgregarLista extends Fragment implements View.OnClickListener {
+
+    Fragment fragmento = null;
 
     private List<Lista> listadoDeListas;
     private EditText nombreLista;
@@ -89,10 +93,20 @@ public class FragmentAgregarLista extends Fragment implements View.OnClickListen
             Lista nuevaLista = new Lista(nombreList);
             SuperListaDbManager.getInstance().addLista(nuevaLista);
             Toast.makeText(getContext(), "Lista Agregada", Toast.LENGTH_SHORT).show();
-
+            llamarFragmentListas();
 
         }
 
+    }
+
+    public void llamarFragmentListas() {
+
+        fragmento = new FragmentListas();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.contenedor, fragmento);
+        ft.addToBackStack("ListaAgregada");
+        getActivity().getSupportFragmentManager().popBackStack("Listas", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        ft.commit();
     }
 
 
