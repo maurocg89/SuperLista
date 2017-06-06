@@ -23,6 +23,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -425,6 +426,8 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
         fragmento = new FragmentProductos();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.contenedor, fragmento);
+        ft.addToBackStack("ProductoAgregado");
+        getActivity().getSupportFragmentManager().popBackStack("Productos", FragmentManager.POP_BACK_STACK_INCLUSIVE);
         ft.commit();
     }
 

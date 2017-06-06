@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -29,11 +28,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView;
 
 import com.example.superlista.model.Categoria;
-import com.example.superlista.model.ProductoPorLista;
 import com.example.superlista.utils.ProductListAdapter;
 import com.example.superlista.data.SuperListaDbManager;
 import com.example.superlista.model.Producto;
@@ -198,6 +195,7 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
                 fragmentoNewProd = new FragmentAgregarProducto();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.contenedor, fragmentoNewProd);
+                ft.addToBackStack("AgregarProducto");
                 ft.commit();
 
             }
@@ -232,6 +230,7 @@ public class FragmentProductos extends Fragment implements TextView.OnEditorActi
                     fragmentProducto.setArguments(bundle);
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.replace(R.id.contenedor, fragmentProducto);
+                    ft.addToBackStack("Producto");
                     ft.commit();
                 }
             }

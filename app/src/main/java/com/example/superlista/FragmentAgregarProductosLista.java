@@ -11,13 +11,9 @@ import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,13 +28,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.superlista.data.SuperListaDbManager;
-import com.example.superlista.model.Categoria;
 import com.example.superlista.model.Lista;
 import com.example.superlista.model.Producto;
 import com.example.superlista.model.ProductoPorLista;
 import com.example.superlista.utils.ProductListAdapter;
 import com.example.superlista.utils.ProductSearchAdapter;
-import com.example.superlista.utils.ToolBarActionModeCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +59,7 @@ public class FragmentAgregarProductosLista extends Fragment implements TextView.
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_productos, container, false);
+        // Oculto el floating button para reutilizar el layout de fragment_productos
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.boton_de_accion_productos);
         fab.setVisibility(View.INVISIBLE);
         listView1 = (ListView) view.findViewById(R.id.lvProductos);

@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -18,19 +17,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
+
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.superlista.data.SuperListaDbManager;
 import com.example.superlista.model.Lista;
-import com.example.superlista.model.Producto;
 import com.example.superlista.model.ProductoPorLista;
 import com.example.superlista.model.Supermercado;
 
@@ -295,6 +291,7 @@ public class FragmentProductosDeLista extends Fragment {
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.contenedor, fragmentListaPorSuper);
+                ft.addToBackStack("ListaPorSuperLaGallega");
                 ft.commit();
             }
         });
@@ -311,6 +308,7 @@ public class FragmentProductosDeLista extends Fragment {
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.contenedor, fragmentListaPorSuper);
+                ft.addToBackStack("ListaPorSuperCoto");
                 ft.commit();
 
             }
@@ -328,6 +326,7 @@ public class FragmentProductosDeLista extends Fragment {
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.contenedor, fragmentListaPorSuper);
+                ft.addToBackStack("ListaPorSuperCarrefour");
                 ft.commit();
             }
         });
@@ -344,6 +343,7 @@ public class FragmentProductosDeLista extends Fragment {
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.contenedor, fragmentListaPorSuper);
+                ft.addToBackStack("ListaPorSuperOtro");
                 ft.commit();
             }
         });
@@ -364,6 +364,7 @@ public class FragmentProductosDeLista extends Fragment {
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.contenedor, fragmentoNewProd);
+                ft.addToBackStack("AgregarProductosLista");
                 ft.commit();
             }
         });

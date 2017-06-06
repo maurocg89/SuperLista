@@ -1,7 +1,5 @@
 package com.example.superlista;
 
-
-import android.net.Uri;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 
@@ -17,18 +15,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.superlista.data.SuperListaDbManager;
-
+import com.example.superlista.model.Categoria;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private long mLastPress = 0;    // Cuándo se pulsó atrás por última vez
     private long mTimeLimit = 2000; // Límite de tiempo entre pulsaciones, en ms
-
+    private String fragmentTag;
     Fragment fragment = null;
 
     /*
@@ -56,14 +53,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //TODO: cuando se pone el telefono en horizontal en un fragment que no sea el de listas vuelve automaticamente a las listas
+        //TODO: (Arreglado) cuando se pone el telefono en horizontal en un fragment que no sea el de listas vuelve automaticamente a las listas
         //colocamos el fragment de listas en el principio
-
-        //fragment = new FragmentListas();
-        //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        //ft.replace(R.id.contenedor, fragment);
-        //ft.commit();
-
+        if(savedInstanceState == null){
+        fragment = new FragmentListas();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.contenedor, fragment);
+        ft.commit();
+        }
         //<editor-fold desc="LOGS DE INFORMACION PARA EXTRAER URIS DE LOS PRODUCTOS">
         /*
         ésto lo probe para extraer la ubicacion del la imagen para guardarla en la BD
@@ -168,38 +165,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    //TODO: Mandar a fragment anterior, implementar pilas de fragment (backstack manipulation)
-
     public void onBackPressed() {
-
 
         Toast onBackPressedToast = Toast.makeText(this,R.string.presionar_para_salir, Toast.LENGTH_SHORT);
         long currentTime = System.currentTimeMillis();
-        super.onBackPressed();
-      /*  if (currentTime - mLastPress > mTimeLimit){
-            // mandar a fragment listas
-           /* FragmentTransaction ft =  getSupportFragmentManager().beginTransaction();
-            fragment = new FragmentListas();
-            ft.replace(R.id.contenedor, fragment);
-            ft.commit();
-            onBackPressedToast.show();
-            mLastPress = currentTime;
-        } else {
-            onBackPressedToast.cancel();
-            super.onBackPressed();
-        }
-*/
 
-        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        // Si esá el drawer abierto, lo cierra
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            FragmentTransaction ft =  getSupportFragmentManager().beginTransaction();
-            fragment = new FragmentListas();
-            ft.replace(R.id.contenedor, fragment);
-            ft.commit();
-           //super.onBackPressed();
-        }*/
+            // Si está en la pantalla principal le da la opcion de salir de la aplicacion
+            if (getSupportFragmentManager().getBackStackEntryCount() < 1){
+                if (currentTime - mLastPress > mTimeLimit) {
+                    onBackPressedToast.show();
+                    mLastPress = currentTime;
+                } else {
+                    super.onBackPressed();
+                }
+            } else {
+                super.onBackPressed();
+            }
+
+        }
+
     }
 
 
@@ -227,42 +216,50 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //metodo que le paso un item del navigation
     public boolean onNavigationItemSelected(MenuItem item) {
-
         int id = item.getItemId();
         displaySelectedScreen(id);
         return true;
     }
 
     private void displaySelectedScreen(int id){
-
-
         switch (id){
             case R.id.item_menu_lista:
-
                 fragment = new FragmentListas();
+                fragmentTag = "Listas";
                 Toast.makeText(getApplicationContext(), "Bienvenido a las Listas", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.item_menu_productos:
                 fragment = new FragmentProductos();
+                fragmentTag = "Productos";
+                Bundle bundle = new Bundle();
+                bundle.putInt(Categoria._ID, 0);
+                fragment.setArguments(bundle);
                 Toast.makeText(getApplicationContext(), "Bienvenido a los Productos", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.item_menu_categoria:
                 fragment = new FragmentCategorias();
+                fragmentTag = "Categorias";
                 Toast.makeText(getApplicationContext(), "Bienvenido a las Categorias", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.item_menu_supers:
                 fragment = new FragmentSupers();
+                fragmentTag = "Supermercados";
                 Toast.makeText(getApplicationContext(), "Bienvenido a los Supermercados", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.item_menu_acercade:
                 fragment = new FragmentAcercaDe();
+                fragmentTag = "AcercaDe";
                 break;
         }
 
         if (fragment != null){
             FragmentTransaction ft =  getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.contenedor, fragment);
-            ft.addToBackStack(null);
+            // Limpio el backstack para que vuelva al fragment listas
+            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i){
+                getSupportFragmentManager().popBackStackImmediate();
+            }
+            ft.addToBackStack(fragmentTag);
             ft.commit();
         }
 
@@ -270,7 +267,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
 
     }
-
-
 
 }

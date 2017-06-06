@@ -3,7 +3,6 @@ package com.example.superlista;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +20,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -42,13 +42,12 @@ import com.example.superlista.data.SuperListaDbManager;
 import com.example.superlista.model.Categoria;
 import com.example.superlista.model.Marca;
 import com.example.superlista.model.Producto;
-import com.example.superlista.model.Supermercado;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -320,6 +319,8 @@ public class FragmentProducto extends Fragment implements TextView.OnEditorActio
 
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.replace(R.id.contenedor, fragmentProductos);
+                    ft.addToBackStack("ProductoModificado");
+                    getActivity().getSupportFragmentManager().popBackStack("Productos", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     ft.commit();
                 }
             }

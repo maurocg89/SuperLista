@@ -5,6 +5,7 @@ package com.example.superlista;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,6 @@ import android.widget.Toast;
 
 import com.example.superlista.data.SuperListaDbManager;
 import com.example.superlista.model.Categoria;
-import com.example.superlista.model.Lista;
 
 import java.util.List;
 import java.util.Objects;
@@ -108,6 +108,8 @@ public class FragmentAgregarCategoria extends Fragment implements View.OnClickLi
         fragmento = new FragmentCategorias();
         FragmentTransaction ft =  getFragmentManager().beginTransaction();
         ft.replace(R.id.contenedor, fragmento);
+        ft.addToBackStack("CategoriaAgregada");
+        getActivity().getSupportFragmentManager().popBackStack("Categorias", FragmentManager.POP_BACK_STACK_INCLUSIVE);
         ft.commit();
     }
 

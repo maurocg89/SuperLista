@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -50,6 +49,8 @@ public class FragmentCategorias extends Fragment implements TextView.OnEditorAct
     private boolean isSearching;
     private final int REQ_CODE_SPEECH_OUTPUT = 143;
     private int cod_categoria;
+
+    // TODO: Poder eliminar categorias agregadas(no se pueden borrar las que vienen por defecto), sacar descripcion del formulario
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,6 +106,7 @@ public class FragmentCategorias extends Fragment implements TextView.OnEditorAct
                 fragmentProductos.setArguments(bundle);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.contenedor, fragmentProductos);
+                ft.addToBackStack("ProductosCategoria");
                 ft.commit();
             }
         });
@@ -230,6 +232,7 @@ public class FragmentCategorias extends Fragment implements TextView.OnEditorAct
                 fragmento = new FragmentAgregarCategoria();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.contenedor, fragmento);
+                ft.addToBackStack("AgregarCategoria");
                 ft.commit();
 
             }

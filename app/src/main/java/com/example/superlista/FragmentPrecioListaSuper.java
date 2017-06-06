@@ -7,19 +7,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.superlista.data.SuperListaDbManager;
-import com.example.superlista.model.Lista;
-import com.example.superlista.model.Producto;
 import com.example.superlista.model.ProductoPorLista;
 import com.example.superlista.model.Supermercado;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class FragmentPrecioListaSuper extends Fragment {
 

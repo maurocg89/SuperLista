@@ -4,10 +4,8 @@ package com.example.superlista;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.example.superlista.data.SuperListaDbManager;
 import com.example.superlista.model.Lista;
-import java.util.ArrayList;
 import java.util.List;
 
-
-
 public class FragmentListas extends Fragment {
-
 
     private ListView listViewListas;
     private List<Lista> listas;
@@ -34,7 +28,6 @@ public class FragmentListas extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_listas, container, false);
-
 
         llamarFloatingButtonAction(view);
 
@@ -71,6 +64,7 @@ public class FragmentListas extends Fragment {
                 fragmentProductosDeLista.setArguments(bundle);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.contenedor, fragmentProductosDeLista);
+                ft.addToBackStack("ProductosDeLista");
                 ft.commit();
             }
         });
@@ -86,6 +80,7 @@ public class FragmentListas extends Fragment {
                 fragmento = new FragmentAgregarLista();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.contenedor, fragmento);
+                ft.addToBackStack("AgregarLista");
                 ft.commit();
                 //Snackbar.make(view, "aca va la accion", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
