@@ -53,13 +53,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //TODO: (Arreglado) cuando se pone el telefono en horizontal en un fragment que no sea el de listas vuelve automaticamente a las listas
         //colocamos el fragment de listas en el principio
-        if(savedInstanceState == null){
-        fragment = new FragmentListas();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.contenedor, fragment);
-        ft.commit();
+        if (savedInstanceState == null) {
+            fragment = new FragmentListas();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.contenedor, fragment);
+            ft.commit();
         }
         //<editor-fold desc="LOGS DE INFORMACION PARA EXTRAER URIS DE LOS PRODUCTOS">
         /*
@@ -162,12 +161,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //</editor-fold>
 
 
-
     }
 
     public void onBackPressed() {
 
-        Toast onBackPressedToast = Toast.makeText(this,R.string.presionar_para_salir, Toast.LENGTH_SHORT);
+        Toast onBackPressedToast = Toast.makeText(this, R.string.presionar_para_salir, Toast.LENGTH_SHORT);
         long currentTime = System.currentTimeMillis();
 
         // Si esá el drawer abierto, lo cierra
@@ -176,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         } else {
             // Si está en la pantalla principal le da la opcion de salir de la aplicacion
-            if (getSupportFragmentManager().getBackStackEntryCount() < 1){
+            if (getSupportFragmentManager().getBackStackEntryCount() < 1) {
                 if (currentTime - mLastPress > mTimeLimit) {
                     onBackPressedToast.show();
                     mLastPress = currentTime;
@@ -204,11 +202,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-      //  int id = item.getItemId();
+        //  int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-      //  if (id == R.id.action_settings) {
-      //      return true;
-      //  }
+        //  if (id == R.id.action_settings) {
+        //      return true;
+        //  }
 
         return super.onOptionsItemSelected(item);
     }
@@ -221,8 +219,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void displaySelectedScreen(int id){
-        switch (id){
+    private void displaySelectedScreen(int id) {
+        switch (id) {
             case R.id.item_menu_lista:
                 fragment = new FragmentListas();
                 fragmentTag = "Listas";
@@ -252,11 +250,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
 
-        if (fragment != null){
-            FragmentTransaction ft =  getSupportFragmentManager().beginTransaction();
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.contenedor, fragment);
             // Limpio el backstack para que vuelva al fragment listas
-            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i){
+            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
                 getSupportFragmentManager().popBackStackImmediate();
             }
             ft.addToBackStack(fragmentTag);

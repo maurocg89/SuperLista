@@ -20,7 +20,7 @@ import com.example.superlista.model.Lista;
 import java.util.List;
 import java.util.Objects;
 
-
+// TODO: 06/06/2017 Esconder teclado cuando se agrega una lista
 public class FragmentAgregarLista extends Fragment implements View.OnClickListener {
 
     Fragment fragmento = null;
@@ -100,11 +100,10 @@ public class FragmentAgregarLista extends Fragment implements View.OnClickListen
     }
 
     public void llamarFragmentListas() {
-
         fragmento = new FragmentListas();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.contenedor, fragmento);
-        ft.addToBackStack("ListaAgregada");
+        //ft.addToBackStack("ListaAgregada");
         getActivity().getSupportFragmentManager().popBackStack("Listas", FragmentManager.POP_BACK_STACK_INCLUSIVE);
         ft.commit();
     }

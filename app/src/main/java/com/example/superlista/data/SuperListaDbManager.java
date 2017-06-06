@@ -94,6 +94,27 @@ public class SuperListaDbManager {
         }
     }
 
+    public void deleteListas(ArrayList<Lista> listas){
+        try {
+            getHelper().getListaDao().delete(listas);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    // Borra los productos por listas que fueron eliminados desde el fragment de Listas
+    public void deleteProductosPorListas(ArrayList<Lista> listasBorradas){
+        DeleteBuilder<ProductoPorLista, Integer> deleteBuilder = getHelper().getProductoPorListaDao().deleteBuilder();
+        try {
+            for (Lista lista : listasBorradas) {
+                deleteBuilder.where().eq(ProductoPorLista.COLUMNA_LISTA_FKEY, lista.getId_lista());
+            }
+            deleteBuilder.delete();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
     public void updateLista(int id_lista, String nombre_nuevo){
         try {
             Lista lista = getListaById(id_lista);
