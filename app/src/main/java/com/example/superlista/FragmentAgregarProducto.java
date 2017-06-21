@@ -64,6 +64,7 @@ import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 
+
 public class FragmentAgregarProducto extends Fragment implements View.OnClickListener, TextView.OnEditorActionListener {
 
     Fragment fragmento = null;
@@ -126,6 +127,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
         imageProd = (ImageView) vista.findViewById(R.id.imageViewFotoProd);
         imageProd.setOnClickListener(this);
+
 
 
         if (mayRequestStoragePermission()) {
@@ -401,6 +403,14 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
             marca = adapterMarca.getItem(sMarca.getSelectedItemPosition());
             supermercado = adapterSuper.getItem(sSupermercado.getSelectedItemPosition());
             double precio = Double.parseDouble(valorPrecio.getText().toString());
+
+            if (direccion_imagen == null ){
+
+                direccion_imagen = Uri.parse("android.resource://" + getContext().getPackageName() + "/" + R.drawable.ic_local_grocery_store_black_24dp).toString();
+                Log.i("Direccion default", "-> " + direccion_imagen);
+
+            }
+
 
             Producto nuevoProd = new Producto(nombreProducto, marca, 0, 0, 0, 0, categoria, direccion_imagen, unidad);
             switch (supermercado.getId_supermercado()){
