@@ -3,6 +3,7 @@ package com.example.superlista;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -408,6 +409,7 @@ public class FragmentProductosDeLista extends Fragment {
                 view = inflater.inflate(R.layout.list_item_producto_de_lista, null);
                 holder.producto = (TextView) view.findViewById(R.id.tvProductoDeLista);
                 holder.checkBox = (CheckBox) view.findViewById(R.id.checkBoxProducto);
+                holder.imagenProducto = (ImageView) view.findViewById(R.id.list_product_imagen);
                 view.setTag(holder);
             }else{
                 holder = (ViewHolderProductoDeLista) view.getTag();
@@ -415,6 +417,12 @@ public class FragmentProductosDeLista extends Fragment {
 
             ProductoPorLista prod = productoPorListas.get(i);
             holder.producto.setText(prod.toString());
+
+            if(prod.getProducto().getImagen() != null) {
+                String direc_imagen = prod.getProducto().getImagen();
+                Uri imagen = Uri.parse(direc_imagen);
+                holder.imagenProducto.setImageURI(imagen);
+            }
 
             return view;
         }
@@ -453,6 +461,8 @@ public class FragmentProductosDeLista extends Fragment {
     private class ViewHolderProductoDeLista{
         TextView producto;
         CheckBox checkBox;
+        ImageView imagenProducto;
+
 
     }
 }

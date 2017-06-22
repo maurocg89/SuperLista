@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Fragment fragment = null;
 
     /*
-       TODO: Ver el tema de adaptar la aplicacoin para distintas pantallas
+       TODO: Ver el tema de adaptar la aplicacion para distintas pantallas
 
 */
 
