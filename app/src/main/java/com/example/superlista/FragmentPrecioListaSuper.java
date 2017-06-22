@@ -15,6 +15,7 @@ import com.example.superlista.data.SuperListaDbManager;
 import com.example.superlista.model.ProductoPorLista;
 import com.example.superlista.model.Supermercado;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -45,6 +46,7 @@ public class FragmentPrecioListaSuper extends Fragment {
         getActivity().setTitle(supermercado.getNombre());
     }
 
+    // TODO: 22/06/2017 ver decimales
     private void setData() {
         double total = 0;
         productoPorListasSupers = new ArrayList<>();
@@ -68,8 +70,8 @@ public class FragmentPrecioListaSuper extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        tvTotal.setText("Total: " + total);
+        DecimalFormat df = new DecimalFormat("####.00");
+        tvTotal.setText("Total: " + df.format(total));
     }
 
     private class PrecioListaSuperAdapter extends BaseAdapter {
@@ -121,17 +123,18 @@ public class FragmentPrecioListaSuper extends Fragment {
             ProductoPorLista productoPorLista = productoPorListas.get(i);
             holder.producto.setText(productoPorLista.toString());
             holder.textoPrecioPorUnidad.setText("Precio por " + productoPorLista.getProducto().getUnidad());
-
+            double precioTotal = 0;
+            DecimalFormat df = new DecimalFormat("####.00");
             switch (supermercado.getId_supermercado()) {
                 case Supermercado.ID_COTO:
-                    holder.precioTotal.setText(String.valueOf
-                            (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_coto()));
+                    precioTotal = (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_coto());
+                    holder.precioTotal.setText(df.format(precioTotal));
                     holder.precioPorUnidad.setText(String.valueOf(productoPorLista.getProducto().getPrecio_coto()));
                     break;
                 case Supermercado.ID_LA_GALLEGA:
-                    holder.precioTotal.setText(String.valueOf
-                            (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_la_gallega()));
-                    holder.precioPorUnidad.setText(String.valueOf(productoPorLista.getProducto().getPrecio_la_gallega()));
+                    precioTotal = (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_la_gallega());
+                    holder.precioTotal.setText(df.format(precioTotal));
+                    holder.precioPorUnidad.setText(df.format(productoPorLista.getProducto().getPrecio_la_gallega()));
                     break;
                 case Supermercado.ID_CARREFOUR:
                     holder.precioTotal.setText(String.valueOf

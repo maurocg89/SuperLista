@@ -1,32 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:orientation="vertical"
-    >
+    android:layout_margin="@dimen/margen_arriba"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/lvListaPorSuper"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp" />
+
+    <TextView
+        android:id="@+id/tvTotalPorSuper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:orientation="vertical">
-
-        <ListView
-            android:id="@+id/lvListaPorSuper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-             />
-
-        <TextView
-            android:id="@+id/tvTotalPorSuper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textAlignment="center"
-            android:text="Total: "
-            android:textAppearance="@android:style/TextAppearance.Large"
-            android:textColor="@android:color/black" />
-    </LinearLayout>
-</ScrollView>
+        android:text="Total: "
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textColor="@android:color/black" />
+</LinearLayout>

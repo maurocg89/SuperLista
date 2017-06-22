@@ -31,6 +31,7 @@ import com.example.superlista.model.Lista;
 import com.example.superlista.model.ProductoPorLista;
 import com.example.superlista.model.Supermercado;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -235,6 +236,7 @@ public class FragmentProductosDeLista extends Fragment {
         if (productosPorLista.size() == 0){return 0;}
 
         double total = 0;
+
 
         for (ProductoPorLista prod: productosPorLista) {
             double cantidad = prod.getCantidad();
