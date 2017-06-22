@@ -46,7 +46,7 @@ public class FragmentPrecioListaSuper extends Fragment {
         getActivity().setTitle(supermercado.getNombre());
     }
 
-    // TODO: 22/06/2017 ver decimales
+
     private void setData() {
         double total = 0;
         productoPorListasSupers = new ArrayList<>();
@@ -70,7 +70,7 @@ public class FragmentPrecioListaSuper extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        DecimalFormat df = new DecimalFormat("####.00");
+        DecimalFormat df = new DecimalFormat("###0.00");
         tvTotal.setText("Total: " + df.format(total));
     }
 
@@ -124,12 +124,12 @@ public class FragmentPrecioListaSuper extends Fragment {
             holder.producto.setText(productoPorLista.toString());
             holder.textoPrecioPorUnidad.setText("Precio por " + productoPorLista.getProducto().getUnidad());
             double precioTotal = 0;
-            DecimalFormat df = new DecimalFormat("####.00");
+            DecimalFormat df = new DecimalFormat("###0.00");
             switch (supermercado.getId_supermercado()) {
                 case Supermercado.ID_COTO:
                     precioTotal = (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_coto());
                     holder.precioTotal.setText(df.format(precioTotal));
-                    holder.precioPorUnidad.setText(String.valueOf(productoPorLista.getProducto().getPrecio_coto()));
+                    holder.precioPorUnidad.setText(df.format(productoPorLista.getProducto().getPrecio_coto()));
                     break;
                 case Supermercado.ID_LA_GALLEGA:
                     precioTotal = (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_la_gallega());
@@ -137,17 +137,17 @@ public class FragmentPrecioListaSuper extends Fragment {
                     holder.precioPorUnidad.setText(df.format(productoPorLista.getProducto().getPrecio_la_gallega()));
                     break;
                 case Supermercado.ID_CARREFOUR:
-                    holder.precioTotal.setText(String.valueOf
-                            (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_carrefour()));
-                    holder.precioPorUnidad.setText(String.valueOf(productoPorLista.getProducto().getPrecio_carrefour()));
+                    precioTotal = (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_carrefour());
+                    holder.precioTotal.setText(df.format(precioTotal));
+                    holder.precioPorUnidad.setText(df.format(productoPorLista.getProducto().getPrecio_carrefour()));
                     break;
                 case Supermercado.ID_OTRO:
-                    holder.precioTotal.setText(String.valueOf
-                            (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_otro()));
-                    holder.precioPorUnidad.setText(String.valueOf(productoPorLista.getProducto().getPrecio_otro()));
+                    precioTotal = (productoPorLista.getCantidad() * productoPorLista.getProducto().getPrecio_otro());
+                    holder.precioTotal.setText(df.format(precioTotal));
+                    holder.precioPorUnidad.setText(df.format(productoPorLista.getProducto().getPrecio_otro()));
                     break;
                 default:
-                    holder.precioTotal.setText("0");
+                    holder.precioTotal.setText("0.00");
                     break;
             }
             return view;
