@@ -10,6 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:layout_margin="@dimen/list_item_linear_margin_xlarge"
         android:orientation="vertical"
         >
 
@@ -18,11 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
             android:textColor="@android:color/black"
+            android:textSize="@dimen/letras_xlarge"
             android:focusable="false"/>
 
         <TextView
@@ -31,16 +29,15 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:textColor="@android:color/black"
-            android:focusable="false"/>
+            android:focusable="false"
+            android:textSize="@dimen/letras_xlarge"/>
     </LinearLayout>
 
     <ImageView
         android:id="@+id/list_item_imagen"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         app:srcCompat="@drawable/ic_local_grocery_store_black_24dp"
         android:focusable="false"/>
 

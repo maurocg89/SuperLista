@@ -31,13 +31,14 @@
                 android:focusable="false"
                 android:gravity="center_vertical"
                 android:padding="10dp"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/letras_xlarge" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/list_product_imagen"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="175dp"
+            android:layout_height="175dp"
             android:focusable="false"
             app:srcCompat="@drawable/ic_local_grocery_store_black_24dp" />
 

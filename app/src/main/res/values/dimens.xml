@@ -9,4 +9,11 @@
     <dimen name="margen_derecho_header">8dp</dimen>
     <dimen name="margen_entre_items">12dp</dimen>
     <dimen name="margen_arriba">20dp</dimen>
+    <dimen name="letras_xlarge">30sp</dimen>
+    <dimen name="letras_large">25sp</dimen>
+    <dimen name="margen_arriba_xlarge">45dp</dimen>
+    <dimen name="spinner_xlarge">250dp</dimen>
+    <dimen name="width_height_fab_xlarge">75dp</dimen>
+    <dimen name="list_item_text_view_height_xlarge">100dp</dimen>
+    <dimen name="list_item_linear_margin_xlarge">25dp</dimen>
 </resources>

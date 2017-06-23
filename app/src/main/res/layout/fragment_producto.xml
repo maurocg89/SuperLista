@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="58dp"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/textViewModificarNombreProd"
                 android:layout_width="wrap_content"
@@ -29,9 +29,10 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentStart="true"
+                android:gravity="center"
                 android:text="Nombre"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                android:gravity="center"/>
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
             <EditText
                 android:id="@+id/editTextModificarNombreProd"
                 android:layout_width="wrap_content"
@@ -41,10 +42,10 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentStart="true"
-                android:visibility="invisible"
                 android:ems="10"
                 android:hint="@string/nombre"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:visibility="invisible" />
 
             <ImageView
                 android:id="@+id/imageViewModificarProdMicrofono"
@@ -90,18 +91,20 @@
                 android:text="Precio Coto: "
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
+
             <EditText
                 android:id="@+id/editTextValorPrecioCoto"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:text="@string/valor_precio"
-                android:inputType="numberDecimal"
-                android:textSize="16sp"
                 android:enabled="false"
-                />
+                android:inputType="numberDecimal"
+                android:text="@string/valor_precio"
+                android:textAlignment="center"
+                android:textSize="16sp" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -117,17 +120,20 @@
                 android:text="Precio La Gallega: "
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
+
             <EditText
                 android:id="@+id/editTextValorPrecioLaGallega"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:text="@string/valor_precio"
+                android:enabled="false"
                 android:inputType="numberDecimal"
-                android:textSize="16sp"
-                android:enabled="false"/>
+                android:text="@string/valor_precio"
+                android:textAlignment="center"
+                android:textSize="16sp" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="54dp"
@@ -143,15 +149,17 @@
                 android:text="Precio Carrefour: "
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
+
             <EditText
                 android:id="@+id/editTextValorPrecioCarrefour"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:text="@string/valor_precio"
+                android:enabled="false"
                 android:inputType="numberDecimal"
-                android:textSize="16sp"
-                android:enabled="false"/>
+                android:text="@string/valor_precio"
+                android:textAlignment="center"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -170,15 +178,17 @@
                 android:text="Precio Otro: "
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
+
             <EditText
                 android:id="@+id/editTextValorPrecioOtro"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:text="@string/valor_precio"
+                android:enabled="false"
                 android:inputType="numberDecimal"
-                android:textSize="16sp"
-                android:enabled="false"/>
+                android:text="@string/valor_precio"
+                android:textAlignment="center"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -203,14 +213,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="bottom"
-                tools:ignore="InefficientWeight"
-                />
+                android:textAlignment="center"
+                tools:ignore="InefficientWeight" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_weight="0.27"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/textViewModifcarCategoria"
                 android:layout_width="141dp"
@@ -225,7 +237,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="bottom"
-                />
+                android:textAlignment="center" />
         </LinearLayout>
 
         <LinearLayout
@@ -247,7 +259,8 @@
                 android:id="@+id/spinnerModificarMarca"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="bottom" />
+                android:layout_gravity="bottom"
+                android:textAlignment="center" />
         </LinearLayout>
 
         <LinearLayout
@@ -264,7 +277,8 @@
                 android:background="@android:color/holo_blue_dark"
                 android:text="@string/editar_producto"
                 android:textColor="@android:color/background_light"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
+
             <Button
                 android:id="@+id/buttonCancelarModifProd"
                 android:layout_width="110dp"
@@ -274,7 +288,7 @@
                 android:background="@android:color/holo_blue_dark"
                 android:text="@string/cancelar"
                 android:textColor="@android:color/background_light"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
         </LinearLayout>
 
     </LinearLayout>

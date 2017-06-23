@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/margen_arriba_xlarge"
+    android:orientation="vertical">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/lvProductosDeLista"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:choiceMode="multipleChoice"
+            tools:ignore="NestedScrolling" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/boton_agregar_productos_listas"
+            android:layout_width="@dimen/width_height_fab_xlarge"
+            android:layout_height="@dimen/width_height_fab_xlarge"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:adjustViewBounds="false"
+            app:backgroundTint="@android:color/holo_blue_light"
+            app:elevation="0dp"
+            app:srcCompat="@mipmap/icono_add" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imgBtnLaGallega"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="Total La Gallega"
+            app:srcCompat="@mipmap/logo_la_gallega" />
+
+        <ImageView
+            android:id="@+id/imgBtnCoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="Total Coto"
+            app:srcCompat="@mipmap/logo_coto" />
+
+        <ImageView
+            android:id="@+id/imgBtnCarrefour"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="Total Carregour"
+            app:srcCompat="@mipmap/logo_carrefour" />
+
+        <ImageView
+            android:id="@+id/imgBtnOtro"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="Total Otro"
+            app:srcCompat="@mipmap/icon_chinese" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -43,7 +43,7 @@
 
     <!--STRINGS PARA EL xml form_agregar_lista -->
     <string name="nueva_lista">Nueva Lista</string>
-    <string name="nombre">Nombre:</string>
+    <string name="nombre">Nombre</string>
     <string name="nombre_lista">escribe aqui el nombre</string>
     <string name="agregar">AGREGAR</string>
     <string name="cancelar">Cancelar</string>

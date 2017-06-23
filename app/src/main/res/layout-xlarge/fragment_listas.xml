@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.superlista.FragmentListas"
-    android:layout_marginTop="@dimen/margen_arriba">
+    android:layout_marginTop="@dimen/margen_arriba_xlarge"
+    tools:context="com.example.superlista.FragmentListas">
 
     <ListView
         android:id="@+id/lvLista"
@@ -15,8 +15,8 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/boton_de_accion_listas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/width_height_fab_xlarge"
+        android:layout_height="@dimen/width_height_fab_xlarge"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:adjustViewBounds="false"

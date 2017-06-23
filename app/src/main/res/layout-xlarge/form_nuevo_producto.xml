@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/margen_arriba"
+    android:layout_marginTop="@dimen/margen_arriba_xlarge"
     android:orientation="vertical">
 
     <LinearLayout
@@ -18,7 +18,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="60dp"
             android:orientation="horizontal">
 
             <EditText
@@ -32,12 +32,13 @@
                 android:layout_alignParentStart="true"
                 android:ems="10"
                 android:hint="@string/nombre"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textSize="@dimen/letras_xlarge" />
 
             <ImageView
                 android:id="@+id/imageViewMicrofono"
-                android:layout_width="59dp"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignTop="@+id/editTextNombreProd"
@@ -55,14 +56,14 @@
             <ImageView
                 android:id="@+id/imageViewFotoProd"
                 android:layout_width="match_parent"
-                android:layout_height="164dp"
-
+                android:layout_height="200dp"
+                android:contentDescription=""
                 app:srcCompat="@drawable/addimage128" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="54dp"
+            android:layout_height="60dp"
             android:orientation="horizontal">
 
             <TextView
@@ -73,81 +74,83 @@
                 android:gravity="center_vertical"
                 android:text="@string/precio"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textSize="@dimen/letras_xlarge" />
 
             <EditText
                 android:id="@+id/editTextValorPrecio"
-                android:layout_width="140dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"
                 android:inputType="numberDecimal"
                 android:text="@string/valor_precio"
                 android:textAlignment="center"
-                android:textSize="16sp" />
+                android:textSize="@dimen/letras_xlarge" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="60dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textViewUnidad"
-                android:layout_width="140dp"
+                android:layout_width="209dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
+                android:gravity="center_vertical"
                 android:text="@string/unidad"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textSize="@dimen/letras_xlarge" />
 
             <Spinner
                 android:id="@+id/spinnerUnidad"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                tools:ignore="InefficientWeight" />
+                android:layout_width="@dimen/spinner_xlarge"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="60dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textViewCategoria"
-                android:layout_width="140dp"
+                android:layout_width="209dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:text="@string/categoria"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textSize="@dimen/letras_xlarge" />
 
             <Spinner
                 android:id="@+id/spinnerCategoria"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/spinner_xlarge"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_vertical" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
 
             <TextView
                 android:id="@+id/textViewMarca"
-                android:layout_width="140dp"
+                android:layout_width="209dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:text="@string/marca"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textSize="@dimen/letras_xlarge"
+                 />
 
             <Spinner
                 android:id="@+id/spinnerMarca"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/spinner_xlarge"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom" />
 
@@ -156,21 +159,21 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="60dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textViewSuper"
-                android:layout_width="140dp"
+                android:layout_width="209dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:text="@string/supermercado"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textSize="@dimen/letras_xlarge" />
 
             <Spinner
                 android:id="@+id/spinnerSuper"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/spinner_xlarge"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom" />
 
@@ -178,13 +181,14 @@
 
         <Button
             android:id="@+id/buttonAgregarProd"
-            android:layout_width="110dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="30dp"
+            android:layout_margin="@dimen/margen_arriba_xlarge"
             android:background="@android:color/holo_blue_dark"
             android:text="@string/agregar"
-            android:textColor="@android:color/background_light" />
+            android:textColor="@android:color/background_light"
+            android:textSize="@dimen/letras_xlarge" />
 
 
     </LinearLayout>

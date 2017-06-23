@@ -7,10 +7,10 @@
     <TextView
         android:id="@+id/list_item_lista"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/list_item_text_view_height_xlarge"
         android:gravity="center_vertical"
-        android:padding="10dp"
+        android:padding="25dp"
         android:textColor="@android:color/black"
-        android:textSize="16sp" />
+        android:textSize="@dimen/letras_xlarge" />
 
 </LinearLayout>
