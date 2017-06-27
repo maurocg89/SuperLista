@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.app.Activity.RESULT_OK;
@@ -78,7 +79,7 @@ public class FragmentProducto extends Fragment implements TextView.OnEditorActio
     private final int SELECT_PICTURE = 300;
     private final int REQ_CODE_SPEECH_OUTPUT = 143;
 
-    
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
