@@ -11,8 +11,8 @@
         android:id="@+id/linearProducto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="@dimen/margen_lateral_xlarge"
+        android:layout_marginRight="@dimen/margen_lateral_xlarge"
         android:orientation="vertical">
 
 
@@ -56,7 +56,7 @@
             <ImageView
                 android:id="@+id/imageViewFotoProd"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="300dp"
                 android:contentDescription=""
                 app:srcCompat="@drawable/addimage128" />
         </LinearLayout>
@@ -188,7 +188,7 @@
             android:background="@android:color/holo_blue_dark"
             android:text="@string/agregar"
             android:textColor="@android:color/background_light"
-            android:textSize="@dimen/letras_xlarge" />
+            android:textSize="@dimen/letras_large" />
 
 
     </LinearLayout>

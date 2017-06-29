@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/margen_arriba_xlarge"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/linearFragmentProducto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margen_lateral_xlarge"
+        android:layout_marginRight="@dimen/margen_lateral_xlarge"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewModificarNombreProd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:text="Nombre"
+                android:textSize="@dimen/letras_xlarge" />
+
+            <EditText
+                android:id="@+id/editTextModificarNombreProd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:ems="10"
+                android:hint="@string/nombre"
+                android:inputType="textPersonName"
+                android:textSize="@dimen/letras_large"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/imageViewModificarProdMicrofono"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/editTextModificarNombreProd"
+                android:contentDescription=""
+                android:visibility="invisible"
+                app:srcCompat="@drawable/ic_microphone"
+                tools:ignore="ContentDescription" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageViewModificarFotoProd"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                app:srcCompat="@drawable/addimage128" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:id="@+id/textViewPrecioCoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:text="Precio Coto: "
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/letras_xlarge" />
+
+            <EditText
+                android:id="@+id/editTextValorPrecioCoto"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:enabled="false"
+                android:inputType="numberDecimal"
+                android:text="@string/valor_precio"
+                android:textAlignment="center"
+                android:textSize="@dimen/letras_xlarge" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:id="@+id/textViewPrecioLaGallega"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:text="Precio La Gallega: "
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/letras_xlarge" />
+
+            <EditText
+                android:id="@+id/editTextValorPrecioLaGallega"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:enabled="false"
+                android:inputType="numberDecimal"
+                android:text="@string/valor_precio"
+                android:textAlignment="center"
+                android:textSize="@dimen/letras_xlarge" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:id="@+id/textViewPrecioCarrefour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:text="Precio Carrefour: "
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/letras_xlarge" />
+
+            <EditText
+                android:id="@+id/editTextValorPrecioCarrefour"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:enabled="false"
+                android:inputType="numberDecimal"
+                android:text="@string/valor_precio"
+                android:textAlignment="center"
+                android:textSize="@dimen/letras_xlarge" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:id="@+id/textViewPrecioOtro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:text="Precio Otro: "
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/letras_xlarge" />
+
+            <EditText
+                android:id="@+id/editTextValorPrecioOtro"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:enabled="false"
+                android:inputType="numberDecimal"
+                android:text="@string/valor_precio"
+                android:textAlignment="center"
+                android:textSize="@dimen/letras_xlarge" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewModificarUnidad"
+                android:layout_width="141dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="@string/unidad"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/letras_xlarge" />
+
+            <Spinner
+                android:id="@+id/spinnerModificarUnidad"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:textAlignment="center"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewModifcarCategoria"
+                android:layout_width="141dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="@string/categoria"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/letras_xlarge" />
+
+            <Spinner
+                android:id="@+id/spinnerModifcarCategoria"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewModificarMarca"
+                android:layout_width="141dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="@string/marca"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/letras_xlarge" />
+
+            <Spinner
+                android:id="@+id/spinnerModificarMarca"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonModificarProd"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="30dp"
+                android:background="@android:color/holo_blue_dark"
+                android:text="@string/editar_producto"
+                android:textColor="@android:color/background_light"
+                android:textSize="@dimen/letras_large"
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/buttonCancelarModifProd"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="30dp"
+                android:background="@android:color/holo_blue_dark"
+                android:text="@string/cancelar"
+                android:textColor="@android:color/background_light"
+                android:textSize="@dimen/letras_large"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
