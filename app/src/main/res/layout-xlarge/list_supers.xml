@@ -17,6 +17,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/margen_lateral_xlarge"
+        android:layout_marginRight="@dimen/margen_lateral_xlarge"
         android:orientation="vertical">
 
         <TextView
