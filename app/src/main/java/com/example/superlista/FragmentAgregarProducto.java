@@ -206,7 +206,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
             btnOpenMic();
 
         } else if (v == linearLayoutProd){
-            //TODO: al hacerle click en el layout baja el teclado
+            //al hacerle click en el layout baja el teclado
            bajarTeclado();
         }
     }

@@ -26,7 +26,7 @@ import com.example.superlista.model.Lista;
 import java.util.List;
 import java.util.Objects;
 
-// TODO: 06/06/2017 Esconder teclado cuando se agrega una lista
+
 public class FragmentAgregarLista extends Fragment implements View.OnClickListener {
 
     Fragment fragmento = null;

@@ -28,10 +28,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String fragmentTag;
     Fragment fragment = null;
 
-    /*
-       TODO: Ver el tema de adaptar la aplicacion para distintas pantallas
 
-*/
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
