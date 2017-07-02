@@ -4,6 +4,7 @@ package com.example.superlista;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -30,6 +31,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -118,6 +120,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
     private void iniciarIU(View vista) {
 
         linearLayoutProd = (LinearLayout) vista.findViewById(R.id.linearProducto);
+        linearLayoutProd.setOnClickListener(this);
 
         botonMicrofono = (ImageView) vista.findViewById(R.id.imageViewMicrofono);
         botonMicrofono.setOnClickListener(this);
@@ -185,6 +188,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
         if (v == agregarProducto) {
 
+            bajarTeclado();
             nombreProducto = nomProd.getText().toString();
             aux = nombreProducto.trim();
 
@@ -200,7 +204,21 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
         } else if (v == botonMicrofono) {
             btnOpenMic();
+
+        } else if (v == linearLayoutProd){
+            //TODO: al hacerle click en el layout baja el teclado
+           bajarTeclado();
         }
+    }
+
+
+    private void bajarTeclado(){
+
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(nomProd.getWindowToken (), 0);
+        imm.hideSoftInputFromWindow(valorPrecio.getWindowToken (), 0);
+        Log.i("Bajamos el teclado", "ahora");
+
     }
 
     private void mostrarOpciones() {
@@ -385,18 +403,7 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
     public void check_exist_addProducto(String nombre, Marca m) {
         Producto prod = SuperListaDbManager.getInstance().getProductoByNombre(nombre, m);
         if (prod != null) {
-            final CharSequence[] opcion = {"OK"};
-            final AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
-            builder2.setTitle("Ya hay registrado un producto de igual nombre");
-            builder2.setItems(opcion, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (opcion[which] == "OK") {
-                        dialog.dismiss();
-                    }
-                }
-            });
-            builder2.show();
+            alertDialogEdit("Ya hay registrado un producto de igual caracteristicas");
         } else {
             unidad = sUnidad.getSelectedItem().toString();
             categoria = adapterCategoria.getItem(sCategoria.getSelectedItemPosition());
@@ -420,8 +427,9 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
                 case Supermercado.ID_OTRO: nuevoProd.setPrecio_otro(precio); break;
             }
             SuperListaDbManager.getInstance().addProducto(nuevoProd);
-            Toast.makeText(getContext(), "Producto Agregado", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), "Producto Agregado", Toast.LENGTH_SHORT).show();
 
+            alertDialogEdit("Producto Agregado");
 
             llamarFragmentProd();
         }
@@ -429,6 +437,21 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
 
     //</editor-fold>
+
+
+    public void alertDialogEdit(String info){// metodo que lanza un alert dialog informativo
+
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(info)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.show();
+
+    }
 
 
     public void llamarFragmentProd() {
@@ -625,6 +648,9 @@ public class FragmentAgregarProducto extends Fragment implements View.OnClickLis
 
 
     //</editor-fold>
+
+
+
 
 
 }
