@@ -45,26 +45,6 @@
             android:textSize="@dimen/letras_large"
             android:textStyle="italic" />
 
-        <TextView
-            android:id="@+id/textViewDescrCat"
-            android:layout_width="match_parent"
-            android:layout_height="49dp"
-            android:gravity="bottom"
-            android:text="@string/descr_categoria"
-            android:textSize="@dimen/letras_xlarge" />
-
-        <EditText
-            android:id="@+id/editTextDescrCat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.20"
-            android:ems="10"
-            android:gravity="bottom"
-            android:hint="@string/text_descr_categoria"
-            android:inputType="textPersonName"
-            android:textSize="@dimen/letras_large"
-            android:textStyle="italic" />
-
         <Button
             android:id="@+id/buttonAgregar"
             android:layout_width="200dp"

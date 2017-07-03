@@ -45,25 +45,6 @@
             android:textSize="18sp"
             android:textStyle="italic" />
 
-        <TextView
-            android:id="@+id/textViewDescrCat"
-            android:layout_width="match_parent"
-            android:layout_height="49dp"
-            android:gravity="bottom"
-            android:text="@string/descr_categoria"
-            android:textSize="24sp" />
-
-        <EditText
-            android:id="@+id/editTextDescrCat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.20"
-            android:ems="10"
-            android:gravity="bottom"
-            android:hint="@string/text_descr_categoria"
-            android:inputType="textPersonName"
-            android:textSize="18sp"
-            android:textStyle="italic" />
 
         <Button
             android:id="@+id/buttonAgregar"

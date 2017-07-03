@@ -50,7 +50,7 @@ public class FragmentCategorias extends Fragment implements TextView.OnEditorAct
     private final int REQ_CODE_SPEECH_OUTPUT = 143;
     private int cod_categoria;
 
-    // TODO: Poder eliminar categorias agregadas(no se pueden borrar las que vienen por defecto), sacar descripcion del formulario
+    // TODO: Poder eliminar categorias agregadas(no se pueden borrar las que vienen por defecto)
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -35,7 +35,7 @@ public class FragmentAgregarCategoria extends Fragment implements View.OnClickLi
     private LinearLayout linearLayoutAgregarCategoria;
     private EditText nombreCategoria, descripcionCategoria;
     private Button botonAgregar;
-    private String dato, dato2, auxiliar;
+    private String dato, auxiliar;
     private boolean validacion = true;
 
 
@@ -48,7 +48,6 @@ public class FragmentAgregarCategoria extends Fragment implements View.OnClickLi
         linearLayoutAgregarCategoria.setOnClickListener(this);
 
         nombreCategoria = (EditText) view.findViewById(R.id.editTextNombreFormCat);
-        descripcionCategoria = (EditText) view.findViewById(R.id.editTextDescrCat);
 
         botonAgregar = (Button) view.findViewById(R.id.buttonAgregar);
         botonAgregar.setOnClickListener(this);
@@ -74,11 +73,10 @@ public class FragmentAgregarCategoria extends Fragment implements View.OnClickLi
 
            bajarTeclado();
            dato = nombreCategoria.getText().toString();
-           dato2 = descripcionCategoria.getText().toString();
            auxiliar= dato.trim();
 
            if (auxiliar.length() > 0){ //verificacion para que el campo nombre no sea vacio
-                check_add_Categoria(dato, dato2);
+                check_add_Categoria(dato);
             }else{
                 Toast.makeText(getContext(), "Coloque un Nombre a la Categoria", Toast.LENGTH_SHORT).show();
             }
@@ -93,12 +91,11 @@ public class FragmentAgregarCategoria extends Fragment implements View.OnClickLi
 
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(nombreCategoria.getWindowToken (), 0);
-        imm.hideSoftInputFromWindow(descripcionCategoria.getWindowToken (), 0);
         Log.i("Bajamos el teclado", "ahora");
 
     }
 
-    public void check_add_Categoria(String nombreCat, String descrCat){
+    public void check_add_Categoria(String nombreCat){
 
         listadoDeCategorias = SuperListaDbManager.getInstance().getAllCategorias();
 
@@ -114,7 +111,7 @@ public class FragmentAgregarCategoria extends Fragment implements View.OnClickLi
         }
 
         if (!validacion) {
-            Categoria nuevaCategoria = new Categoria(nombreCat, descrCat);
+            Categoria nuevaCategoria = new Categoria(nombreCat, null);
             SuperListaDbManager.getInstance().addCategoria(nuevaCategoria);
             //Toast.makeText(getContext(), "Categoría Agregada", Toast.LENGTH_SHORT).show();
 

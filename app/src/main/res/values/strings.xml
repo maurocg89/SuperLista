@@ -51,8 +51,6 @@
     <!--STRINGS PARA EL xml form_agregar_categoria -->
     <string name="nueva_categoria">Nueva Categoria</string>
     <string name="nombre_categoria">escribe el nombre de la Categoria</string>
-    <string name="descr_categoria">Descripción:</string>
-    <string name="text_descr_categoria">escribe una descripción básica</string>
 
 
     <!--STRINGS PARA EL xml form_nuevo_producto -->
