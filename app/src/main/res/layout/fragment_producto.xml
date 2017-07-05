@@ -4,27 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/fab_margin"
+    android:layout_marginLeft="@dimen/fab_margin"
+    android:layout_marginRight="@dimen/fab_margin"
+    android:layout_marginTop="@dimen/margen_arriba"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/linearFragmentProducto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:orientation="vertical"
-        android:weightSum="1">
-
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="58dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textViewModificarNombreProd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
@@ -37,7 +38,6 @@
                 android:id="@+id/editTextModificarNombreProd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
@@ -64,10 +64,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2.63"
-            android:orientation="horizontal"
-            android:weightSum="1"
-            tools:ignore="InefficientWeight">
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/imageViewModificarFotoProd"
@@ -196,7 +193,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_weight="0.27"
             android:orientation="horizontal">
 
             <TextView
@@ -213,14 +209,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="bottom"
-                android:textAlignment="center"
-                tools:ignore="InefficientWeight" />
+                android:textAlignment="center" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_weight="0.27"
             android:orientation="horizontal">
 
             <TextView
@@ -243,7 +237,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_weight="0.27"
             android:orientation="horizontal">
 
             <TextView

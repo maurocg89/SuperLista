@@ -17,27 +17,26 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
+            android:layout_height="80dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/textViewModificarNombreProd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentStart="true"
                 android:gravity="center"
                 android:text="Nombre"
-                android:textSize="@dimen/letras_xlarge" />
+                android:textSize="@dimen/letras_xlarge"/>
 
             <EditText
                 android:id="@+id/editTextModificarNombreProd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"

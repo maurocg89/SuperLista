@@ -67,7 +67,7 @@ public class FragmentSupers extends Fragment {
                 arrayItems.add(new Supermercado(supermercado.getNombre() , "Sucursal: " + supermercado.getSucursal() , R.mipmap.logo_carrefour));
 
             }else{
-                arrayItems.add(new Supermercado(supermercado.getNombre() , "Sucursal: " + supermercado.getSucursal() , R.mipmap.icon_chinese));
+                arrayItems.add(new Supermercado(supermercado.getNombre() , null , R.mipmap.icon_chinese));
             }
 
         }

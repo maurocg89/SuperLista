@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="7dp"
+        android:layout_margin="10dp"
         android:orientation="vertical">
 
 
@@ -100,6 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/margen_entre_items"
+                android:layout_marginBottom="12dp"
                 android:text="@string/boton_env_comentario"
                 android:textAllCaps="false" />
 
